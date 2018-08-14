@@ -18,13 +18,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onFormSubmit(){
-    this.user.resgiterUser(this.userModel)
-      .subscribe(res => {
-        let id = res._id;
-        this.router.navigate(["/profile"])
-      }, (error) => {
-        console.error(error)
-      })
+    console.log(this.userModel)
   }
 
 }

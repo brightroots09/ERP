@@ -2,12 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const path = require("path");
-const passport = require("passport");
-const passportConfig = require("./passport");
 
 const adminModel = require("../models/adminModel");
 const employeeModel = require("../models/employeeModel");
 const projectModel = require("../models/projectModel");
+const session = require("express-session");
 
 const commonFunction = require("../services/common_functions")
 
@@ -47,18 +46,26 @@ router.get("/", function(req, res, callback){
 * login route
 * -----------
 * */
-router.post("/login", passport.authenticate("admin", {
-  successRedirect: "/profile",
-  failureRedirect: "/login",
-  failureFlash: false
-}));
+router.post("/login", function(req, res, callback){
+  let condition = {
+    email: req.body.email,
+    password: req.body.password
+  }
+  commonFunction.loginUser(adminModel, condition, function(error, result){
+    if(error) callback(error)
+    else{
+      req.session.user = result.user
+      res.send(result)
+    }
+  })
+});
 
 router.get("/login", function(req, res, callback){
   if(req.user){
     res.redirect("/profile")
   }
   else{
-    res.json("Not Logged In")
+    res.json("Wrong Credentials")
   }
 })
 
@@ -67,11 +74,14 @@ router.get("/login", function(req, res, callback){
 * logout route
 * ------------
 * */
-router.get("/logout", function(req, res, cb){
-  req.logout();
-  res.redirect("/");
+router.get('/logout', (req, res) => {
+  if (req.session.user && req.cookies.user_id) {
+      res.clearCookie('user_id');
+      res.redirect('/');
+  } else {
+      res.redirect('/login');
+  }
 });
-
 
 /*
 * -------------
@@ -79,20 +89,11 @@ router.get("/logout", function(req, res, cb){
 * -------------
 * */
 router.get("/profile", function(req, res, callback){
-  // adminModel
-  //   .findById({_id: req.user._id})
-  //   .exec(function(error, user){
-  //     if(error) return callback(error);
-  //     else{
-  //       res.json(user);
-  //     }
-  //   })
-
-  let conidtion = {
-    id: req.user._id
+  let condition = {
+    id: req.session.user._id
   };
 
-  commonFunction.getProfile(adminModel, conidtion, function(error, response){
+  commonFunction.getProfile(adminModel, condition, function(error, response){
     if(error) callback(error)
     else{
       res.json(response)

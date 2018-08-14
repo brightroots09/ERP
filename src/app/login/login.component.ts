@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user';
 import { Router } from '@angular/router';
-import { UserService } from '../user.service';
+import { AuthService } from "../auth.service"
 
 @Component({
   selector: 'app-login',
@@ -12,20 +12,21 @@ export class LoginComponent implements OnInit {
 
   userModel = new User()
 
-  constructor(private router: Router, private user: UserService) { }
+  constructor(private _router: Router, private _auth: AuthService ) { }
 
   ngOnInit() {
   }
 
   onFormSubmit() {
-    this.user.login(this.userModel)
-      .subscribe(res => {
-          if(res){
-            this.router.navigate(["/profile"])
-          }
-      }, (error) => {
-        console.error(error)
-      })
+    this._auth.loginUser(this.userModel)
+      .subscribe(
+        res => {
+          console.log(res)
+          localStorage.setItem('token', res.token)
+          this._router.navigate(["/profile"])
+        },
+        error => console.log(error)
+      )
   }
 
 }

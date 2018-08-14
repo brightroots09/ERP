@@ -1,4 +1,4 @@
-odule.exports = {
+module.exports = {
      sql_cust : async ()=>{
         try {
             await con.query(`create table if not exists customer(

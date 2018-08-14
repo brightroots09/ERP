@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const passport = require("passport");
-const passportConfig = require("./passport");
-
 const employeeModel = require("../models/employeeModel")
 
 const commonFunction = require("../services/common_functions")
@@ -27,11 +24,19 @@ router.get("/", function(req, res, callback) {
 * Login route
 * -----------
 * */
-router.post("/employee_login", passport.authenticate("employee", {
-  successRedirect: "/employee_profile",
-  failureRedirect: "/employee_login",
-  failureFlash: false
-}));
+router.post("/employee_login", function(req, res, callback){
+  let conidtion = {
+    email: req.body.email,
+    password: req.body.password
+  }
+  commonFunction.loginUser(employeeModel,conidtion, function(error, result){
+    if(error) callback(error)
+    else{
+      req.user = result.user
+      res.send(result)
+    }
+  })
+});
 
 router.get("/employee_login", function(req, res, callback){
   if(req.user){

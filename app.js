@@ -10,8 +10,6 @@ const bodyParser = require("body-parser");
 
 //db
 const mongoose = require("mongoose");
-const sqlConnection = require("./connection/sqlConnection")
-const sql = require("./models/sql.js")
 
 //session and cookie
 const session = require('express-session');
@@ -21,15 +19,12 @@ const passport = require("passport");
 
 
 //db connection
-// const url = "mongodb://root:qwertyuiop09@ds115762.mlab.com:15762/erp"
+const url = "mongodb://root:qwertyuiop09@ds115762.mlab.com:15762/erp"
 
-// mongoose.connect(url, { useNewUrlParser: true }, function(error){
-//     if(error) console.error("DB Error====>",error)
-//     else console.log(`MongoDB connected`)
-// })
-
-sqlConnection();
-sql();
+mongoose.connect(url, { useNewUrlParser: true }, function(error){
+    if(error) console.error("DB Error====>",error)
+    else console.log(`MongoDB connected`)
+})
 
 //morgan middleware
 app.use(morgan("dev"));
@@ -46,17 +41,18 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     secret: "qwertyuiop09",
-    store: new mongoStore({url: url, autoReconnect: true})
+    store: new mongoStore({url: url, autoReconnect: true}),
+    cookie: {
+        expires: 600000
+    }
 }));
-
-//passport intialized
-app.use(passport.initialize());
-app.use(passport.session());
 
 
 //global variables
 app.use((req, res, next) => {
-    res.locals.user = req.user;
+    if (req.cookies.user_id && !req.session.user) {
+        res.clearCookie('user_id');        
+    }
     next();
 });
 
@@ -67,9 +63,9 @@ const employee = require("./routes/employee")
 app.use(admin);
 app.use(employee);
 
-// app.get("*", (req, res, callback) => {
-//     res.sendFile(path.join(__dirname, "dist/ERP/index.html"))
-// })
+app.get("*", (req, res, callback) => {
+    res.sendFile(path.join(__dirname, "dist/ERP/index.html"))
+})
 
 
 //server connection
