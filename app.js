@@ -1,26 +1,40 @@
-var express = require("express");
-var app = express();
-var PORT = process.env.PORT || 8000;
+//server
+const express = require("express");
+const app = express();
+const PORT = process.env.PORT || 8000;
 
-var path = require("path")
-var morgan = require("morgan");
-var bodyParser = require("body-parser");
+//middlewares
+const path = require("path")
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
 
-var mongoose = require("mongoose");
+//db
+const mongoose = require("mongoose");
+const sqlConnection = require("./connection/sqlConnection")
+const sql = require("./models/sql.js")
 
+//session and cookie
 const session = require('express-session');
 const cookieParser = require("cookie-parser")
 const mongoStore = require("connect-mongo")(session)
 const passport = require("passport");
 
-var url = "mongodb://root:qwertyuiop09@ds115762.mlab.com:15762/erp"
 
-mongoose.connect(url, { useNewUrlParser: true }, function(error){
-    if(error) console.error("DB Error====>",error)
-    else console.log(`MongoDB connected`)
-})
+//db connection
+// const url = "mongodb://root:qwertyuiop09@ds115762.mlab.com:15762/erp"
 
+// mongoose.connect(url, { useNewUrlParser: true }, function(error){
+//     if(error) console.error("DB Error====>",error)
+//     else console.log(`MongoDB connected`)
+// })
+
+sqlConnection();
+sql();
+
+//morgan middleware
 app.use(morgan("dev"));
+
+//body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'dist/ERP')));
@@ -33,25 +47,32 @@ app.use(session({
     saveUninitialized: true,
     secret: "qwertyuiop09",
     store: new mongoStore({url: url, autoReconnect: true})
-}))
+}));
 
+//passport intialized
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 //global variables
 app.use((req, res, next) => {
     res.locals.user = req.user;
     next();
-})
+});
 
-var api = require("./routes/api")
+//Routes
+const admin = require("./routes/admin");
+const employee = require("./routes/employee")
 
-app.use(api)
+app.use(admin);
+app.use(employee);
 
-app.get("*", (req, res, callback) => {
-    res.sendFile(path.join(__dirname, "dist/ERP/index.html"))
-})
+// app.get("*", (req, res, callback) => {
+//     res.sendFile(path.join(__dirname, "dist/ERP/index.html"))
+// })
 
+
+//server connection
 app.listen(PORT, function(){
     console.log(`Server started at PORT: ${PORT}`);
-})
+});

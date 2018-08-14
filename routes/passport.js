@@ -1,37 +1,70 @@
 const passport = require("passport");
 const localStratergy = require("passport-local").Strategy;
-const userModel = require("../models/user")
+const adminModel = require("../models/adminModel");
+const employeeModel = require("../models/employeeModel")
 
 //serialize and deserialize
-passport.serializeUser(function(user, callback){
-    callback(null, user._id)
-})
+passport.serializeUser(function (user, callback) {
+  callback(null, user._id)
+});
 
-passport.deserializeUser(function(id, cb){
-    userModel.findById(id, function(err, user){
+passport.deserializeUser(function (id, cb) {
+  adminModel.findById(id, function (err, user) {
+    if (user) {
+      cb(null, user)
+    }
+    else {
+      employeeModel.findById(id, function (error, user) {
         cb(null, user)
-    })
-})
+      })
+    }
+  })
+
+
+});
 
 
 //middleware
-passport.use("local-login", new localStratergy({
-    usernameField: "email",
-    passwordField: "password",
-    passReqToCallback: true
-}, function(req, email, password, callback){
-    userModel.findOne({email: email}, function(error, user){
-        if(error) return callback(error)
-        
-        if(!user){
-            return callback(null, false, "No User")
-        }
+passport.use("admin", new localStratergy({
+  usernameField: "email",
+  passwordField: "password",
+  passReqToCallback: true
+}, function (req, email, password, callback) {
+  adminModel.findOne({ email: email }, function (error, user) {
+    if (error) return callback(error)
 
-        if(!user.comparePassword(password)){
-            return callback(null, false, "Wrong Password")
-        }
+    if (!user) {
+      return callback(null, false, "No User")
+    }
 
-        return callback(null, user)
+    if (!user.comparePassword(password)) {
+      return callback(null, false, "Wrong Password")
+    }
 
-    })
-}))
+    else {
+      return callback(null, user)
+    }
+  })
+}));
+
+passport.use("employee", new localStratergy({
+  usernameField: "email",
+  passwordField: "password",
+  passReqToCallback: true
+}, function (req, email, password, callback) {
+  employeeModel.findOne({ email: email }, function (error, user) {
+    if (error) return callback(error)
+
+    if (!user) {
+      return callback(null, false, "No User")
+    }
+
+    if (!user.comparePassword(password)) {
+      return callback(null, false, "Wrong Password")
+    }
+
+    else {
+      return callback(null, user)
+    }
+  })
+}));

@@ -17,11 +17,12 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  onFormSubmit(){
+  onFormSubmit() {
     this.user.login(this.userModel)
       .subscribe(res => {
-        let id = res._id;
-        this.router.navigate(["/profile"])
+          if(res){
+            this.router.navigate(["/profile"])
+          }
       }, (error) => {
         console.error(error)
       })

@@ -15,15 +15,18 @@ export class ProfileComponent implements OnInit {
   constructor(private router: Router, private user: UserService) { }
 
   ngOnInit() {
+    this.getData()
+  }
+
+  getData(){
     this.user.profile()
       .subscribe(res => {
-        console.log(res)
         this.userModel = res
+        console.log("==================>",res)
       }, (error) => {
         console.error(error)
       })
   }
-
 
 
 }

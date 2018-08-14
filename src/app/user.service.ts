@@ -3,6 +3,10 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { catchError, tap, map } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
 
+const httpOptions = {
+	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
 const apiUrl = "/";
 
 @Injectable({
@@ -33,25 +37,25 @@ export class UserService {
   }
   
   resgiterUser(data): Observable<any>{
-    return this.http.post(`${apiUrl}register`, data)
+    return this.http.post(`${apiUrl}register`, data, httpOptions)
 			.pipe(
 				catchError(this.handleError)
 			);
 	}
 	
 	login(data): Observable<any>{
-		return this.http.post(`${apiUrl}login`, data)
+		return this.http.post(`${apiUrl}login`, data, httpOptions)
 			.pipe(
 				catchError(this.handleError)
 			)
 	}
 
   profile(): Observable<any>{
-    return this.http.get(`${apiUrl}profile`)
+    return this.http.get(`${apiUrl}profile`, httpOptions)
       .pipe(
         map(this.extractData),
         catchError(this.handleError)
-      )
+			)
   }
 
 }
