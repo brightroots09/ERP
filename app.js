@@ -22,8 +22,8 @@ const passport = require("passport");
 const url = "mongodb://root:qwertyuiop09@ds115762.mlab.com:15762/erp"
 
 mongoose.connect(url, { useNewUrlParser: true }, function(error){
-    if(error) console.error("DB Error====>",error)
-    else console.log(`MongoDB connected`)
+    if(error) console.error("DB Error====>",error);
+    else console.log(`MongoDB connected to url: ${url}`);
 })
 
 //morgan middleware

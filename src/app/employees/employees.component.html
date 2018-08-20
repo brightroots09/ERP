@@ -1,3 +1,25 @@
-<p>
-  employees works!
-</p>
+<div class="row">
+
+	<div class="card mt-4 ml-auto mr-auto" *ngFor="let employee of userModel">
+		<img class="card-img-top" src="/images/{{ employee.profile.image }}" alt="{{ employee.profile.first_name }}">
+		<div class="card-body">
+			<h5 class="card-title">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</h5>
+			<p class="card-text">{{ employee.designation }}</p>
+			<p class="card-text">
+				{{ employee.email }}
+			</p>
+			<p class="card-text">
+				<small class="text-muted">{{ employee.date_created | date : 'medium'}}</small>
+			</p>
+		</div>
+		<div class="card-footer">
+			<a class="btn btn-link text-success" routerLink="/employee_details/{{employee._id}}">
+				View
+			</a>
+			<a routerLink="/edit_employee/{{employee._id}}" class="btn btn-link text-danger">
+				Edit
+			</a>
+		</div>
+	</div>
+
+</div>

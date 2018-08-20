@@ -7,49 +7,34 @@ import { FormsModule } from "@angular/forms"
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
 import { EmployeesComponent } from './employees/employees.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { TasksComponent } from './tasks/tasks.component';
+import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
+import { AddEmployeesComponent } from './add-employees/add-employees.component';
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
+import { AddProjectComponent } from './add-project/add-project.component';
+import { EditProjectComponent } from './edit-project/edit-project.component';
 
-const appRoutes: Routes = [
-  {
-    path: '/',
-    component: HomeComponent
-  },
-  {
-    path: 'profile',
-    component: ProfileComponent
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'register',
-    component: RegisterComponent
-  },
-  {
-    path: '**',
-    redirectTo: '/',
-    pathMatch: 'full'
-  }
-];
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent,
     ProfileComponent,
     HomeComponent,
     EmployeesComponent,
+    AddEmployeesComponent,
+    EmployeeDetailComponent,
     ProjectsComponent,
-    TasksComponent,
+    AddProjectComponent,
+    ProjectDetailComponent,
+    EditProjectComponent,
+    TasksComponent
   ],
   imports: [
     BrowserModule,

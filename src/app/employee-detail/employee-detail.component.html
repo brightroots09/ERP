@@ -1,0 +1,47 @@
+<div class="row">
+	<div class="col-md-6 card offset-md-3 mt-4 text-center">
+		<img src="/images/{{userModel.profile.image}}" alt="Empoyee Image" class="rounded img-thumbnail card-img-top">
+		<div class="card-body">
+			<h5 class="card-title">
+				Name: {{userModel.profile.first_name}} {{ userModel.profile.last_name }}
+			</h5>
+			<h5 class="card-text">
+				Email: {{ userModel.email }}
+			</h5>
+			<h5 class="card-text">
+				Dsignation: {{ userModel.designation }}
+			</h5>
+			<h5 class="card-text" *ngIf="userModel.is_active; else else_block">
+				Status: Active
+			</h5>
+			<ng-template #else_block>
+				<h5>Status: Inactive</h5>
+			</ng-template>
+
+			<div class="card-text">
+				<div class="col-md-12">
+
+					<div class="row">
+						<div class="col-md-6">
+							<button type="button" class="btn btn-outline-primary ml-auto mr-auto">Edit</button>
+						</div>
+						<div class="col-md-6">
+							<button type="button" class="btn btn-outline-danger ml-auto mr-auto">Delete</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="card-footer">
+			<div class="row">
+				<div class="col-md-12">
+					<select class="form-control" id="exampleFormControlSelect1">
+						<option *ngFor="let project of userModel.projects">{{ project.project_details.name }}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

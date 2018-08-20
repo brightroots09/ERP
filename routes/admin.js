@@ -9,34 +9,35 @@ const projectModel = require("../models/projectModel");
 const session = require("express-session");
 
 const commonFunction = require("../services/common_functions")
+const mongoose = require("mongoose")
 
 /*
 * -----------
 * index route
 * -----------
 * */
-router.get("/", function(req, res, callback){
-    let admin = new adminModel();
+router.get("/", function (req, res, callback) {
+  let admin = new adminModel();
 
-    admin.email = "admin@admin.com";
-    admin.password = "admin@admin";
-    admin.profile.name = "Admin";
+  admin.email = "admin@admin.com";
+  admin.password = "admin@admin";
+  admin.profile.name = "Admin";
 
-    adminModel.findOne({email: "admin@admin.com"}, function(error, exists){
-        if(error) callback(error);
-        if(exists){
-            res.json("Connected");
+  adminModel.findOne({ email: "admin@admin.com" }, function (error, exists) {
+    if (error) callback(error);
+    if (exists) {
+      res.json("Connected");
+    }
+    else {
+      admin.save(function (error, result) {
+        if (error) callback(error);
+        else {
+          // res.sendFile(path.join(__dirname, "dist/ERP/index.html"))
+          res.json("Connected")
         }
-        else{
-            admin.save(function(error, result){
-                if(error) callback(error);
-                else{
-                    // res.sendFile(path.join(__dirname, "dist/ERP/index.html"))
-                  res.json("Connected")
-                }
-            })
-        }
-    })
+      })
+    }
+  })
 
 });
 
@@ -46,25 +47,25 @@ router.get("/", function(req, res, callback){
 * login route
 * -----------
 * */
-router.post("/login", function(req, res, callback){
+router.post("/login", function (req, res, callback) {
   let condition = {
     email: req.body.email,
     password: req.body.password
   }
-  commonFunction.loginUser(adminModel, condition, function(error, result){
-    if(error) callback(error)
-    else{
+  commonFunction.loginUser(adminModel, condition, function (error, result) {
+    if (error) callback(error)
+    else {
       req.session.user = result.user
       res.send(result)
     }
   })
 });
 
-router.get("/login", function(req, res, callback){
-  if(req.user){
+router.get("/login", function (req, res, callback) {
+  if (req.user) {
     res.redirect("/profile")
   }
-  else{
+  else {
     res.json("Wrong Credentials")
   }
 })
@@ -76,10 +77,10 @@ router.get("/login", function(req, res, callback){
 * */
 router.get('/logout', (req, res) => {
   if (req.session.user && req.cookies.user_id) {
-      res.clearCookie('user_id');
-      res.redirect('/');
+    res.clearCookie('user_id');
+    res.redirect('/');
   } else {
-      res.redirect('/login');
+    res.redirect('/login');
   }
 });
 
@@ -88,14 +89,14 @@ router.get('/logout', (req, res) => {
 * profile route
 * -------------
 * */
-router.get("/profile", function(req, res, callback){
+router.get("/profile", function (req, res, callback) {
   let condition = {
     id: req.session.user._id
   };
 
-  commonFunction.getProfile(adminModel, condition, function(error, response){
-    if(error) callback(error)
-    else{
+  commonFunction.getProfile(adminModel, condition, function (error, response) {
+    if (error) callback(error)
+    else {
       res.json(response)
     }
   })
@@ -108,15 +109,13 @@ router.get("/profile", function(req, res, callback){
 * Get all employees route
 * -----------------------
 * */
-router.get("/employees", function(req, res, callback) {
-  if(req.user){
-    employeeModel.find({}, function(error, employees) {
-      if(error) callback(error);
-      else{
-        res.json(employees);
-      }
-    })
-  }
+router.get("/employees", function (req, res, callback) {
+  employeeModel.find({}, function (error, employees) {
+    if (error) callback(error);
+    else {
+      res.json(employees);
+    }
+  })
 });
 
 
@@ -125,31 +124,31 @@ router.get("/employees", function(req, res, callback) {
 * Add employees route
 * -------------------
 * */
-router.post("/add_employee", function(req, res, callback){
-    let employee = new employeeModel();
-    let date = new Date();
-    employee.email = req.body.email;
-    employee.password = req.body.password;
+router.post("/add_employee", function (req, res, callback) {
+  let employee = new employeeModel();
+  let date = new Date();
+  employee.email = req.body.email;
+  employee.password = req.body.password;
 
-    employee.profile.first_name = req.body.first_name;
-    employee.profile.last_name = req.body.last_name;
+  employee.profile.first_name = req.body.first_name;
+  employee.profile.last_name = req.body.last_name;
 
-    employee.designation = req.body.designation;
-    employee.date_created = date;
+  employee.designation = req.body.designation;
+  employee.date_created = date;
 
-    employeeModel.findOne({email: req.body.email}, function(error, exists) {
-      if(error) callback(error);
-      if(exists) res.redirect("/employees");
-      else{
-        employee.save(function(error, result){
-          if(error) callback(error);
-          else{
-            console.log(result);
-            res.redirect("/employees");
-          }
-        })
-      }
-    })
+  employeeModel.findOne({ email: req.body.email }, function (error, exists) {
+    if (error) callback(error);
+    if (exists) res.redirect("/employees");
+    else {
+      employee.save(function (error, result) {
+        if (error) callback(error);
+        else {
+          console.log(result);
+          res.redirect("/employees");
+        }
+      })
+    }
+  })
 });
 
 
@@ -158,10 +157,10 @@ router.post("/add_employee", function(req, res, callback){
 * Change status of employee route
 * -------------------------------
 * */
-router.post("/toggle_employee/:id", function(req, res, callback){
-  employeeModel.findByIdAndUpdate({_id: req.params.id}, {$set: {is_active: req.body.toggle}}, function(error, result){
-    if(error) callback(error);
-    else{
+router.post("/toggle_employee/:id", function (req, res, callback) {
+  employeeModel.findByIdAndUpdate({ _id: req.params.id }, { $set: { is_active: req.body.toggle } }, function (error, result) {
+    if (error) callback(error);
+    else {
       res.redirect("/employees");
     }
   })
@@ -173,15 +172,15 @@ router.post("/toggle_employee/:id", function(req, res, callback){
 * Get particular employee route
 * -----------------------------
 * */
-router.get("/employee/:id", function(req, res, callback){
-  if(req.user){
-    employeeModel.findOne({_id: req.params.id}, function(error, employee){
-      if(error) callback(error);
-      else{
-        res.json(employee);
+router.get("/employee/:id", function (req, res, callback) {
+  employeeModel
+    .aggregate([{$match: {_id: mongoose.Types.ObjectId(req.params.id)}},{ $lookup: { from: 'projectModel', localField: '_id', foreignField: 'employee_id.id', as: 'projects' } }], function (error, result) {
+      if (error) callback(error);
+      else {
+        res.json(result);
       }
     })
-  }
+
 });
 
 
@@ -190,10 +189,10 @@ router.get("/employee/:id", function(req, res, callback){
 * Delete particular employee route
 * --------------------------------
 * */
-router.post("/delete_employee/:id", function(req, res, callback){
-  employeeModel.findByIdAndRemove({_id: req.params.id}, function(error, result){
-    if(error) callback(error);
-    else{
+router.post("/delete_employee/:id", function (req, res, callback) {
+  employeeModel.findByIdAndRemove({ _id: req.params.id }, function (error, result) {
+    if (error) callback(error);
+    else {
       res.redirect("/employees");
     }
   })
@@ -205,7 +204,7 @@ router.post("/delete_employee/:id", function(req, res, callback){
 * Create project route
 * --------------------
 * */
-router.post("/create_project", function(req, res, callback){
+router.post("/create_project", function (req, res, callback) {
   let project = new projectModel();
   let date = new Date();
 
@@ -214,8 +213,8 @@ router.post("/create_project", function(req, res, callback){
   project.status = req.body.status;
   project.employee_id = req.body.employee_id;
 
-  project.save(function(error, result){
-    if(error) callback(error);
+  project.save(function (error, result) {
+    if (error) callback(error);
     else {
       res.redirect("/projects");
     }
@@ -228,15 +227,13 @@ router.post("/create_project", function(req, res, callback){
 * Get all the projects route
 * --------------------------
 * */
-router.get("/projects", function(req, res, callback) {
-  if(req.user){
-    projectModel.aggregate([{ $lookup: { from: 'employeeModel', localField: 'employee_id.id', foreignField: '_id', as: 'employees' } }], function(error, result){
-      if(error) callback(error);
-      else{
-        res.json(result);
-      }
-    })
-  }
+router.get("/projects", function (req, res, callback) {
+  projectModel.aggregate([{ $lookup: { from: 'employeeModel', localField: 'employee_id.id', foreignField: '_id', as: 'employees' } }], function (error, result) {
+    if (error) callback(error);
+    else {
+      res.json(result);
+    }
+  })
 });
 
 
@@ -245,15 +242,13 @@ router.get("/projects", function(req, res, callback) {
 * Get particular project details route
 * ------------------------------------
 * */
-router.get("/project/:id", function(req, res, callback) {
-  if(req.user){
-    projectModel.find({_id: req.params.id}, function(error, project) {
-      if(error) callback(error);
-      else{
-        res.json(project);
-      }
-    })
-  }
+router.get("/project/:id", function (req, res, callback) {
+  projectModel.find({ _id: req.params.id }, function (error, project) {
+    if (error) callback(error);
+    else {
+      res.json(project);
+    }
+  })
 });
 
 
