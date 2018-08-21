@@ -31,6 +31,7 @@ function loginUser(db, condition, cb){
     else{
       let payload = { subject: user._id }
       let token = jwt.sign(payload, "secretKey")
+      console.log(token)
       return cb(null, {
         user: user,
         token: token

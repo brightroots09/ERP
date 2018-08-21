@@ -1,65 +1,26 @@
 <div class="row">
 
-	<div class="card-deck">
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Project Name 1</h5>
-				<p class="card-text">Project Status (OnHold/ InProgress)</p>
-				<p class="card-text">
-					<small class="text-muted">Created 3 mins ago</small>
-				</p>
-				<div class="card-footer">
-					<button type="button" class="btn btn-link">
-						View
-					</button>
-				</div>
-			</div>
+	<div class="card mt-4 mb-4 ml-auto mr-auto" style="width: 18rem;" *ngFor="let project of projects">
+		<div class="card-body">
+			<h5 class="card-title">{{ project.project_details.name }}</h5>
+			<p class="card-text">{{ project.project_details.description }}</p>
+			<p class="card-text">
+				<span class="badge badge-info p-2">{{ project.status }}</span>
+			</p>
+			<p class="card-text">
+				<small class="text-muted">{{ project.date_created | date : 'medium'}}</small>
+			</p>
 		</div>
-
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Project Name 2</h5>
-				<p class="card-text">Project Status (OnHold/ InProgress)</p>
-				<p class="card-text">
-					<small class="text-muted">Created 3 mins ago</small>
-				</p>
-				<div class="card-footer">
-					<button type="button" class="btn btn-link">
-						View
-					</button>
-				</div>
-			</div>
-		</div>
-
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Project Name 3</h5>
-				<p class="card-text">Project Status (OnHold/ InProgress)</p>
-				<p class="card-text">
-					<small class="text-muted">Created 3 mins ago</small>
-				</p>
-				<div class="card-footer">
-					<button type="button" class="btn btn-link">
-						View
-					</button>
-				</div>
-			</div>
-		</div>
-
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Project Name 4</h5>
-				<p class="card-text">Project Status (OnHold/ InProgress)</p>
-				<p class="card-text">
-					<small class="text-muted">Created 3 mins ago</small>
-				</p>
-				<div class="card-footer">
-					<button type="button" class="btn btn-link">
-						View
-					</button>
-				</div>
-			</div>
+		<div class="card-footer text-center">
+			<a class="btn btn-link text-success" routerLink="/project_details/{{project._id}}">
+				View
+			</a>
 		</div>
 
 	</div>
+
+	<button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
+		&laquo; Go back
+	</button>
+
 </div>

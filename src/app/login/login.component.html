@@ -12,9 +12,9 @@
         <label for="password">Password: </label>
         <input type="password" id="password" name="password" class="form-control" #password="ngModel" [class.is-invalid]="password.invalid && password.touched"
           [class.is-valid]="password.valid && password.touched" [(ngModel)]="userModel.password" required>
-        <small class="text-danger" [class.d-none]="email.valid || email.untouched">Password Required</small>
+        <small class="text-danger" [class.d-none]="password.valid || password.untouched">Password Required</small>
       </div>
-      <button class="btn btn-outline-primary" [disabled]="userForm.form.invalid" type="submit">Register</button>
+      <button class="btn btn-outline-primary" [disabled]="userForm.form.invalid" type="submit">Login</button>
     </form>
   </div>
 </div>

@@ -1,31 +1,73 @@
 <div class="row">
-	<div class="col-md-6 offset-md-3 text-center">
-		<img src="" alt="Empoyee Image" class="rounded img-thumbnail">
-		<h3>
-			Name: Project Name
-		</h3>
-		<h3>
-			Description: Lorem ipsum dolor sit amet consectetur, adipisicing elit. Unde labore, earum, sit repudiandae sint aliquid in
-			voluptatum praesentium id inventore facilis. Nulla, officia fugiat nisi totam sapiente modi neque cum!
-		</h3>
-		<h3>
-			Dsignation: Employee Designation
-		</h3>
-		<div class="row">
-			<div class="col-md-12">
-				<button type="button" class="btn btn-outline-primary">Update</button>
-				<button type="button" class="btn btn-outline-danger">View Tasks</button>
+	<div class="col-md-6 card offset-md-3 mt-4 text-center">
+		<div class="card-body">
+			<h5 class="card-title" *ngIf="!edit">
+				Name: {{projectModel.project_details.name}}
+			</h5>
+			<h5 class="card-text" *ngIf="!edit">
+				Description: {{ projectModel.project_details.description }}
+			</h5>
+			<h5 class="card-text">
+				Status:
+				<span class="badge badge-info p-2">{{ projectModel.status }}</span>
+			</h5>
+
+			<div class="card-text">
+				<div class="col-md-12">
+
+					<div class="row">
+						<div class="col-md-6">
+							<button type="button" *ngIf="!edit" class="btn btn-outline-primary ml-auto mr-auto" (click)="toggleEdit()">Edit</button>
+						</div>
+						<div class="col-md-6">
+							<button type="button" *ngIf="!edit" class="btn btn-outline-danger ml-auto mr-auto">Delete</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<form (ngSubmit)="onFormSubmit()" class="mb-3">
+				<div class="form-group" *ngIf="edit">
+					<label for="name">Name: </label>
+					<input type="text" id="name" #name="ngModel" class="form-control" name="name" [(ngModel)]="projectModel.project_details.name"
+					 [class.is-invalid]="name.invalid && name.touched" [class.is-valid]="name.valid && name.touched"
+					 required>
+					<small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
+
+				</div>
+
+				<div class="form-group" *ngIf="edit">
+					<label for="first_name">Description: </label>
+					<input type="text" id="description" #description="ngModel" class="form-control" name="description" [(ngModel)]="projectModel.project_details.description" [class.is-invalid]="description.invalid && description.touched"
+					 [class.is-valid]="description.valid && description.touched" required>
+					<small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
+				</div>
+				<button type="submit" *ngIf="edit" class="btn btn-outline-primary ml-auto mr-auto">Update</button>
+				<button type="button" *ngIf="edit" class="btn btn-outline-secondary ml-auto mr-auto" (click)="cancelUpdate()">Cancel</button>
+			</form>
+
+		</div>
+
+		<div class="card-footer">
+			<div class="row">
+				<div class="col-md-12" *ngIf="projectModel.employees.length > 0; else project_else">
+					<label for="project_manager">Project Members</label>
+					<select class="form-control" id="exampleFormControlSelect1">
+						<option *ngFor="let employee of projectModel.employees">{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})</option>
+					</select>
+				</div>
+				<ng-template #project_else>
+					<div class="col-md-12">
+						<p class="mt-auto mb-auto">
+							Currently there are no employees working on this project.
+						</p>
+					</div>
+				</ng-template>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<label for="exampleFormControlSelect2">Working People</label>
-				<select multiple class="form-control" id="exampleFormControlSelect2">
-					<option>Android</option>
-					<option>Ios</option>
-					<option>Project Manager</option>
-				</select>
-			</div>
-		</div>
+		<button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
+			&laquo; Go back
+		</button>
 	</div>
 </div>

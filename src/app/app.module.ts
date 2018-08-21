@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router";
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http'
 import { FormsModule } from "@angular/forms"
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,7 +18,7 @@ import { AddEmployeesComponent } from './add-employees/add-employees.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { EditProjectComponent } from './edit-project/edit-project.component';
-
+import { TokenInterceptorService } from "./token-interceptor.service" 
 
 
 @NgModule({
@@ -42,7 +42,11 @@ import { EditProjectComponent } from './edit-project/edit-project.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
-})
+}) 
 export class AppModule { }

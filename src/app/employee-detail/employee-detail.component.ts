@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../user.service';
+import { User } from '../user';
 
 @Component({
   selector: 'app-employee-detail',
@@ -11,6 +12,8 @@ export class EmployeeDetailComponent implements OnInit {
 
   userModel;
   param;
+
+  private edit: boolean = false;
 
   constructor(private router: Router, private user: UserService, private route: ActivatedRoute) { 
 
@@ -41,6 +44,29 @@ export class EmployeeDetailComponent implements OnInit {
         console.error(error)
       }
     )
+  }
+
+  toggleEdit(){
+    this.edit = true
+  }
+
+  onFormSubmit(){
+    this.edit = false
+    this.user.editEmployee(this.param.id, this.userModel)
+      .subscribe(res => {
+        this.router.navigate([`/employee_details/${this.param.id}`])
+      },
+    (error) => {
+      console.error(error)
+    })
+  }
+
+  cancelUpdate(){
+    this.edit = false;
+  }
+
+  goBack(){
+    this.router.navigate(["/employees"])
   }
 
 }

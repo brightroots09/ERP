@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../user';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
+import { HttpErrorResponse } from '../../../node_modules/@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -17,9 +18,7 @@ export class ProfileComponent implements OnInit {
   async ngOnInit() {
       try {
         const profile = await this.getProfile()
-        if(profile != undefined || profile != null){
           this.userModel = profile
-        }
       } catch (error) {
         return error
       }
@@ -31,7 +30,11 @@ export class ProfileComponent implements OnInit {
           this.userModel = res
           console.log("==================>",res)
         }, (error) => {
-          console.error(error)
+          if(error instanceof HttpErrorResponse){
+            if(error.status === 401){
+              this.router.navigate(['/login'])
+            }
+          }
         })
   }
 

@@ -38,4 +38,8 @@ export class EmployeesComponent implements OnInit {
     )
   }
 
+  goBack(){
+    this.router.navigate(["/profile"])
+  }
+
 }

@@ -48,6 +48,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: "edit_employee/:id",
+    component: EmployeeDetailComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: "projects",
     component: ProjectsComponent,
     canActivate: [AuthGuard]
@@ -63,7 +68,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "project_details",
+    path: "project_details/:id",
     component: ProjectDetailComponent,
     canActivate: [AuthGuard]
   },

@@ -33,28 +33,28 @@ app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'dist/ERP')));
-
+app.use(express.static(path.join(__dirname, '/public')));
 
 //session and flash middleware
-app.use(cookieParser());
-app.use(session({
-    resave: true,
-    saveUninitialized: true,
-    secret: "qwertyuiop09",
-    store: new mongoStore({url: url, autoReconnect: true}),
-    cookie: {
-        expires: 600000
-    }
-}));
+// app.use(cookieParser());
+// app.use(session({
+//     resave: true,
+//     saveUninitialized: true,
+//     secret: "qwertyuiop09",
+//     store: new mongoStore({url: url, autoReconnect: true}),
+//     cookie: {
+//         expires: 600000
+//     }
+// }));
 
 
 //global variables
-app.use((req, res, next) => {
-    if (req.cookies.user_id && !req.session.user) {
-        res.clearCookie('user_id');        
-    }
-    next();
-});
+// app.use((req, res, next) => {
+//     if (req.cookies.user_id && !req.session.user) {
+//         res.clearCookie('user_id');        
+//     }
+//     next();
+// });
 
 //Routes
 const admin = require("./routes/admin");

@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Router, ActivatedRoute, ParamMap } from "@angular/router"
-import { catchError, tap, map } from 'rxjs/operators';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, throwError, ObservableInput } from 'rxjs';
 
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -17,9 +15,14 @@ export class UserService {
 
 	private _profileUrl = "/profile";
   private _employeeUrl = "/employees";
-  private _employeeDetailUrl = "/employee"
-  
-  constructor(private http: HttpClient, private route: ActivatedRoute) { }
+  private _employeeDetailUrl = "/employee";
+  private _addEmployeeUrl = "/add_employee"
+  private _editEmployeeUrl = "/edit_employee";
+  private _projectsUrl = "/projects";
+  private _projectDetails = "/project_details";
+  private _editProject = "/edit_project"
+
+  constructor(private http: HttpClient) { }
 	
   profile(): Observable<any>{
     return this.http.get<any>(this._profileUrl)
@@ -34,4 +37,26 @@ export class UserService {
     return this.http.get<any>(url)
   }
 
+  addEmployee(data): Observable<any>{
+    return this.http.post<any>(this._addEmployeeUrl, data)
+  }
+
+  editEmployee(id, data): Observable<any>{
+    let url = this._editEmployeeUrl + "/" + id
+    return this.http.post<any>(url, data)
+  }
+
+  projects(){
+    return this.http.get<any>(this._projectsUrl)
+  }
+
+  projectDetails(id){
+    let url = this._projectDetails + "/" + id
+    return this.http.get<any>(url)
+  }
+
+  editProject(id, data){
+    let url = this._editProject + "/" + id
+    return this.http.post<any>(url, data)
+  }
 }
