@@ -24,6 +24,10 @@ export class UserService {
   private _editProject = "/edit_project";
   private _adddProject = "/create_project";
   private _projectDelete = "/project_delete";
+  private _tasks = "/tasks";
+  private tasksDetailsUrl = "/tasks_details";
+  private _createTasks = "/create_tasks";
+  private _projectTasksDetails = "/project_tasks_details";
 
   constructor(private http: HttpClient) { }
 	
@@ -79,6 +83,28 @@ export class UserService {
   deleteProject(id): Observable<any>{
     let url = this._projectDelete + "/" + id
     return this.http.post<any>(url, id)
+  }
+
+  tasks(): Observable<any>{
+    return this.http.get<any>(this._tasks)
+  }
+
+  tasksDetails(id): Observable<any>{
+    let url = this.tasksDetailsUrl + "/" + id;
+    return this.http.get<any>(url)
+  }
+
+  createTasks(tasks, projects): Observable<any>{
+    let obj = {
+      tasks,
+      projects
+    }
+    return this.http.post<any>(this._createTasks, obj)
+  }
+
+  projectTasksDetails(id): Observable<any>{
+    let url = this._projectTasksDetails + "/" + id;
+    return this.http.get(url)
   }
 
 }

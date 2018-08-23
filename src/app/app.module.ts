@@ -18,7 +18,10 @@ import { AddEmployeesComponent } from './add-employees/add-employees.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { EditProjectComponent } from './edit-project/edit-project.component';
-import { TokenInterceptorService } from "./token-interceptor.service" 
+import { TokenInterceptorService } from "./token-interceptor.service";
+import { TaskDetailsComponent } from './task-details/task-details.component';
+import { AddTasksComponent } from './add-tasks/add-tasks.component';
+import { ProjectTaskDetailsComponent } from './project-task-details/project-task-details.component' 
 
 
 @NgModule({
@@ -34,7 +37,10 @@ import { TokenInterceptorService } from "./token-interceptor.service"
     AddProjectComponent,
     ProjectDetailComponent,
     EditProjectComponent,
-    TasksComponent
+    TasksComponent,
+    TaskDetailsComponent,
+    AddTasksComponent,
+    ProjectTaskDetailsComponent
   ],
   imports: [
     BrowserModule,

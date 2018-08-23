@@ -1,6 +1,6 @@
 <div class="row" *ngIf="filtersLoaded | async">
 	<div class="col-md-6 offset-md-3 text-right">
-		<button type="button" class="btn btn-link" routerLink="/tasks">View Tasks</button>
+		<button type="button" class="btn btn-link" routerLink="/projectTasksDetails/{{projectModel._id}}">View Tasks</button>
 	</div>
 	<div class="col-md-6 card offset-md-3 mt-4 text-center">
 		<div class="card-body">
@@ -47,20 +47,22 @@
 					<small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
 				</div>
 
-				<div class="form-check form-check-inline" *ngIf="edit">
-					<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio1"
-					 value="In Progress">
-					<label class="form-check-label" for="inlineRadio1">In Progress</label>
-				</div>
-				<div class="form-check form-check-inline" *ngIf="edit">
-					<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio2"
-					 value="On Hold">
-					<label class="form-check-label" for="inlineRadio2">On Hold</label>
-				</div>
-				<div class="form-check form-check-inline" *ngIf="edit">
-					<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio3"
-					 value="Completed">
-					<label class="form-check-label" for="inlineRadio3">Completed</label>
+				<div class="form-group">
+					<div class="form-check form-check-inline" *ngIf="edit">
+						<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio1"
+						 value="In Progress">
+						<label class="form-check-label" for="inlineRadio1">In Progress</label>
+					</div>
+					<div class="form-check form-check-inline" *ngIf="edit">
+						<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio2"
+						 value="On Hold">
+						<label class="form-check-label" for="inlineRadio2">On Hold</label>
+					</div>
+					<div class="form-check form-check-inline" *ngIf="edit">
+						<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio3"
+						 value="Completed">
+						<label class="form-check-label" for="inlineRadio3">Completed</label>
+					</div>
 				</div>
 
 				<button type="submit" *ngIf="edit" class="btn btn-outline-primary mr-2">Update</button>

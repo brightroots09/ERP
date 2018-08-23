@@ -1,3 +1,38 @@
-<p>
-  tasks works!
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6 text-left">
+        <button type="button" class="btn btn-link text-primary mt-2 mb-2" (click)="goBack()">
+          &laquo; Go back
+        </button>
+      </div>
+      <div class="col-md-6 text-right">
+        <button class="btn btn-link mt-2 mb-2" routerLink="/create_tasks">Create Project</button>
+      </div>
+    </div>
+  </div>
+    <div class="card mt-4 mb-4 ml-auto mr-auto" style="width: 18rem;" *ngFor="let tasks of tasksModel">
+      <div *ngIf="tasksModel; else else_block">
+        <div class="card-body">
+          <h5 class="card-title">{{ tasks.tasks_details.name }}</h5>
+          <p class="card-text">{{ tasks.tasks_details.description }}</p>
+          <p class="card-text">
+            <small class="text-muted">{{ tasks.date_created | date : 'medium'}}</small>
+          </p>
+        </div>
+        <div class="card-footer text-center">
+          <a class="btn btn-link text-success" routerLink="/tasks_details/{{tasks._id}}">
+            View
+          </a>
+        </div>
+      </div>
+      
+      <ng-template #else_block>
+        <div class="col-md-6 offset-md-3 text-center">
+          <h3>
+            No Tasks
+          </h3>
+        </div>
+      </ng-template>
+    </div>
+</div>

@@ -6,6 +6,7 @@ const path = require("path");
 const adminModel = require("../models/adminModel");
 const employeeModel = require("../models/employeeModel");
 const projectModel = require("../models/projectModel");
+const tasksModel = require("../models/taskModel");
 const session = require("express-session");
 
 const commonFunction = require("../services/common_functions");
@@ -180,13 +181,13 @@ router.post("/add_employee", verifyToken, function (req, res, callback) {
  * ---------------------
  */
 router.post("/delete_employee/:id", verifyToken, function (req, res, callback) {
-	employeeModel.findByIdAndRemove({_id: req.params.id}, function(error, response){
-		if(error) callback(error)
-		else{
+	employeeModel.findByIdAndRemove({ _id: req.params.id }, function (error, response) {
+		if (error) callback(error)
+		else {
 			res.redirect("/employees")
 		}
 	})
-})	
+})
 
 /**
  * -------------------
@@ -354,12 +355,93 @@ router.post("/edit_project/:id", verifyToken, function (req, res, callback) {
  * --------------------
  */
 router.post("/project_delete/:id", verifyToken, function (req, res, callback) {
-	projectModel.findByIdAndRemove({_id: req.params.id}, function(error, response){
-		if(error) callback(error)
-		else{
+	projectModel.findByIdAndRemove({ _id: req.params.id }, function (error, response) {
+		if (error) callback(error)
+		else {
 			res.redirect("/projects")
 		}
 	})
+})
+
+/**
+ * ---------
+ * GET TASKS
+ * ---------
+ */
+
+router.get("/tasks", verifyToken, function (req, res, callback) {
+	tasksModel.find({}, function (error, tasks) {
+		if (error) callback(error)
+		else {
+			console.log(tasks)
+			res.json(tasks)
+		}
+	})
+})
+
+/**
+ * -----------------
+ * GET TASKS DETAILS
+ * -----------------
+ */
+
+router.get("/tasks_details/:id", verifyToken, function (req, res, callback) {
+	tasksModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'projectModel', localField: 'project_id.id', foreignField: '_id', as: 'projects' } }], function (error, response) {
+		if (error) callback(error)
+		else {
+			console.log(response)
+			res.json(response)
+		}
+	})
+})
+
+/**
+ * -------------------------
+ * GET PROJECT TASKS DETAILS
+ * -------------------------
+ */
+
+router.get("/project_tasks_details/:id", verifyToken, function (req, res, callback) {
+	tasksModel.aggregate([{ $match: { 'project_id.id': mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'projectModel', localField: 'project_id.id', foreignField: '_id', as: 'projects' } }], function (error, response) {
+		if (error) callback(error)
+		else {
+			console.log(response)
+			res.json(response)
+		}
+	})
+})
+
+/**
+ * ------------
+ * CREATE TASKS
+ * ------------
+ */
+
+router.post("/create_tasks", verifyToken, function(req, res, callback){
+	var tasks = new tasksModel()
+	var date = new Date()
+
+	let arr = []
+	let projects = req.body.projects
+
+	for (let i in projects) {
+		arr.push({
+			id: mongoose.Types.ObjectId(projects[i]._id)
+		})
+	}
+
+	tasks.tasks_details.name = req.body.tasks.tasks_name;
+	tasks.tasks_details.description = req.body.tasks.tasks_description;
+	tasks.project_id = arr;
+	tasks.date_created = date;
+
+	tasks.save(function(error, result){
+		if(error) callback(error)
+		else{
+			res.redirect("/tasks")
+		}
+	})
+
 })
 
 module.exports = router;

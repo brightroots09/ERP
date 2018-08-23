@@ -12,6 +12,9 @@ import { EditProjectComponent } from './edit-project/edit-project.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
+import { TaskDetailsComponent } from './task-details/task-details.component';
+import { AddTasksComponent } from './add-tasks/add-tasks.component';
+import { ProjectTaskDetailsComponent } from './project-task-details/project-task-details.component';
 
 const routes: Routes = [
   {
@@ -88,6 +91,21 @@ const routes: Routes = [
     component: TasksComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: "tasks_details/:id",
+    component: TaskDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "create_tasks",
+    component: AddTasksComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "projectTasksDetails/:id",
+    component: ProjectTaskDetailsComponent,
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
