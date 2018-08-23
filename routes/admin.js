@@ -313,9 +313,19 @@ router.get("/project_details/:id", verifyToken, function (req, res, callback) {
  */
 
 router.post("/edit_project/:id", function(req, res, callback){
-  let obj = {
-    "project_details.name": req.body.project_details.name,
-    "project_details.description": req.body.project_details.description,
+  let obj
+  if(req.body.status){
+    obj = {
+      "project_details.name": req.body.project_details.name,
+      "project_details.description": req.body.project_details.description,
+      "status": req.body.status
+    }
+  }
+  else{
+    obj = {
+      "project_details.name": req.body.project_details.name,
+      "project_details.description": req.body.project_details.description
+    }
   }
   projectModel.findByIdAndUpdate({_id: req.params.id}, {$set: obj}, function(error, response){
     if(error) callback(error)

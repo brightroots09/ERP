@@ -7,7 +7,7 @@
 			<h5 class="card-text" *ngIf="!edit">
 				Description: {{ projectModel.project_details.description }}
 			</h5>
-			<h5 class="card-text">
+			<h5 class="card-text" *ngIf="!edit">
 				Status:
 				<span class="badge badge-info p-2">{{ projectModel.status }}</span>
 			</h5>
@@ -31,20 +31,37 @@
 				<div class="form-group" *ngIf="edit">
 					<label for="name">Name: </label>
 					<input type="text" id="name" #name="ngModel" class="form-control" name="name" [(ngModel)]="projectModel.project_details.name"
-					 [class.is-invalid]="name.invalid && name.touched" [class.is-valid]="name.valid && name.touched"
-					 required>
+					 [class.is-invalid]="name.invalid && name.touched" [class.is-valid]="name.valid && name.touched" required>
 					<small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
 
 				</div>
 
 				<div class="form-group" *ngIf="edit">
 					<label for="first_name">Description: </label>
-					<input type="text" id="description" #description="ngModel" class="form-control" name="description" [(ngModel)]="projectModel.project_details.description" [class.is-invalid]="description.invalid && description.touched"
-					 [class.is-valid]="description.valid && description.touched" required>
+					<input type="text" id="description" #description="ngModel" class="form-control" name="description" [(ngModel)]="projectModel.project_details.description"
+					 [class.is-invalid]="description.invalid && description.touched" [class.is-valid]="description.valid && description.touched"
+					 required>
 					<small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
 				</div>
-				<button type="submit" *ngIf="edit" class="btn btn-outline-primary ml-auto mr-auto">Update</button>
-				<button type="button" *ngIf="edit" class="btn btn-outline-secondary ml-auto mr-auto" (click)="cancelUpdate()">Cancel</button>
+
+				<div class="form-check form-check-inline" *ngIf="edit">
+					<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio1"
+					 value="In Progress">
+					<label class="form-check-label" for="inlineRadio1">In Progress</label>
+				</div>
+				<div class="form-check form-check-inline" *ngIf="edit">
+					<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio2"
+					 value="On Hold">
+					<label class="form-check-label" for="inlineRadio2">On Hold</label>
+				</div>
+				<div class="form-check form-check-inline" *ngIf="edit">
+					<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio3"
+					 value="Completed">
+					<label class="form-check-label" for="inlineRadio3">Completed</label>
+				</div>
+
+				<button type="submit" *ngIf="edit" class="btn btn-outline-primary mr-1">Update</button>
+				<button type="button" *ngIf="edit" class="btn btn-outline-secondary ml-2" (click)="cancelUpdate()">Cancel</button>
 			</form>
 
 		</div>
