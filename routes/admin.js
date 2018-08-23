@@ -195,12 +195,26 @@ router.post("/toggle_employee/:id", verifyToken, function (req, res, callback) {
  * -------------------
  */
 router.post("/edit_employee/:id", function(req, res, callback){
-  var obj = {
-    "profile.first_name": req.body.profile.first_name,
-    "profile.last_name": req.body.profile.last_name,
-    "email": req.body.email,
-    "designation": req.body.designation
+  var obj;
+
+  if(req.body.is_active){
+    obj = {
+      "profile.first_name": req.body.profile.first_name,
+      "profile.last_name": req.body.profile.last_name,
+      "email": req.body.email,
+      "designation": req.body.designation,
+      "is_active": req.body.is_active
+    }
   }
+  else{
+    obj = {
+      "profile.first_name": req.body.profile.first_name,
+      "profile.last_name": req.body.profile.last_name,
+      "email": req.body.email,
+      "designation": req.body.designation
+    }
+  }
+
 
   employeeModel.findByIdAndUpdate({_id: req.params.id}, {$set: obj}, function(error, result){
     if(error) callback(error)
