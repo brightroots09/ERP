@@ -35,6 +35,7 @@ export class ProjectTaskDetailsComponent implements OnInit {
   getTasksDetails(){
     this.user.projectTasksDetails(this.param.id)
       .subscribe(res => {
+        console.log("***********", res)
         this.tasksModel = res[0]
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
@@ -42,7 +43,35 @@ export class ProjectTaskDetailsComponent implements OnInit {
       })
   }
 
+  toggleEdit(){
+    this.edit = true
+  }
+
+  cancelUpdate(){
+    this.edit = false;
+  }
+
+  onFormSubmit(id){
+    this.edit = false
+    this.user.editProjectTask(id, this.tasksModel)
+      .subscribe(res => {
+        this.router.navigate([`/tasks_details/${id}`])
+      },
+    (error) => {
+      console.error(error)
+    })
+  }
+
   goBack(){
     this.router.navigate(["/tasks"])
+  }
+
+  deleteTask(id){
+    this.user.deleteTask(id)
+      .subscribe(res => {
+        this.router.navigate(["/tasks"])
+      }, (error) => {
+        console.error(error)
+      })
   }
 }

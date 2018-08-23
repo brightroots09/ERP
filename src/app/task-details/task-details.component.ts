@@ -43,8 +43,37 @@ export class TaskDetailsComponent implements OnInit {
       })
   }
 
+  toggleEdit(){
+    this.edit = true
+  }
+
+  cancelUpdate(){
+    this.edit = false;
+  }
+
+  onFormSubmit(){
+    console.log(this.tasksModel)
+    this.edit = false
+    this.user.editTask(this.param.id, this.tasksModel)
+      .subscribe(res => {
+        this.router.navigate([`/tasks_details/${this.param.id}`])
+      },
+    (error) => {
+      console.error(error)
+    })
+  }
+
   goBack(){
     this.router.navigate(["/tasks"])
+  }
+
+  deleteTask(){
+    this.user.deleteTask(this.param.id)
+      .subscribe(res => {
+        this.router.navigate(["/tasks"])
+      }, (error) => {
+        console.error(error)
+      })
   }
 
 }

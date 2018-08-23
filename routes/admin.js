@@ -444,4 +444,73 @@ router.post("/create_tasks", verifyToken, function(req, res, callback){
 
 })
 
+
+/**
+ * ---------
+ * EDIT TASK
+ * ---------
+ */
+
+router.post("/edit_task/:id", verifyToken, function(req, res, callback){
+	let obj
+	if (req.body.status) {
+		obj = {
+			"tasks_details.name": req.body.tasks_details.name,
+			"tasks_details.description": req.body.tasks_details.description,
+			"status": req.body.status
+		}
+	}
+	else {
+		obj = {
+			"tasks_details.name": req.body.tasks_details.name,
+			"tasks_details.description": req.body.tasks_details.description
+		}
+	}
+	tasksModel.findByIdAndUpdate({ _id: req.params.id }, { $set: obj }, function (error, response) {
+		if (error) callback(error)
+		else {
+			res.redirect(`/tasks_details/${req.params.id}`)
+		}
+	})
+})
+
+router.post("/edit_project_task/:id", verifyToken, function(req, res, callback){
+	let obj
+	if (req.body.status) {
+		obj = {
+			"tasks_details.name": req.body.tasks_details.name,
+			"tasks_details.description": req.body.tasks_details.description,
+			"status": req.body.status
+		}
+	}
+	else {
+		obj = {
+			"tasks_details.name": req.body.tasks_details.name,
+			"tasks_details.description": req.body.tasks_details.description
+		}
+	}
+	tasksModel.findByIdAndUpdate({ "_id": req.params.id }, { $set: obj }, function (error, response) {
+		if (error) callback(error)
+		else {
+			res.redirect(`/tasks_details/${req.params.id}`)
+		}
+	})
+})
+
+
+
+/**
+ * -----------
+ * DELETE TASK
+ * -----------
+ */
+router.post("/delete_task/:id", verifyToken,function(req, res, callback){
+	tasksModel.findByIdAndRemove({_id: req.params.id}, function(error, response){
+		if(error) callback(error)
+		else{
+			res.redirect("/tasks")
+		}
+	})
+})
+
 module.exports = router;
