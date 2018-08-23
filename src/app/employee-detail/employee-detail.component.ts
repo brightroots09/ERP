@@ -63,6 +63,15 @@ export class EmployeeDetailComponent implements OnInit {
     })
   }
 
+  deleteEmployee(){
+    this.user.deleteEmployee(this.param.id)
+      .subscribe(res => {
+        this.router.navigate(["/employees"])
+      }, (error) => {
+        console.error(error)
+      })
+  }
+
   cancelUpdate(){
     this.edit = false;
   }

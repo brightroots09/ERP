@@ -1,4 +1,7 @@
 <div class="row" *ngIf="filtersLoaded | async">
+	<div class="col-md-6 offset-md-3 text-right">
+		<button type="button" class="btn btn-link" routerLink="/tasks">View Tasks</button>
+	</div>
 	<div class="col-md-6 card offset-md-3 mt-4 text-center">
 		<div class="card-body">
 			<h5 class="card-title" *ngIf="!edit">
@@ -20,7 +23,7 @@
 							<button type="button" *ngIf="!edit" class="btn btn-outline-primary ml-auto mr-auto" (click)="toggleEdit()">Edit</button>
 						</div>
 						<div class="col-md-6">
-							<button type="button" *ngIf="!edit" class="btn btn-outline-danger ml-auto mr-auto">Delete</button>
+							<button type="button" *ngIf="!edit" (click)="deleteProject()" class="btn btn-outline-danger ml-auto mr-auto">Delete</button>
 						</div>
 					</div>
 

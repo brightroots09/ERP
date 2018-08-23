@@ -70,4 +70,13 @@ export class ProjectDetailComponent implements OnInit {
     this.router.navigate(["/projects"])
   }
 
+  deleteProject(){
+    this.user.deleteProject(this.param.id)
+      .subscribe(res => {
+        this.router.navigate(["/projects"])
+      }, (error) => {
+        console.error(error)
+      })
+  }
+
 }

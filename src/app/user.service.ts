@@ -16,12 +16,14 @@ export class UserService {
 	private _profileUrl = "/profile";
   private _employeeUrl = "/employees";
   private _employeeDetailUrl = "/employee";
-  private _addEmployeeUrl = "/add_employee"
+  private _addEmployeeUrl = "/add_employee";
+  private _deleteEmployeeUrl = "/delete_employee"
   private _editEmployeeUrl = "/edit_employee";
   private _projectsUrl = "/projects";
   private _projectDetails = "/project_details";
   private _editProject = "/edit_project";
   private _adddProject = "/create_project";
+  private _projectDelete = "/project_delete";
 
   constructor(private http: HttpClient) { }
 	
@@ -40,6 +42,11 @@ export class UserService {
 
   addEmployee(data): Observable<any>{
     return this.http.post<any>(this._addEmployeeUrl, data)
+  }
+
+  deleteEmployee(id): Observable<any>{
+    let url = this._deleteEmployeeUrl + "/" + id
+    return this.http.post<any>(url, id)
   }
 
   editEmployee(id, data): Observable<any>{
@@ -67,6 +74,11 @@ export class UserService {
       employee
     }
     return this.http.post<any>(this._adddProject, obj)
+  }
+
+  deleteProject(id): Observable<any>{
+    let url = this._projectDelete + "/" + id
+    return this.http.post<any>(url, id)
   }
 
 }

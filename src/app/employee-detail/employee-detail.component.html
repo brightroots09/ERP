@@ -39,7 +39,7 @@
 							<button type="button" *ngIf="!edit" class="btn btn-outline-primary ml-auto mr-auto" (click)="toggleEdit()">Edit</button>
 						</div>
 						<div class="col-md-6">
-							<button type="button" *ngIf="!edit" class="btn btn-outline-danger ml-auto mr-auto">Delete</button>
+							<button type="button" *ngIf="!edit" (click)="deleteEmployee()" class="btn btn-outline-danger ml-auto mr-auto">Delete</button>
 						</div>
 					</div>
 
