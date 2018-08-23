@@ -253,10 +253,19 @@ router.post("/create_project", verifyToken, function (req, res, callback) {
   let project = new projectModel();
   let date = new Date();
 
-  project.project_details.name = req.body.project_name;
-  project.project_details.description = req.body.project_description;
-  project.status = req.body.status;
-  project.employee_id = req.body.employee_id;
+  let arr = []
+  let employee = req.body.employee
+
+  for(let i in employee){
+    arr.push({
+      id: mongoose.Types.ObjectId(employee[i]._id)
+    })
+  }
+
+  project.project_details.name = req.body.project.project_name;
+  project.project_details.description = req.body.project.project_description;
+  project.status = req.body.project.status;
+  project.employee_id = arr;
   project.date_created = date;
 
   project.save(function (error, result) {

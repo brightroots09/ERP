@@ -12,13 +12,14 @@ export class AddProjectComponent implements OnInit {
 
   userModel;
   projectModel = new Project;
+  employees = [];
 
   constructor(private router: Router, private user: UserService) { }
 
   async ngOnInit() {
     try {
       const employees = await this.getEmployee()
-      if(employees != undefined || employees != null){
+      if (employees != undefined || employees != null) {
         this.userModel = employees
       }
     } catch (error) {
@@ -26,23 +27,39 @@ export class AddProjectComponent implements OnInit {
     }
   }
 
-  getEmployee(){
+  getEmployee() {
     this.user.employee()
       .subscribe(res => {
         console.log(res)
         this.userModel = res
       },
-      (error)=>{
-        console.log(error)
-      } 
-    )
+        (error) => {
+          console.log(error)
+        }
+      )
   }
-  onFormSubmit(){
-    console.log(this.projectModel)
+  onFormSubmit() {
+    this.user.addProject(this.projectModel, this.employees)
+      .subscribe(res => {
+        this.router.navigate(["/projects"])
+      }, (error) => {
+        console.error(error)
+      })
   }
 
-  cancelAdd(){
+  cancelAdd() {
     this.router.navigate(["/projects"])
+  }
+
+  add_employee(id) {
+    this.employees.push(id)
+  }
+
+  remove(employee) {
+    var index = this.employees.indexOf(employee);
+    if (index > -1) {
+      this.employees.splice(index, 1);
+    }
   }
 
 }

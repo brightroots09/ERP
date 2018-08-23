@@ -61,8 +61,12 @@ export class UserService {
     return this.http.post<any>(url, data)
   }
 
-  addProject(data){
-    return this.http.post<any>(this._adddProject, data)
+  addProject(project, employee){
+    let obj = {
+      project,
+      employee
+    }
+    return this.http.post<any>(this._adddProject, obj)
   }
 
 }
