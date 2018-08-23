@@ -10,6 +10,8 @@ import { HttpErrorResponse } from '../../../node_modules/@angular/common/http';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  
+  filtersLoaded: Promise<boolean>;
 
   userModel;
 
@@ -29,6 +31,7 @@ export class ProfileComponent implements OnInit {
         .subscribe(res => {
           this.userModel = res
           console.log("==================>",res)
+          this.filtersLoaded = Promise.resolve(true);
         }, (error) => {
           if(error instanceof HttpErrorResponse){
             if(error.status === 401){

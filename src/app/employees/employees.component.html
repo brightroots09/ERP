@@ -1,4 +1,12 @@
 <div class="row">
+	<div class="col-md-12">
+		<div class="text-right">
+			<button class="btn btn-outline-danger mt-2 mb-2" routerLink="/add_employee">Add Employee</button>
+			<button type="button" class="btn btn-link text-primary mt-2 mb-2" (click)="goBack()">
+				&laquo; Go back
+			</button>
+		</div>
+	</div>
 
 	<div class="card mt-4 mb-4 ml-auto mr-auto" style="width: 18rem;" *ngFor="let employee of userModel">
 		<img class="card-img-top ml-auto mr-auto mt-2" style="width: 200px; height: 200px;" *ngIf="employee.profile.image != ''; else else_block" src="/images/{{ employee.profile.image }}" alt="{{ employee.profile.first_name }}">

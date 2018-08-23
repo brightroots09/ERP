@@ -20,7 +20,8 @@ export class UserService {
   private _editEmployeeUrl = "/edit_employee";
   private _projectsUrl = "/projects";
   private _projectDetails = "/project_details";
-  private _editProject = "/edit_project"
+  private _editProject = "/edit_project";
+  private _adddProject = "/create_project";
 
   constructor(private http: HttpClient) { }
 	
@@ -59,4 +60,9 @@ export class UserService {
     let url = this._editProject + "/" + id
     return this.http.post<any>(url, data)
   }
+
+  addProject(data){
+    return this.http.post<any>(this._adddProject, data)
+  }
+
 }

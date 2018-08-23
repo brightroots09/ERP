@@ -11,6 +11,7 @@ export class ProjectDetailComponent implements OnInit {
 
   projectModel;
   param;
+  filtersLoaded: Promise<boolean>;
 
   private edit: boolean = false;
 
@@ -38,6 +39,7 @@ export class ProjectDetailComponent implements OnInit {
       .subscribe(res => {
         console.log("===========>", res)
         this.projectModel = res[0]
+        this.filtersLoaded = Promise.resolve(true);
       }, 
       (error) => {
         console.error(error)

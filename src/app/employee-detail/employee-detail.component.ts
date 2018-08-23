@@ -12,6 +12,7 @@ export class EmployeeDetailComponent implements OnInit {
 
   userModel;
   param;
+  filtersLoaded: Promise<boolean>;
 
   private edit: boolean = false;
 
@@ -39,6 +40,7 @@ export class EmployeeDetailComponent implements OnInit {
       .subscribe(res => {
         console.log("===========>", res)
         this.userModel = res[0]
+        this.filtersLoaded = Promise.resolve(true);
       }, 
       (error) => {
         console.error(error)
