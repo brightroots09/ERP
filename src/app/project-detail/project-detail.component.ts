@@ -37,7 +37,7 @@ export class ProjectDetailComponent implements OnInit {
   getProjectDetails(){
     this.user.projectDetails(this.param.id)
       .subscribe(res => {
-        console.log("===========>", res)
+        console.log("===========>", res[0])
         this.projectModel = res[0]
         this.filtersLoaded = Promise.resolve(true);
       }, 
