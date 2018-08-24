@@ -21,7 +21,8 @@ import { EditProjectComponent } from './edit-project/edit-project.component';
 import { TokenInterceptorService } from "./token-interceptor.service";
 import { TaskDetailsComponent } from './task-details/task-details.component';
 import { AddTasksComponent } from './add-tasks/add-tasks.component';
-import { ProjectTaskDetailsComponent } from './project-task-details/project-task-details.component' 
+import { ProjectTaskDetailsComponent } from './project-task-details/project-task-details.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component' 
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { ProjectTaskDetailsComponent } from './project-task-details/project-task
     TasksComponent,
     TaskDetailsComponent,
     AddTasksComponent,
-    ProjectTaskDetailsComponent
+    ProjectTaskDetailsComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

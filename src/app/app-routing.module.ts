@@ -15,6 +15,7 @@ import { EmployeeDetailComponent } from './employee-detail/employee-detail.compo
 import { TaskDetailsComponent } from './task-details/task-details.component';
 import { AddTasksComponent } from './add-tasks/add-tasks.component';
 import { ProjectTaskDetailsComponent } from './project-task-details/project-task-details.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -105,6 +106,10 @@ const routes: Routes = [
     path: "projectTasksDetails/:id",
     component: ProjectTaskDetailsComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: "**",
+    component: PageNotFoundComponent
   }
 ];
 
