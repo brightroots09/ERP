@@ -280,6 +280,8 @@ router.post("/create_project", verifyToken, function (req, res, callback) {
 	project.project_details.description = req.body.project.project_description;
 	project.status = req.body.project.status;
 	project.employee_id = arr;
+	project.project_manager = req.body.project.project_manager;
+	project.responsible_person = req.body.project.responsible_person;
 	project.date_created = date;
 
 	project.save(function (error, result) {
@@ -312,9 +314,10 @@ router.get("/projects", verifyToken, function (req, res, callback) {
 * ------------------------------------
 * */
 router.get("/project_details/:id", verifyToken, function (req, res, callback) {
-	projectModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'employeeModel', localField: 'employee_id.id', foreignField: '_id', as: 'employees' } }], function (error, project) {
+	projectModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'employeeModel', localField: 'employee_id.id', foreignField: '_id', as: 'employees' } }, {$lookup: { from: 'employeeModel', localField: 'responsible_person', foreignField: '_id', as: 'responsible_person'}}, {$lookup: { from: 'employeeModel', localField: 'project_manager', foreignField: '_id', as: 'project_manager'}}], function (error, project) {
 		if (error) callback(error);
 		else {
+			console.log(project)
 			res.json(project);
 		}
 	})

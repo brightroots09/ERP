@@ -42,23 +42,40 @@
 				</ng-template>
 			</div>
 			<div class="form-group">
-				<div class="row" *ngFor="let employee of userModel">
-					<div class="col-md-12 mb-2" *ngIf="employee.designation == 'Developer (IOS)'">
-						<label>IOS Developer</label>
-						<button type="button" class="btn btn-outline-info m-2" (click)="add_employee(employee)" >{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="row" *ngFor="let employee of userModel">
+							<div class="col-md-12 mb-2" *ngIf="employee.designation == 'Developer (IOS)'">
+								<label>IOS Developer</label>
+								<button type="button" class="btn btn-outline-info m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+							</div>
+							<div class="col-md-12 mb-2" *ngIf="employee.designation == 'Developer (Android)'">
+								<label>Android Developer</label>
+								<button type="button" class="btn btn-outline-info m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+							</div>
+							<div class="col-md-12 mb-2" *ngIf="employee.designation == 'Backend Developer'">
+								<label>Backend Developer</label>
+								<button type="button" class="btn btn-outline-info m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+							</div>
+						</div>
 					</div>
-					<div class="col-md-12 mb-2" *ngIf="employee.designation == 'Developer (Android)'">
-						<label>Android Developer</label>
-						<button type="button" class="btn btn-outline-info m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
-					</div>
-					<div class="col-md-12 mb-2" *ngIf="employee.designation == 'Project Manager'">
+					<div class="col-md-4">
 						<label>Project Manager</label>
-						<button type="button" class="btn btn-outline-info m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+						<select class="form-control" name="project_manager" #project_manager="ngModel" [(ngModel)]="projectModel.project_manager">
+							<ng-container *ngFor="let employee of userModel">
+								<option *ngIf="employee.designation == 'Project Manager'" value="{{employee._id}}">
+									{{ employee.profile.first_name }} {{ employee.profile.last_name }}
+								</option>
+							</ng-container>
+						</select>
 					</div>
-
-					<div class="col-md-12 mb-2" *ngIf="employee.designation == 'Backend Developer'">
-						<label>Backend Developer</label>
-						<button type="button" class="btn btn-outline-info m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+					<div class="col-md-4">
+						<label>Responsible Person</label>
+						<select class="form-control" name="responsible_person" #responsible_person="ngModel" [(ngModel)]="projectModel.responsible_person">
+							<option *ngFor="let employee of userModel" value="{{employee._id}}">
+								{{ employee.profile.first_name }} {{ employee.profile.last_name }}
+							</option>
+						</select>
 					</div>
 				</div>
 			</div>

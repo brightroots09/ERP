@@ -73,19 +73,55 @@
 
 		<div class="card-footer">
 			<div class="row">
-				<div class="col-md-12" *ngIf="projectModel.employees.length > 0; else project_else">
-					<label for="project_manager">Project Members</label>
+				<div class="col-md-12" *ngIf="projectModel.employees.length > 0; else employee_else">
+					<label>Project Members</label>
 					<ul>
 						<li *ngFor="let employee of projectModel.employees" class="text-left">
 							{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})
 						</li>
 					</ul>
-					
+
 				</div>
-				<ng-template #project_else>
+				<ng-template #employee_else>
 					<div class="col-md-12">
 						<p class="mt-auto mb-auto">
 							Currently there are no employees working on this project.
+						</p>
+					</div>
+				</ng-template>
+			</div>
+			<div class="row">
+				<div class="col-md-12" *ngIf="projectModel.project_manager.length > 0; else manager_else">
+					<label>Project Manager</label>
+					<ul>
+						<li *ngFor="let manager of projectModel.project_manager" class="text-left">
+							{{ manager.profile.first_name }} {{ manager.profile.last_name }}
+						</li>
+					</ul>
+
+				</div>
+				<ng-template #manager_else>
+					<div class="col-md-12">
+						<p class="mt-auto mb-auto">
+							Currently there is no manager working on this project.
+						</p>
+					</div>
+				</ng-template>
+			</div>
+			<div class="row">
+				<div class="col-md-12" *ngIf="projectModel.responsible_person.length > 0; else responsible_else">
+					<label>Responsible Person</label>
+					<ul>
+						<li *ngFor="let responsible of projectModel.responsible_person" class="text-left">
+							{{ responsible.profile.first_name }} {{ responsible.profile.last_name }} ({{ responsible.designation }})
+						</li>
+					</ul>
+
+				</div>
+				<ng-template #responsible_else>
+					<div class="col-md-12">
+						<p class="mt-auto mb-auto">
+							Currently there is no responsible person for this project.
 						</p>
 					</div>
 				</ng-template>

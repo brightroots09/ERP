@@ -9,6 +9,14 @@ var projectModel = new Schema({
       ref: "employeeModel"
     }
   }],
+  responsible_person: {
+    type: Schema.Types.ObjectId,
+    ref: "employeeModel"
+  },
+  project_manager: {
+    type: Schema.Types.ObjectId,
+    ref: "employeeModel"
+  },
   project_details: {
     name: {
       type: String,
