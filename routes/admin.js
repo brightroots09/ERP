@@ -7,6 +7,8 @@ const adminModel = require("../models/adminModel");
 const employeeModel = require("../models/employeeModel");
 const projectModel = require("../models/projectModel");
 const tasksModel = require("../models/taskModel");
+const taskUpdateModel = require("../models/taskUpdateModel")
+
 const session = require("express-session");
 
 const commonFunction = require("../services/common_functions");
@@ -195,7 +197,7 @@ router.post("/delete_employee/:id", verifyToken, function (req, res, callback) {
  * -------------------
  */
 router.post("/edit_employee/:id", verifyToken, function (req, res, callback) {
-	var obj;
+	let obj;
 
 	if (req.body.is_active) {
 		obj = {
@@ -421,8 +423,8 @@ router.get("/project_tasks_details/:id", verifyToken, function (req, res, callba
  */
 
 router.post("/create_tasks", verifyToken, function(req, res, callback){
-	var tasks = new tasksModel()
-	var date = new Date()
+	let tasks = new tasksModel()
+	let date = new Date()
 
 	let arr = []
 	let projects = req.body.projects
@@ -514,6 +516,19 @@ router.post("/delete_task/:id", verifyToken,function(req, res, callback){
 			res.redirect("/tasks")
 		}
 	})
+})
+
+
+/**
+ * ---------------------
+ * UPDATE PROJECT'S TASK
+ * ---------------------
+ */
+
+router.post("/update_project_task", verifyToken, function(req, res, callback){
+	let updateModel = new taskUpdateModel()
+	let date = new Date()
+	console.log(req.body)
 })
 
 module.exports = router;

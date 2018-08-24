@@ -25,11 +25,11 @@ router.get("/", function(req, res, callback) {
 * -----------
 * */
 router.post("/employee_login", function(req, res, callback){
-  let conidtion = {
+  let condition = {
     email: req.body.email,
     password: req.body.password
   }
-  commonFunction.loginUser(employeeModel,conidtion, function(error, result){
+  commonFunction.loginUser(employeeModel,condition, function(error, result){
     if(error) callback(error)
     else{
       req.user = result.user

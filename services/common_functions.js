@@ -18,6 +18,7 @@ function getProfile(db, condition, cb){
 
 
 function loginUser(db, condition, cb){
+  console.log(condition)
   db.findOne({email: condition.email}, function(error, user) {
     if(error) cb(error)
     if(!user){

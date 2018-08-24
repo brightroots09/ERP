@@ -31,6 +31,7 @@ export class UserService {
   private _editTaskUrl = "/edit_task";
   private _editProjectTaskUrl = "/edit_project_task";
   private _deleteTask = "/delete_task";
+  private _updateProjectTask = "/update_project_task";
 
   constructor(private http: HttpClient) { }
 	
@@ -123,6 +124,14 @@ export class UserService {
   deleteTask(id): Observable<any>{
     let url = this._deleteTask + "/" + id
     return this.http.post(url, id)
+  }
+
+  updateProjectTasks(id, data): Observable<any>{
+    let url = this._updateProjectTask;
+    let obj = {
+      id, data
+    }
+    return this.http.post(url, obj)
   }
 
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '../../../node_modules/@angular/router';
 import { UserService } from '../user.service';
+import { Updates } from '../updates';
+import { Subscriber } from '../../../node_modules/rxjs';
 
 @Component({
   selector: 'app-project-detail',
@@ -12,6 +14,7 @@ export class ProjectDetailComponent implements OnInit {
   projectModel;
   param;
   filtersLoaded: Promise<boolean>;
+  updateModel = new Updates;
 
   private edit: boolean = false;
 
@@ -74,6 +77,16 @@ export class ProjectDetailComponent implements OnInit {
     this.user.deleteProject(this.param.id)
       .subscribe(res => {
         this.router.navigate(["/projects"])
+      }, (error) => {
+        console.error(error)
+      })
+  }
+
+  onUpdateFormSubmit(){
+    this.user.updateProjectTasks(this.param.id, this.updateModel)
+    .subscribe(res => {
+      console.log(this.updateModel)
+        // this.router.navigate([`/project_details/${this.param.id}`])
       }, (error) => {
         console.error(error)
       })
