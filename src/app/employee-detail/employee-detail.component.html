@@ -104,9 +104,10 @@
 		<div class="card-footer">
 			<div class="row">
 				<div class="col-md-12" *ngIf="userModel.projects.length > 0; else project_else">
-					<select class="form-control" id="exampleFormControlSelect1">
-						<option *ngFor="let project of userModel.projects">{{ project.project_details.name }}</option>
-					</select>
+					<label>Assigned Projects</label>
+					<ul>
+						<li *ngFor="let project of userModel.projects" class="text-left">{{ project.project_details.name }}</li>
+					</ul>
 				</div>
 				<ng-template #project_else>
 					<div class="col-md-12">

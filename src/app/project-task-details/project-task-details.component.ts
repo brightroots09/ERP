@@ -63,7 +63,7 @@ export class ProjectTaskDetailsComponent implements OnInit {
   }
 
   goBack(){
-    this.router.navigate(["/tasks"])
+    this.router.navigate(["/projects"])
   }
 
   deleteTask(id){

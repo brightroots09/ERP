@@ -1,77 +1,84 @@
 <div class="row" *ngIf="filtersLoaded | async">
-    <div *ngIf="tasksModel; else else_block" class="col-md-6 card offset-md-3 mt-4 text-center">
-      <div class="card-body">
-        <h5 class="card-title" *ngIf="!edit">
-          Name: {{tasksModel.tasks_details.name}}
-        </h5>
-        <h5 class="card-text" *ngIf="!edit">
-          Description: {{ tasksModel.tasks_details.description }}
-        </h5>
-  
-        <div class="card-text">
-          <div class="col-md-12">
-  
-            <div class="row">
-              <div class="col-md-6">
-                <button type="button" *ngIf="!edit" class="btn btn-outline-primary ml-auto mr-auto" (click)="toggleEdit()">Edit</button>
-              </div>
-              <div class="col-md-6">
-                <button type="button" *ngIf="!edit" (click)="deleteTask(tasksModel._id)" class="btn btn-outline-danger ml-auto mr-auto">Delete</button>
-              </div>
-            </div>
-  
-          </div>
-        </div>
-  
-        <form (ngSubmit)="onFormSubmit(tasksModel._id)" class="mb-3">
-          <div class="form-group" *ngIf="edit">
-            <label for="name">Name: </label>
-            <input type="text" id="name" #name="ngModel" class="form-control" name="name" [(ngModel)]="tasksModel.tasks_details.name"
-              [class.is-invalid]="name.invalid && name.touched" [class.is-valid]="name.valid && name.touched" required>
-            <small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
-  
-          </div>
-  
-          <div class="form-group" *ngIf="edit">
-            <label for="first_name">Description: </label>
-            <input type="text" id="description" #description="ngModel" class="form-control" name="description" [(ngModel)]="tasksModel.tasks_details.description"
-              [class.is-invalid]="description.invalid && description.touched" [class.is-valid]="description.valid && description.touched"
-              required>
-            <small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
-          </div>
-  
-          <button type="submit" *ngIf="edit" class="btn btn-outline-primary mr-2">Update</button>
-          <button type="button" *ngIf="edit" class="btn btn-outline-secondary ml-2" (click)="cancelUpdate()">Cancel</button>
-        </form>
-  
-      </div>
-  
-      <div class="card-footer">
-        <div class="row">
-          <div class="col-md-12" *ngIf="tasksModel.projects.length > 0; else project_else">
-            <label for="project_manager">Projects</label>
-            <select class="form-control" id="exampleFormControlSelect1">
-              <option *ngFor="let projects of tasksModel.projects">{{ projects.project_details.name }}</option>
-            </select>
-          </div>
-          <ng-template #project_else>
-            <div class="col-md-12">
-              <p class="mt-auto mb-auto">
-                Currently there are no projects associated with this task.
-              </p>
-            </div>
-          </ng-template>
-        </div>
-      </div>
-      <button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
-        &laquo; Go back
-      </button>
-    </div>
-    <ng-template #else_block>
-      <div class="col-md-6 offset-md-3 text-center">
-        <h2>
-          No Tasks
-        </h2>
-      </div>
-    </ng-template>
+  <div class="col-md-6 text-left">
+    <button type="button" class="btn btn-link text-primary mt-2 mb-2" (click)="goBack()">
+      &laquo; Go back
+    </button>
   </div>
+  <div class="col-md-6 text-right">
+    <button class="btn btn-link mt-2 mb-2" routerLink="/create_tasks">Create Task</button>
+  </div>
+  <div *ngIf="tasksModel; else else_block" class="col-md-6 card offset-md-3 mt-4 text-center">
+    <div class="card-body">
+      <h5 class="card-title" *ngIf="!edit">
+        Name: {{tasksModel.tasks_details.name}}
+      </h5>
+      <h5 class="card-text" *ngIf="!edit">
+        Description: {{ tasksModel.tasks_details.description }}
+      </h5>
+
+      <div class="card-text">
+        <div class="col-md-12">
+
+          <div class="row">
+            <div class="col-md-6">
+              <button type="button" *ngIf="!edit" class="btn btn-outline-primary ml-auto mr-auto" (click)="toggleEdit()">Edit</button>
+            </div>
+            <div class="col-md-6">
+              <button type="button" *ngIf="!edit" (click)="deleteTask(tasksModel._id)" class="btn btn-outline-danger ml-auto mr-auto">Delete</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <form (ngSubmit)="onFormSubmit(tasksModel._id)" class="mb-3">
+        <div class="form-group" *ngIf="edit">
+          <label for="name">Name: </label>
+          <input type="text" id="name" #name="ngModel" class="form-control" name="name" [(ngModel)]="tasksModel.tasks_details.name"
+            [class.is-invalid]="name.invalid && name.touched" [class.is-valid]="name.valid && name.touched" required>
+          <small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
+
+        </div>
+
+        <div class="form-group" *ngIf="edit">
+          <label for="first_name">Description: </label>
+          <input type="text" id="description" #description="ngModel" class="form-control" name="description" [(ngModel)]="tasksModel.tasks_details.description"
+            [class.is-invalid]="description.invalid && description.touched" [class.is-valid]="description.valid && description.touched"
+            required>
+          <small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
+        </div>
+
+        <button type="submit" *ngIf="edit" class="btn btn-outline-primary mr-2">Update</button>
+        <button type="button" *ngIf="edit" class="btn btn-outline-secondary ml-2" (click)="cancelUpdate()">Cancel</button>
+      </form>
+
+    </div>
+
+    <div class="card-footer">
+      <div class="row">
+        <div class="col-md-12" *ngIf="tasksModel.projects.length > 0; else project_else">
+          <label for="project_manager">Projects</label>
+          <ul>
+            <li *ngFor="let projects of tasksModel.projects" class="text-left">
+              {{ projects.project_details.name }}
+            </li>
+          </ul>
+        </div>
+        <ng-template #project_else>
+          <div class="col-md-12">
+            <p class="mt-auto mb-auto">
+              Currently there are no projects associated with this task.
+            </p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <ng-template #else_block>
+    <div class="col-md-6 offset-md-3 text-center">
+      <h2>
+        No Tasks
+      </h2>
+    </div>
+  </ng-template>
+</div>

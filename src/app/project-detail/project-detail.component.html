@@ -75,9 +75,12 @@
 			<div class="row">
 				<div class="col-md-12" *ngIf="projectModel.employees.length > 0; else project_else">
 					<label for="project_manager">Project Members</label>
-					<select class="form-control" id="exampleFormControlSelect1">
-						<option *ngFor="let employee of projectModel.employees">{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})</option>
-					</select>
+					<ul>
+						<li *ngFor="let employee of projectModel.employees" class="text-left">
+							{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})
+						</li>
+					</ul>
+					
 				</div>
 				<ng-template #project_else>
 					<div class="col-md-12">
