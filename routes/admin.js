@@ -87,7 +87,7 @@ router.post("/login", function (req, res, callback) {
 
 router.get("/login", function (req, res, callback) {
 	if (req.user) {
-		res.redirect("/profile")
+		res.redirect("/admin/profile")
 	}
 	else {
 		res.json("Wrong Credentials")
@@ -164,13 +164,13 @@ router.post("/add_employee", verifyToken, function (req, res, callback) {
 
 	employeeModel.findOne({ email: req.body.email }, function (error, exists) {
 		if (error) callback(error);
-		if (exists) res.redirect("/employees");
+		if (exists) res.redirect("/admin/employees");
 		else {
 			employee.save(function (error, result) {
 				if (error) callback(error);
 				else {
 					console.log(result);
-					res.redirect("/employees");
+					res.redirect("/admin/employees");
 				}
 			})
 		}
@@ -186,7 +186,7 @@ router.post("/delete_employee/:id", verifyToken, function (req, res, callback) {
 	employeeModel.findByIdAndRemove({ _id: req.params.id }, function (error, response) {
 		if (error) callback(error)
 		else {
-			res.redirect("/employees")
+			res.redirect("/admin/employees")
 		}
 	})
 })
@@ -221,7 +221,7 @@ router.post("/edit_employee/:id", verifyToken, function (req, res, callback) {
 	employeeModel.findByIdAndUpdate({ _id: req.params.id }, { $set: obj }, function (error, result) {
 		if (error) callback(error)
 		else {
-			res.redirect(`/employee/${req.params.id}`)
+			res.redirect(`/admin/employee/${req.params.id}`)
 		}
 	})
 
@@ -254,7 +254,7 @@ router.post("/delete_employee/:id", verifyToken, function (req, res, callback) {
 	employeeModel.findByIdAndRemove({ _id: req.params.id }, function (error, result) {
 		if (error) callback(error);
 		else {
-			res.redirect("/employees");
+			res.redirect("/admin/employees");
 		}
 	})
 });
@@ -289,7 +289,7 @@ router.post("/create_project", verifyToken, function (req, res, callback) {
 	project.save(function (error, result) {
 		if (error) callback(error);
 		else {
-			res.redirect("/projects");
+			res.redirect("/admin/projects");
 		}
 	})
 });
@@ -316,7 +316,7 @@ router.get("/projects", verifyToken, function (req, res, callback) {
 * ------------------------------------
 * */
 router.get("/project_details/:id", verifyToken, function (req, res, callback) {
-	projectModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'employeeModel', localField: 'employee_id.id', foreignField: '_id', as: 'employees' } }, {$lookup: { from: 'employeeModel', localField: 'responsible_person', foreignField: '_id', as: 'responsible_person'}}, {$lookup: { from: 'employeeModel', localField: 'project_manager', foreignField: '_id', as: 'project_manager'}}], function (error, project) {
+	projectModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'employeeModel', localField: 'employee_id.id', foreignField: '_id', as: 'employees' } }, {$lookup: { from: 'employeeModel', localField: 'responsible_person', foreignField: '_id', as: 'responsible_person'}}, {$lookup: { from: 'employeeModel', localField: 'project_manager', foreignField: '_id', as: 'project_manager'}}, {$lookup: {from: 'taskUpdateModel', localField: '_id', foreignField: 'project_id', as: 'dailyTasksUpdate'}}], function (error, project) {
 		if (error) callback(error);
 		else {
 			console.log(project)
@@ -349,7 +349,7 @@ router.post("/edit_project/:id", verifyToken, function (req, res, callback) {
 	projectModel.findByIdAndUpdate({ _id: req.params.id }, { $set: obj }, function (error, response) {
 		if (error) callback(error)
 		else {
-			res.redirect(`/project_details/${req.params.id}`)
+			res.redirect(`/admin/project_details/${req.params.id}`)
 		}
 	})
 })
@@ -363,7 +363,7 @@ router.post("/project_delete/:id", verifyToken, function (req, res, callback) {
 	projectModel.findByIdAndRemove({ _id: req.params.id }, function (error, response) {
 		if (error) callback(error)
 		else {
-			res.redirect("/projects")
+			res.redirect("/admin/projects")
 		}
 	})
 })
@@ -443,7 +443,7 @@ router.post("/create_tasks", verifyToken, function(req, res, callback){
 	tasks.save(function(error, result){
 		if(error) callback(error)
 		else{
-			res.redirect("/tasks")
+			res.redirect("/admin/tasks")
 		}
 	})
 
@@ -474,7 +474,7 @@ router.post("/edit_task/:id", verifyToken, function(req, res, callback){
 	tasksModel.findByIdAndUpdate({ _id: req.params.id }, { $set: obj }, function (error, response) {
 		if (error) callback(error)
 		else {
-			res.redirect(`/tasks_details/${req.params.id}`)
+			res.redirect(`/tadmin/asks_details/${req.params.id}`)
 		}
 	})
 })
@@ -497,7 +497,7 @@ router.post("/edit_project_task/:id", verifyToken, function(req, res, callback){
 	tasksModel.findByIdAndUpdate({ "_id": req.params.id }, { $set: obj }, function (error, response) {
 		if (error) callback(error)
 		else {
-			res.redirect(`/tasks_details/${req.params.id}`)
+			res.redirect(`/admin/tasks_details/${req.params.id}`)
 		}
 	})
 })
@@ -513,7 +513,7 @@ router.post("/delete_task/:id", verifyToken,function(req, res, callback){
 	tasksModel.findByIdAndRemove({_id: req.params.id}, function(error, response){
 		if(error) callback(error)
 		else{
-			res.redirect("/tasks")
+			res.redirect("/admin/tasks")
 		}
 	})
 })
@@ -528,7 +528,31 @@ router.post("/delete_task/:id", verifyToken,function(req, res, callback){
 router.post("/update_project_task", verifyToken, function(req, res, callback){
 	let updateModel = new taskUpdateModel()
 	let date = new Date()
-	console.log(req.body)
+
+	updateModel.project_id = req.body.id;
+	updateModel.description = req.body.data.description
+	updateModel.date_created = date;
+
+	updateModel.save(function(error, response){
+		if(error) callback(error)
+		else{
+			res.json(response)
+		}
+	})
+
+})
+
+router.get("/view_daily_updates/:id", verifyToken, function(req, res, callback){
+	taskUpdateModel
+		.find({project_id: req.params.id})
+		.exec(function(error, response){
+			if(error) {
+				callback(error)
+			}
+			else{
+				res.json(response)
+			}
+		})
 })
 
 module.exports = router;

@@ -7,23 +7,34 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { ProfileComponent } from './profile/profile.component';
+import { LoginComponent } from './admin/login/login.component';
+import { ProfileComponent } from './admin/profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth.guard';
-import { EmployeesComponent } from './employees/employees.component';
-import { ProjectsComponent } from './projects/projects.component';
-import { TasksComponent } from './tasks/tasks.component';
-import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
-import { AddEmployeesComponent } from './add-employees/add-employees.component';
-import { ProjectDetailComponent } from './project-detail/project-detail.component';
-import { AddProjectComponent } from './add-project/add-project.component';
-import { EditProjectComponent } from './edit-project/edit-project.component';
+import { EmployeesComponent } from './admin/employees/employees.component';
+import { ProjectsComponent } from './admin/projects/projects.component';
+import { TasksComponent } from './admin/tasks/tasks.component';
+import { EmployeeDetailComponent } from './admin/employee-detail/employee-detail.component';
+import { AddEmployeesComponent } from './admin/add-employees/add-employees.component';
+import { ProjectDetailComponent } from './admin/project-detail/project-detail.component';
+import { AddProjectComponent } from './admin/add-project/add-project.component';
+import { EditProjectComponent } from './admin/edit-project/edit-project.component';
 import { TokenInterceptorService } from "./token-interceptor.service";
-import { TaskDetailsComponent } from './task-details/task-details.component';
-import { AddTasksComponent } from './add-tasks/add-tasks.component';
-import { ProjectTaskDetailsComponent } from './project-task-details/project-task-details.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component' 
+import { TaskDetailsComponent } from './admin/task-details/task-details.component';
+import { AddTasksComponent } from './admin/add-tasks/add-tasks.component';
+import { ProjectTaskDetailsComponent } from './admin/project-task-details/project-task-details.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { EmployeeProfileComponent } from './employee/employee-profile/employee-profile.component';
+import { EmployeeLoginComponent } from './employee/employee-login/employee-login.component';
+import { MyProjectsComponent } from './employee/my-projects/my-projects.component';
+import { MyProjectDetailsComponent } from './employee/my-project-details/my-project-details.component';
+import { MyTasksComponent } from './employee/my-tasks/my-tasks.component';
+import { MyTaskDetailsComponent } from './employee/my-task-details/my-task-details.component';
+import { QueryComponent } from './employee/query/query.component';
+import { QueryDetailsComponent } from './employee/query-details/query-details.component';
+import { DailyDiaryComponent } from './employee/daily-diary/daily-diary.component';
+import { MyProjectTaskComponent } from './employee/my-project-task/my-project-task.component';
+import { DailyUpdateComponent } from './employee/daily-update/daily-update.component' ;
 
 
 @NgModule({
@@ -43,7 +54,18 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     TaskDetailsComponent,
     AddTasksComponent,
     ProjectTaskDetailsComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    EmployeeProfileComponent,
+    EmployeeLoginComponent,
+    MyProjectsComponent,
+    MyProjectDetailsComponent,
+    MyTasksComponent,
+    MyTaskDetailsComponent,
+    QueryComponent,
+    QueryDetailsComponent,
+    DailyDiaryComponent,
+    MyProjectTaskComponent,
+    DailyUpdateComponent
   ],
   imports: [
     BrowserModule,

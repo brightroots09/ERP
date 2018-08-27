@@ -1,0 +1,36 @@
+<div class="row" *ngIf="filtersLoaded | async">
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-5 mr-auto ml-auto">
+				<div class="card">
+					<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
+					 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
+
+					<ng-template #else_image>
+						<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
+					</ng-template>
+					<div class="card-body">
+						<h5 class="card-title">{{userModel.profile.name}}</h5>
+						<p class="card-text">{{userModel.email}}</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 mr-auto ml-auto">
+				<ul class="nav flex-column">
+					<li class="nav-item">
+						<a class="nav-link active" routerLink="/add_employee">Add Employee</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" routerLink="/employees">View Employee</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" routerLink="/projects">Projects</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" routerLink="/tasks">Tasks</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,38 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-6 text-left">
+				<button type="button" class="btn btn-link text-primary mt-2 mb-2" (click)="goBack()">
+					&laquo; Go back
+				</button>
+			</div>
+		</div>
+	</div>
+		<div class="col-md-12 mt-3 mb-3" *ngFor="let tasks of tasksModel">
+			<h5 class="card-title">{{ tasks.project_details.name }}</h5>
+			<div class="row" *ngIf="tasks.my_tasks.length > 0; else no_tasks">
+				<div class="card ml-auto mr-auto" style="width: 18rem;" *ngFor="let myTasks of tasks.my_tasks">
+					<div class="card-body">
+						{{ myTasks.tasks_details.name }}
+					</div>
+					<div class="card-footer text-center">
+						<a class="btn btn-link text-success" routerLink="/myTaskDetails/{{myTasks._id}}">
+							View
+						</a>
+					</div>
+				</div>
+			</div>
+			<ng-template #no_tasks>
+				<div class="card" style="width: 18rem;">
+					No Task
+				</div>
+			</ng-template>
+		</div>
+	<ng-template #else_block>
+		<div class="col-md-6 offset-md-3 text-center">
+			<h3>
+				No Project
+			</h3>
+		</div>
+	</ng-template>
+</div>

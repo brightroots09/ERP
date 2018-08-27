@@ -1,0 +1,22 @@
+<div class="row" *ngIf="filtersLoaded | async">
+    <div *ngIf="tasksModel != ''; else else_block" class="col-md-6 card offset-md-3 mt-4 text-center">
+      <div class="card-body">
+        <h5 class="card-title">
+          Name: {{tasksModel.tasks_details.name}}
+        </h5>
+        <h5 class="card-text">
+          Description: {{ tasksModel.tasks_details.description }}
+        </h5>
+      </div>
+      <button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
+        &laquo; Go back
+      </button>
+    </div>
+    <ng-template #else_block>
+      <div class="col-md-6 offset-md-3 text-center">
+        <h2>
+          No Tasks
+        </h2>
+      </div>
+    </ng-template>
+  </div>

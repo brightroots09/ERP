@@ -1,0 +1,48 @@
+<div class="row" *ngIf="filtersLoaded | async">
+  <div class="col-md-6 offset-md-3 text-right">
+      <button type="button" class="nav-link btn btn-link" data-toggle="modal" data-target="#updateModal">Update Daily Tasks</button>
+  </div>
+    <div  class="col-md-6 offset-md-3 card mt-4">
+      <div class="card-header">
+        <h5 class="card-title">Daily Updates</h5>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li *ngFor="let task of tasksModel">
+            {{ task.description }}
+            <span class="text-muted float-right">{{ task.date_created | date : 'medium' }}</span>
+          </li>
+        </ul>
+      </div>
+      <button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
+        &laquo; Go back
+      </button>
+    </div>
+  </div>
+
+  <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Update Daily Task</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="onUpdateFormSubmit()">
+              <div class="form-group">
+                <textarea name="updates" class="form-control" #description="ngModel" [(ngModel)]="updateModel.description" [class.is-invalid]="description.invalid && description.touched"
+                 [class.is-valid]="description.valid && description.touched" required>
+                </textarea>
+                <small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -60,8 +60,8 @@ app.use(express.static(path.join(__dirname, '/public')));
 const admin = require("./routes/admin");
 const employee = require("./routes/employee")
 
-app.use(admin);
-app.use(employee);
+app.use("/admin", admin);
+app.use("/employee", employee);
 
 app.get("*", (req, res, callback) => {
     res.sendFile(path.join(__dirname, "dist/ERP/index.html"))

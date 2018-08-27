@@ -1,0 +1,30 @@
+<div class="row">
+
+		<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-6 text-right">
+						<button type="button" class="btn btn-link text-primary mt-2 mb-2" (click)="goBack()">
+							&laquo; Go back
+						</button>
+					</div>
+				</div>
+			</div>
+	<div class="card mt-4 mb-4 ml-auto mr-auto" style="width: 18rem;" *ngFor="let project of projects">
+		<div class="card-body">
+			<h5 class="card-title">{{ project.project_details.name }}</h5>
+			<p class="card-text">{{ project.project_details.description }}</p>
+			<p class="card-text">
+				<span class="badge badge-info p-2">{{ project.status }}</span>
+			</p>
+			<p class="card-text">
+				<small class="text-muted">{{ project.date_created | date : 'medium'}}</small>
+			</p>
+		</div>
+		<div class="card-footer text-center">
+			<a class="btn btn-link text-success" routerLink="/myProjectDetails/{{project._id}}">
+				View
+			</a>
+		</div>
+
+	</div>
+</div>

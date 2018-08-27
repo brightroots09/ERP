@@ -1,0 +1,147 @@
+<div class="row" *ngIf="filtersLoaded | async">
+
+	<div class="col-md-8 card mt-4">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-12">
+					<h5 class="card-title">
+						Name: {{projectModel.project_details.name}}
+					</h5>
+					<h5 class="card-text">
+						Description: {{ projectModel.project_details.description }}
+					</h5>
+					<h5 class="card-text">
+						Status:
+						<span class="badge badge-info p-2">{{ projectModel.status }}</span>
+					</h5>
+				</div>
+			</div>
+		</div>
+
+		<div class="card-footer">
+			<div class="row">
+				<div class="col-md-12" *ngIf="projectModel.employee_id.length > 1; else employee_else">
+					<label>Project Members</label>
+					<ul>
+						<li *ngFor="let employee of projectModel.employee_id" class="text-left">
+							{{ employee.id.profile.first_name }} {{ employee.id.profile.last_name }} ({{ employee.id.designation }})
+						</li>
+					</ul>
+
+				</div>
+				<ng-template #employee_else>
+					<div class="col-md-12">
+						<p class="mt-auto mb-auto">
+							Currently no other employee is working on this project.
+						</p>
+					</div>
+				</ng-template>
+			</div>
+			<div class="row">
+				<div class="col-md-12 mt-2">
+					<label>Project Manager</label>
+					<ul *ngIf="projectModel.project_manager; else manager_else">
+						<li class="text-left">
+							{{ projectModel.project_manager.profile.first_name }} {{ projectModel.project_manager.profile.last_name }}
+						</li>
+					</ul>
+
+				</div>
+				<ng-template #manager_else>
+					<div class="col-md-12">
+						<small class="mt-1 text-muted">
+							Currently there is no manager working on this project.
+						</small>
+					</div>
+				</ng-template>
+			</div>
+			<div class="row">
+				<div class="col-md-12 mt-2">
+					<label>Responsible Person</label>
+					<ul *ngIf="projectModel.responsible_person; else responsible_else">
+						<li class="text-left">
+							{{ projectModel.responsible_person.profile.first_name }} {{ projectModel.responsible_person.profile.last_name }} ({{ projectModel.responsible_person.designation
+							}})
+						</li>
+					</ul>
+
+				</div>
+				<ng-template #responsible_else>
+					<div class="col-md-12">
+						<small class="mt-1 text-muted">
+							Currently there is no responsible person for this project.
+						</small>
+					</div>
+				</ng-template>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 mt-4 text-center">
+		<ul class="nav flex-column">
+			<li class="nav-item">
+				<a class="nav-link" routerLink="/dailyUpdate/{{projectModel._id}}">Dialy Updates</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" routerLink="/myProjectTask/{{projectModel._id}}">My Tasks</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link btn btn-link text-primary" (click)="goBack()">
+					&laquo; Go back
+				</a>
+			</li>
+		</ul>
+	</div>
+
+
+	<!-- <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Update Daily Task</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form (ngSubmit)="onUpdateFormSubmit()">
+						<div class="form-group">
+							<textarea name="updates" class="form-control" #description="ngModel" [(ngModel)]="updateModel.description" [class.is-invalid]="description.invalid && description.touched"
+							 [class.is-valid]="description.valid && description.touched" required>
+                </textarea>
+							<small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary">Save</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">View Daily Task</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<ul *ngIf="projectModel.dailyTasksUpdate != ''; else dailyTasksUpdate_else">
+						<li *ngFor="let tasksUpdates of projectModel.dailyTasksUpdate">{{tasksUpdates.description}}</li>
+					</ul>
+					<ng-template #dailyTasksUpdate_else>
+						<ul>
+							<li>No daily updates found.</li>
+						</ul>
+					</ng-template>
+				</div>
+				<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div> -->
+
+</div>

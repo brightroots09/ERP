@@ -7,13 +7,17 @@ import { Router } from '@angular/router'
 })
 export class AuthService {
 
-  private _loginUrl = "/login";
-  private _logoutUrl = "/logout"
+  private _adminLoginUrl = "/admin/login";
+  private _employeeLoginUrl = "/employee/employee_login"
 
   constructor(private http: HttpClient, private router: Router) { }
 
   loginUser(user){
-    return this.http.post<any>(this._loginUrl, user)
+    return this.http.post<any>(this._adminLoginUrl, user)
+  }
+
+  employeeLogin(user){
+    return this.http.post<any>(this._employeeLoginUrl, user)
   }
 
   loggedIn(){
