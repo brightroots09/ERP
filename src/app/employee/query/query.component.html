@@ -40,7 +40,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form (ngSubmit)="onUpdateFormSubmit()">
+				<form #queryForm="ngForm" (ngSubmit)="onUpdateFormSubmit()">
 					<div class="form-group" *ngIf="employeeModel != 0; else employeeModel_else">
 						<label>Management</label>
 						<select class="form-control" #management_id="ngModel" [(ngModel)]="updateModel.management_id" name="management_id" id="exampleFormControlSelect1">
@@ -53,12 +53,13 @@
 						</p>
 					</ng-template>
 					<div class="form-group">
+						<label>Query Message</label>
 						<textarea name="message" class="form-control" #message="ngModel" [(ngModel)]="updateModel.message" [class.is-invalid]="message.invalid && message.touched"
 						 [class.is-valid]="message.valid && message.touched" required></textarea>
 						<small class="text-danger" [class.d-none]="message.valid || message.untouched">Message is required</small>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Save</button>
+						<button type="submit" [disabled]="queryForm.form.invalid" class="btn btn-primary">Save</button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 					</div>
 				</form>

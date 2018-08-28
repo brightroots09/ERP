@@ -37,6 +37,7 @@ export class UserService {
   private _editProjectTaskUrl = "/admin/edit_project_task";
   private _deleteTask = "/admin/delete_task";
   private _updateProjectTask = "/admin/update_project_task";
+  private _getAllQueries = "/admin/queries";
 
   /**
    * -------------
@@ -164,70 +165,74 @@ export class UserService {
     return this.http.post(url, obj)
   }
 
+  getAllQueries(): Observable<any> {
+    return this.http.get(this._getAllQueries)
+  }
+
   /**
    * ---------------- 
    * EMPLOYEE SECTION
    * ----------------
    */
 
-  employeeProfile(): Observable<any>{
+  employeeProfile(): Observable<any> {
     return this.http.get<any>(this._employeeProfileUrl)
   }
 
-  myProjects(): Observable<any>{
+  myProjects(): Observable<any> {
     return this.http.get<any>(this._myProjectsUrl)
   }
 
-  myProjectDetails(id): Observable<any>{
+  myProjectDetails(id): Observable<any> {
     let url = this._myProjectDetailsUrl + "/" + id
     return this.http.get<any>(url)
   }
 
-  myTasks(): Observable<any>{
+  myTasks(): Observable<any> {
     return this.http.get<any>(this._myTasksUrl)
   }
 
-  myTaskDetails(id): Observable<any>{
+  myTaskDetails(id): Observable<any> {
     let url = this._myTaskDetailsUrl + "/" + id;
     return this.http.get<any>(url)
   }
 
-  myProjectTaskDetails(id): Observable<any>{
+  myProjectTaskDetails(id): Observable<any> {
     let url = this._myProjectTaskUrl + "/" + id
     return this.http.get<any>(url)
   }
 
-  myDailyTasks(id): Observable<any>{
+  myDailyTasks(id): Observable<any> {
     let url = this._dailyUpdateUrl + "/" + id
     return this.http.get<any>(url)
   }
 
-  addDailyTask(id, data): Observable<any>{
+  addDailyTask(id, data): Observable<any> {
     let url = this._dailyUpdateUrl + "/" + id
     return this.http.post<any>(url, data)
   }
 
-  addQuery(data): Observable<any>{
+  addQuery(data): Observable<any> {
     return this.http.post<any>(this._addQueryUrl, data)
   }
 
-  queries(): Observable<any>{
+  queries(): Observable<any> {
     return this.http.get<any>(this._queriesUrl)
   }
 
-  queryDetails(id): Observable<any>{
+  queryDetails(id): Observable<any> {
     return this.http.get<any>(this._queryDetailsUrl)
   }
 
-  dailyDiary(): Observable<any>{
+  dailyDiary(): Observable<any> {
     return this.http.get<any>(this._dailyDiaryUrl)
   }
 
-  addDailyDiary(data): Observable<any>{
+  addDailyDiary(data): Observable<any> {
     return this.http.post<any>(this._addDailyDiary, data)
   }
 
-  dailyDiaryDetails(): Observable<any>{
+  dailyDiaryDetails(): Observable<any> {
     return this.http.get<any>(this._dailyDiaryDetailsUrl)
   }
 

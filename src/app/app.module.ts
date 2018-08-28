@@ -23,6 +23,7 @@ import { TokenInterceptorService } from "./token-interceptor.service";
 import { TaskDetailsComponent } from './admin/task-details/task-details.component';
 import { AddTasksComponent } from './admin/add-tasks/add-tasks.component';
 import { ProjectTaskDetailsComponent } from './admin/project-task-details/project-task-details.component';
+import { ViewQueriesComponent } from './admin/view-queries/view-queries.component' ;
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EmployeeProfileComponent } from './employee/employee-profile/employee-profile.component';
 import { EmployeeLoginComponent } from './employee/employee-login/employee-login.component';
@@ -34,7 +35,7 @@ import { QueryComponent } from './employee/query/query.component';
 import { QueryDetailsComponent } from './employee/query-details/query-details.component';
 import { DailyDiaryComponent } from './employee/daily-diary/daily-diary.component';
 import { MyProjectTaskComponent } from './employee/my-project-task/my-project-task.component';
-import { DailyUpdateComponent } from './employee/daily-update/daily-update.component' ;
+import { DailyUpdateComponent } from './employee/daily-update/daily-update.component';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { DailyUpdateComponent } from './employee/daily-update/daily-update.compo
     QueryDetailsComponent,
     DailyDiaryComponent,
     MyProjectTaskComponent,
-    DailyUpdateComponent
+    DailyUpdateComponent,
+    ViewQueriesComponent
   ],
   imports: [
     BrowserModule,

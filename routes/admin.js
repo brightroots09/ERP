@@ -7,7 +7,8 @@ const adminModel = require("../models/adminModel");
 const employeeModel = require("../models/employeeModel");
 const projectModel = require("../models/projectModel");
 const tasksModel = require("../models/taskModel");
-const taskUpdateModel = require("../models/taskUpdateModel")
+const taskUpdateModel = require("../models/taskUpdateModel");
+const queryModel = require("../models/queryModel");
 
 const session = require("express-session");
 
@@ -554,5 +555,24 @@ router.get("/view_daily_updates/:id", verifyToken, function(req, res, callback){
 			}
 		})
 })
+
+
+/**
+ * ---------------------
+ * GET ALL QUERIES ROUTE
+ * ---------------------
+ */
+
+ router.get("/queries", verifyToken, function(req, res, callback){
+	 queryModel
+		 .find({})
+		 .populate([{path: 'employee_id', model: employeeModel}, {path: 'management_id', model: employeeModel}])
+		.exec(function(error, response){
+			if(error) callback(error)
+			else{
+				res.json(response)
+			}
+		})
+ })
 
 module.exports = router;

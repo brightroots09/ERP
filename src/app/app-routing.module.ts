@@ -15,6 +15,7 @@ import { EmployeeDetailComponent } from './admin/employee-detail/employee-detail
 import { TaskDetailsComponent } from './admin/task-details/task-details.component';
 import { AddTasksComponent } from './admin/add-tasks/add-tasks.component';
 import { ProjectTaskDetailsComponent } from './admin/project-task-details/project-task-details.component';
+import { ViewQueriesComponent } from './admin/view-queries/view-queries.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EmployeeLoginComponent } from './employee/employee-login/employee-login.component';
 import { EmployeeProfileComponent } from './employee/employee-profile/employee-profile.component';
@@ -116,6 +117,11 @@ const routes: Routes = [
   {
     path: "projectTasksDetails/:id",
     component: ProjectTaskDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "queries",
+    component: ViewQueriesComponent,
     canActivate: [AuthGuard]
   },
   {
