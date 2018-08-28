@@ -45,8 +45,16 @@ export class DailyUpdateComponent implements OnInit {
   }
 
   goBack(){
-    this.router.navigate([`/myProjectDetails/${this.param.id}`])
+    this.router.navigate([`/employeeProfile`])
   }
 
+  onUpdateFormSubmit(){
+    this.user.addDailyTask(this.param.id, this.updateModel)
+      .subscribe(res => {
+        window.location.reload()
+      }, (error) => {
+        console.error(error)
+      })
+  }
 
 }

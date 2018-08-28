@@ -7,7 +7,7 @@ var queryModel = new Schema({
         type: Schema.Types.ObjectId,
         ref: "employeeModel"
     },
-    to_id: {
+    management_id: {
         type: Schema.Types.ObjectId,
         ref: "employeeModel"
     },

@@ -7,12 +7,15 @@
         <h5 class="card-title">Daily Updates</h5>
       </div>
       <div class="card-body">
-        <ul>
+        <ul *ngIf="tasksModel.length > 0; else taskModel_else">
           <li *ngFor="let task of tasksModel">
             {{ task.description }}
             <span class="text-muted float-right">{{ task.date_created | date : 'medium' }}</span>
           </li>
         </ul>
+        <ng-template #taskModel_else>
+          No daily Update
+        </ng-template>
       </div>
       <button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
         &laquo; Go back
@@ -32,7 +35,7 @@
           <div class="modal-body">
             <form (ngSubmit)="onUpdateFormSubmit()">
               <div class="form-group">
-                <textarea name="updates" class="form-control" #description="ngModel" [(ngModel)]="updateModel.description" [class.is-invalid]="description.invalid && description.touched"
+                <textarea name="description" class="form-control" #description="ngModel" [(ngModel)]="updateModel.description" [class.is-invalid]="description.invalid && description.touched"
                  [class.is-valid]="description.valid && description.touched" required>
                 </textarea>
                 <small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>

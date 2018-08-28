@@ -217,7 +217,7 @@ router.post("/daily_tasks/:id", verifyToken,function(req, res, callback){
 	let date = new Date()
 
 	updateTask.project_id = req.params.id;
-	updateTask.description = req.body.data.description
+	updateTask.description = req.body.description
 	updateTask.date_created = date;
 
 	updateTask.save(function(error, response){
@@ -226,6 +226,7 @@ router.post("/daily_tasks/:id", verifyToken,function(req, res, callback){
 			res.json(response)
 		}
 	})
+	
 })
 
 
@@ -244,8 +245,8 @@ router.post("/query", verifyToken, function(req, res, callback){
 	var query = new queryModel()
 	var date = new Date()
 	query.employee_id = condition.id
-	query.to_id = req.body.data.to_id
-	query.message = req.body.data.message
+	query.management_id = req.body.management_id
+	query.message = req.body.message
 	query.date_created = date
 
 	query.save(function(error, response){
@@ -263,7 +264,7 @@ router.post("/query", verifyToken, function(req, res, callback){
  * GET QUERIES ROUTE
  * -----------------
  */
-router.get("/queries", verifyToken, function*(req, res, callback){
+router.get("/query", verifyToken, function(req, res, callback){
 	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
 	let payload = jwt.verify(token, 'secretKey');
 	let condition = {
@@ -272,13 +273,13 @@ router.get("/queries", verifyToken, function*(req, res, callback){
 
 	queryModel
 		.find({employee_id: condition.id})
+		.populate({path: 'management_id', model: employeeModel})
 		.exec(function(error, response){
 			if(error) callback(error)
 			else{
 				res.json(response)
 			}
 		})
-
 })
 
 
@@ -287,7 +288,7 @@ router.get("/queries", verifyToken, function*(req, res, callback){
  * PARTICULAR QUERY DETAILS ROUTE
  * ------------------------------
  */
-router.get("/query_details/:id", function(req, res, callback){
+router.get("/query_details/:id", verifyToken, function(req, res, callback){
 	queryModel
 		.find({_id: req.params.id})
 		.exec(function(error, response){
@@ -340,9 +341,9 @@ router.post("/daily_diary", verifyToken, function(req, res, callback){
 	var date = new Date();
 
 	dailyDiary.employee_id = condition.id;
-	dailyDiary.message = req.body.data.message;
-	dailyDiary.in_time = req.body.data.in_time;
-	dailyDiary.out_time = req.body.data.out_time;
+	dailyDiary.message = req.body.message;
+	dailyDiary.in_time = req.body.in_time;
+	dailyDiary.out_time = req.body.out_time;
 	dailyDiary.date_created = date;
 
 	dailyDiary.save(function(error, response){

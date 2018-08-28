@@ -51,7 +51,7 @@ export class UserService {
   private _myProjectTaskUrl = "/employee/my_project_task";
   private _myTaskDetailsUrl = "/employee/my_task_details";
   private _addQueryUrl = "/employee/query";
-  private _queriesUrl = "/employee/queries";
+  private _queriesUrl = "/employee/query";
   private _queryDetailsUrl = "/employee/query_details";
   private _dailyDiaryUrl = "/employee/daily_diary";
   private _addDailyDiary = "/employee/daily_diary";

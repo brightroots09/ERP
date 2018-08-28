@@ -1,3 +1,68 @@
-<p>
-  query works!
-</p>
+<div class="row">
+	<div class="col-md-6 offset-md-3">
+		<div class="row">
+			<div class="col-md-6 text-left">
+				<button type="button" class="btn btn-link text-primary" (click)="goBack()">
+					&laquo; Go back
+				</button>
+			</div>
+			<div class="col-md-6 text-right">
+				<button type="button" class="btn btn-link" data-toggle="modal" data-target="#updateModal">Ask Query</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row" *ngIf="filtersLoaded | async">
+	<div class="col-md-4 card mt-4 ml-auto mr-auto" *ngFor="let query of queryModel">
+		<div class="card-body" *ngIf="queryModel.length > 0; else queryModel_else">
+			<h5>
+				To: {{ query.management_id.profile.first_name }} {{ query.management_id.profile.last_name }} ({{ query.management_id.designation
+				}})
+			</h5>
+			<p>
+				Message: {{ query.message }}
+			</p>
+			<small class="text-muted float-right">{{ query.date_created | date : 'medium' }}</small>
+		</div>
+		<ng-template #queryModel_else>
+			No queries asked
+		</ng-template>
+	</div>
+</div>
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Ask Query</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form (ngSubmit)="onUpdateFormSubmit()">
+					<div class="form-group" *ngIf="employeeModel != 0; else employeeModel_else">
+						<label>Management</label>
+						<select class="form-control" #management_id="ngModel" [(ngModel)]="updateModel.management_id" name="management_id" id="exampleFormControlSelect1">
+							<option *ngFor="let employee of employeeModel" value="{{ employee._id }}">{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})</option>
+						</select>
+					</div>
+					<ng-template #employeeModel_else>
+						<p>
+							There is no employee
+						</p>
+					</ng-template>
+					<div class="form-group">
+						<textarea name="message" class="form-control" #message="ngModel" [(ngModel)]="updateModel.message" [class.is-invalid]="message.invalid && message.touched"
+						 [class.is-valid]="message.valid && message.touched" required></textarea>
+						<small class="text-danger" [class.d-none]="message.valid || message.untouched">Message is required</small>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Save</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

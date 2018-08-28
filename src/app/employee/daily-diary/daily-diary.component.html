@@ -1,3 +1,85 @@
-<p>
-  daily-diary works!
-</p>
+<div class="row">
+	<div class="col-md-6 offset-md-3">
+		<div class="row">
+				<div class="col-md-6 text-left">
+						<button type="button" class="btn btn-link text-primary" (click)="goBack()">
+							&laquo; Go back
+						</button>
+					</div>
+					<div class="col-md-6 text-right">
+						<button type="button" class="btn btn-link" data-toggle="modal" data-target="#updateModal">Update Daily Tasks</button>
+					</div>
+		</div>
+	</div>
+</div>
+<div class="row" *ngIf="filtersLoaded | async">
+	<div class="col-md-4 ml-auto mr-auto card mt-4" *ngFor="let task of tasksModel">
+		<div class="card-header">
+			<h5 class="card-title">Daily Dairy</h5>
+		</div>
+		<div class="card-body" *ngIf="tasksModel.length > 0; else taskModel_else">
+			<div class="row">
+				<div class="col-md-12">
+					<p>
+						{{ task.message }}
+					</p>
+					<p>
+						In-time:
+						<span class="badge badge-info p-1">{{ task.in_time }}</span>
+						<br> Out-time:
+						<span class="badge badge-danger p-1">{{ task.out_time }} </span>
+					</p>
+					<span class="text-muted float-right">{{ task.date_created | date : 'medium' }}</span>
+				</div>
+			</div>
+		</div>
+		<ng-template #taskModel_else>
+			No daily Update
+		</ng-template>
+	</div>
+</div>
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Update Daily Task</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form #tasksForm="ngForm" (ngSubmit)="onUpdateFormSubmit()">
+					<div class="form-group">
+						<textarea name="message" class="form-control" #message="ngModel" [(ngModel)]="updateModel.message" [class.is-invalid]="message.invalid && message.touched"
+						 [class.is-valid]="message.valid && message.touched" required></textarea>
+						<small class="text-danger" [class.d-none]="message.valid || message.untouched">Message is required</small>
+					</div>
+					<div class="form-group">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-6">
+									<label>In Time</label>
+									<input type="time" class="form-control" name="in_time" class="form-control" #in_time="ngModel" [(ngModel)]="updateModel.in_time"
+									 [class.is-invalid]="in_time.invalid && in_time.touched" [class.is-valid]="in_time.valid && in_time.touched" required>
+									<small class="text-danger" [class.d-none]="in_time.valid || in_time.untouched">In Time is required</small>
+								</div>
+								<div class="col-md-6">
+									<label>Out Time</label>
+									<input type="time" class="form-control" name="out_time" class="form-control" #out_time="ngModel" [(ngModel)]="updateModel.out_time"
+									 [class.is-invalid]="out_time.invalid && out_time.touched" [class.is-valid]="out_time.valid && out_time.touched"
+									 required>
+									<small class="text-danger" [class.d-none]="out_time.valid || out_time.untouched">Out Time is required</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" [disabled]="tasksForm.form.invalid" class="btn btn-primary">Save</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
