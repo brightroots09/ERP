@@ -370,11 +370,30 @@ router.post("/daily_diary", verifyToken, function (req, res, callback) {
  */
 
 router.post("/addEveningUpdate/:id", function (req, res, callback) {
+	let date = new Date()
 	dailyUpdatedModel
-		.findByIdAndUpdate({ _id: req.params.id }, { $set: { 'evening_session': req.body.message, 'out_time': req.body.out_time } }, function (error, response) {
-			if (error) callback(error)
-			else {
-				res.json(response)
+		.findOne({_id: req.params.id})
+		.sort({_id: -1})
+		.exec(function(error, response){
+			if(error) callback(error)
+			else{
+				let in_time = moment(response.in_time, 'HH:mm A')
+				let new_date = moment(date, 'HH:mm A')
+				let diff = moment.duration(new_date.diff(in_time))
+				let format_date = diff.asHours();
+				if(format_date < 9){
+					res.json("You havn't completed 9 hours of your shift")
+				}
+				else{
+					dailyUpdatedModel
+					.findByIdAndUpdate({ _id: req.params.id }, { $set: { 'evening_session': req.body.message, 'out_time': req.body.out_time } }, function (error, response) {
+						if (error) callback(error)
+						else {
+							res.json("")
+						}
+					})
+
+				}
 			}
 		})
 })

@@ -16,7 +16,7 @@ export class DailyDiaryComponent implements OnInit {
   updateDisable: Boolean = false
   nowTime;
   edit: Boolean = false;
-
+  error;
   // time = this.nowTime.toLocaleString()
 
   sessionTime;
@@ -92,7 +92,12 @@ export class DailyDiaryComponent implements OnInit {
   onEveningUpdateFormSubmit(dailyDiaryId){
     this.user.addEveningUpdate(dailyDiaryId, this.updateModel)
       .subscribe(res => {
-        window.location.reload()
+        if(res != ""){
+          this.error = res
+        }
+        else{
+          window.location.reload()
+        }
       }, (error) => {
         console.error(error)
       })

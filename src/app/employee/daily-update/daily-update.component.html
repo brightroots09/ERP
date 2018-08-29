@@ -1,16 +1,22 @@
 <div class="row" *ngIf="filtersLoaded | async">
-  <div class="col-md-6 offset-md-3 text-right">
+  <div class="col-md-8 offset-md-2 text-right">
       <button type="button" class="nav-link btn btn-link" data-toggle="modal" data-target="#updateModal">Update Daily Tasks</button>
   </div>
-    <div  class="col-md-6 offset-md-3 card mt-4">
+    <div  class="col-md-8 offset-md-2 card mt-4">
       <div class="card-header">
         <h5 class="card-title">Daily Updates</h5>
       </div>
       <div class="card-body">
         <ul *ngIf="tasksModel.length > 0; else taskModel_else">
           <li *ngFor="let task of tasksModel">
-            {{ task.description }}
-            <span class="text-muted float-right">{{ task.date_created | date : 'medium' }}</span>
+            <div class="row">
+              <div class="col-md-7">
+                {{ task.description }}
+              </div>
+              <div class="col-md-5 text-right text-muted">
+                <small>{{ task.date_created | date : 'medium' }}</small>
+              </div>
+            </div>
           </li>
         </ul>
         <ng-template #taskModel_else>
