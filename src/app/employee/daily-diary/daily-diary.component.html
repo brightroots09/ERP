@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="filtersLoaded | async">
 	<div class="col-md-6 offset-md-3">
 		<div class="row">
 			<div class="col-md-6 text-left">
@@ -7,7 +7,7 @@
 				</button>
 			</div>
 			<div class="col-md-6 text-right">
-				<button type="button" class="btn btn-link" data-toggle="modal" data-target="#updateModal">Update Daily Tasks</button>
+				<button type="button" class="btn btn-link" *ngIf="tasksModel[0].evening_session != ''" data-toggle="modal" data-target="#updateModal">Update Daily Tasks</button>
 			</div>
 		</div>
 	</div>
@@ -18,23 +18,91 @@
 		<div class="card-body" *ngIf="tasksModel.length > 0; else taskModel_else">
 			<div class="row">
 				<div class="col-md-12">
-					<p>
-						{{ task.message }}
+					<p *ngIf="task.morning_session != ''; else morning_session">
+						<b>Morning Update: </b>{{ task.morning_session }}
 					</p>
+					<ng-template #morning_session>
+						<p>
+							<b>Morning Update: </b>Morning Update Pending
+						</p>
+					</ng-template>
+					<p *ngIf="task.evening_session != ''; else evening_session">
+						<b>Evening Update: </b>{{ task.evening_session }}
+					</p>
+					<ng-template #evening_session>
+						<p>
+							<b>Evening Update: </b>
+							<button type="button" class="btn btn-link" data-toggle="modal" data-target="#eveningUpdateModal">Add</button>
+						</p>
+
+						<div class="modal fade" id="eveningUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">Update Daily Task</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form #tasksForm="ngForm" (ngSubmit)="onEveningUpdateFormSubmit(task._id)">
+											<div class="form-group">
+												<label>Task description</label>
+												<textarea name="message" class="form-control" #message="ngModel" [(ngModel)]="updateModel.message" [class.is-invalid]="message.invalid && message.touched"
+												 [class.is-valid]="message.valid && message.touched" required></textarea>
+												<small class="text-danger" [class.d-none]="message.valid || message.untouched">Message is required</small>
+											</div>
+											<div class="form-group">
+												<select class="form-control" [(ngModel)]="updateModel.time" (ngModelChange)="onChange($event)" name="session" required>
+													<option selected="">Select Session</option>
+													<option value="Morning" disabled>Morning</option>
+													<option value="Evening">Evening</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<div class="col-md-12">
+													<div class="row">
+														<div class="col-md-6" *ngIf="sessionTime == 'Morning'">
+															<label>In Time</label>
+															<input type="text" class="form-control" name="in_time" [(ngModel)]="updateModel.in_time" class="form-control" [value]="nowTime"
+															 disabled>
+														</div>
+														<div class="col-md-6" *ngIf="sessionTime == 'Evening'">
+															<label>Out Time</label>
+															<input type="text" class="form-control" name="out_time" [(ngModel)]="updateModel.out_time" class="form-control" [value]="nowTime"
+															 disabled>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="submit" [disabled]="toggleSave || tasksForm.form.invalid" class="btn btn-primary">Save</button>
+												<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</ng-template>
 					<p>
 						<span *ngIf="task.in_time != ''">
-								In-time:
-								<span class="badge badge-info p-1">{{ task.in_time }}</span>
+							In-time:
+							<span class="badge badge-info p-1">{{ task.in_time }}</span>
 						</span>
-						<br> 
+						<br>
 						<span *ngIf="task.out_time != ''">
-								Out-time:
-								<span class="badge badge-danger p-1">{{ task.out_time }} </span>
+							Out-time:
+							<span class="badge badge-danger p-1">{{ task.out_time }} </span>
 						</span>
 					</p>
-					<span class="text-muted float-right">{{ task.date_created | date : 'medium' }}</span>
+
 				</div>
 			</div>
+		</div>
+		<div class="card-footer p-0" *ngIf="tasksModel.length > 0">
+			<span class="text-muted float-right">{{ task.date_created | date : 'medium' }}</span>
 		</div>
 		<ng-template #taskModel_else>
 			No daily Update
@@ -63,7 +131,7 @@
 						<select class="form-control" [(ngModel)]="updateModel.time" (ngModelChange)="onChange($event)" name="session" required>
 							<option selected="">Select Session</option>
 							<option value="Morning">Morning</option>
-							<option value="Evening">Evening</option>
+							<option value="Evening" disabled>Evening</option>
 						</select>
 					</div>
 					<div class="form-group">
@@ -71,11 +139,13 @@
 							<div class="row">
 								<div class="col-md-6" *ngIf="sessionTime == 'Morning'">
 									<label>In Time</label>
-									<input type="text" class="form-control" name="in_time" [(ngModel)]="updateModel.in_time" class="form-control" [value]="nowTime" disabled>
+									<input type="text" class="form-control" name="in_time" [(ngModel)]="updateModel.in_time" class="form-control" [value]="nowTime"
+									 disabled>
 								</div>
 								<div class="col-md-6" *ngIf="sessionTime == 'Evening'">
 									<label>Out Time</label>
-									<input type="text" class="form-control" name="out_time" [(ngModel)]="updateModel.out_time" class="form-control" [value]="nowTime" disabled>
+									<input type="text" class="form-control" name="out_time" [(ngModel)]="updateModel.out_time" class="form-control" [value]="nowTime"
+									 disabled>
 								</div>
 							</div>
 						</div>

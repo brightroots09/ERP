@@ -7,11 +7,11 @@ var dailyUpdateModel = new Schema({
         type: Schema.Types.ObjectId,
         ref: "employeeModel"
     },
-    message: {
+    morning_session: {
         type: String,
         default: ""
     },
-    session: {
+    evening_session: {
         type: String,
         default: ""
     },

@@ -13,8 +13,9 @@ export class DailyDiaryComponent implements OnInit {
   tasksModel;
   param;
   updateModel = new DailyDiary;
-
+  updateDisable: Boolean = false
   nowTime;
+  edit: Boolean = false;
 
   // time = this.nowTime.toLocaleString()
 
@@ -82,6 +83,19 @@ export class DailyDiaryComponent implements OnInit {
         this.updateModel.in_time = ""
       }
     }
+  }
+
+  toggleEveningUpdate(){
+    this.edit = true
+  }
+
+  onEveningUpdateFormSubmit(dailyDiaryId){
+    this.user.addEveningUpdate(dailyDiaryId, this.updateModel)
+      .subscribe(res => {
+        window.location.reload()
+      }, (error) => {
+        console.error(error)
+      })
   }
 
 }

@@ -6,6 +6,7 @@ const employeeModel = require("../models/employeeModel")
 const commonFunction = require("../services/common_functions")
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 const projectModel = require("../models/projectModel");
 const taskModel = require("../models/taskModel");
@@ -55,6 +56,7 @@ router.get("/", function (req, res, callback) {
 * -----------
 * */
 router.post("/employee_login", function (req, res, callback) {
+
 	let condition = {
 		email: req.body.email,
 		password: req.body.password
@@ -315,7 +317,7 @@ router.get("/daily_diary", verifyToken, function (req, res, callback) {
 	dailyUpdatedModel
 		.find({ employee_id: condition.id })
 		.populate({ path: 'to_id', model: employeeModel })
-		.sort({_id: -1})
+		.sort({ _id: -1 })
 		.exec(function (error, response) {
 			if (error) callback(error)
 			else {
@@ -342,8 +344,12 @@ router.post("/daily_diary", verifyToken, function (req, res, callback) {
 	var date = new Date();
 
 	dailyDiary.employee_id = condition.id;
-	dailyDiary.message = req.body.message;
-	dailyDiary.session = req.body.time;
+	if (req.body.in_time != "") {
+		dailyDiary.morning_session = req.body.message
+	}
+	if (req.body.out_time != "") {
+		dailyDiary.evening_session = req.body.message
+	}
 	dailyDiary.in_time = req.body.in_time || "";
 	dailyDiary.out_time = req.body.out_time || "";
 	dailyDiary.date_created = date;
@@ -355,6 +361,22 @@ router.post("/daily_diary", verifyToken, function (req, res, callback) {
 		}
 	})
 
+})
+
+/**
+ * ------------------------
+ * ADD EVENING UPDATE ROUTE
+ * ------------------------
+ */
+
+router.post("/addEveningUpdate/:id", function (req, res, callback) {
+	dailyUpdatedModel
+		.findByIdAndUpdate({ _id: req.params.id }, { $set: { 'evening_session': req.body.message, 'out_time': req.body.out_time } }, function (error, response) {
+			if (error) callback(error)
+			else {
+				res.json(response)
+			}
+		})
 })
 
 router.get("/daily_diary_details/:id", function (req, res, callback) {
@@ -396,13 +418,13 @@ router.post("/toggleQueryStatus/:id", verifyToken, function (req, res, callback)
  * ------------------
  */
 
- router.post("/toggleTaskSatus", verifyToken, function(req, res, callback){
-	taskModel.findByIdAndUpdate({_id: req.body.task_id}, {$set: {status: 'completed'}}, function(error, response){
-		if(error) callback(error)
-		else{
+router.post("/toggleTaskSatus", verifyToken, function (req, res, callback) {
+	taskModel.findByIdAndUpdate({ _id: req.body.task_id }, { $set: { status: 'completed' } }, function (error, response) {
+		if (error) callback(error)
+		else {
 			res.json(response)
 		}
 	})
- })
+})
 
 module.exports = router;
