@@ -12,7 +12,14 @@ export class DailyDiaryComponent implements OnInit {
 
   tasksModel;
   param;
-  updateModel = new DailyDiary
+  updateModel = new DailyDiary;
+
+  nowTime;
+
+  // time = this.nowTime.toLocaleString()
+
+  sessionTime;
+  toggleSave: Boolean = true;
 
   filtersLoaded: Promise<boolean>;
 
@@ -56,6 +63,25 @@ export class DailyDiaryComponent implements OnInit {
       }, (error) => {
         console.error(error)
       })
+  }
+
+  onChange(value){
+    if(value == 'Select Session'){
+      this.toggleSave = true
+    }
+    else{
+      this.toggleSave = false
+      this.sessionTime = value
+      this.nowTime = new Date().toLocaleTimeString();
+      if(value == 'Morning'){
+        this.updateModel.in_time = this.nowTime
+        this.updateModel.out_time = ""
+      }
+      if(value == 'Evening'){
+        this.updateModel.out_time = this.nowTime
+        this.updateModel.in_time = ""
+      }
+    }
   }
 
 }

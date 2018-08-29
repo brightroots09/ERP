@@ -46,4 +46,18 @@ export class MyTaskDetailsComponent implements OnInit {
     this.router.navigate(["/myTasks"])
   }
 
+  toggleStatus(id) {
+    let obj = {
+      task_id: id,
+      project_id: this.param.id
+    }
+    this.user.toggleTaskStatus(obj)
+      .subscribe(res => {
+        console.log(res)
+        window.location.reload()
+      }, (error) => {
+        console.error(error)
+      })
+  }
+
 }

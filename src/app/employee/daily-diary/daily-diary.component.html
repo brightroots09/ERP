@@ -22,10 +22,15 @@
 						{{ task.message }}
 					</p>
 					<p>
-						In-time:
-						<span class="badge badge-info p-1">{{ task.in_time }}</span>
-						<br> Out-time:
-						<span class="badge badge-danger p-1">{{ task.out_time }} </span>
+						<span *ngIf="task.in_time != ''">
+								In-time:
+								<span class="badge badge-info p-1">{{ task.in_time }}</span>
+						</span>
+						<br> 
+						<span *ngIf="task.out_time != ''">
+								Out-time:
+								<span class="badge badge-danger p-1">{{ task.out_time }} </span>
+						</span>
 					</p>
 					<span class="text-muted float-right">{{ task.date_created | date : 'medium' }}</span>
 				</div>
@@ -55,26 +60,28 @@
 						<small class="text-danger" [class.d-none]="message.valid || message.untouched">Message is required</small>
 					</div>
 					<div class="form-group">
+						<select class="form-control" [(ngModel)]="updateModel.time" (ngModelChange)="onChange($event)" name="session" required>
+							<option selected="">Select Session</option>
+							<option value="Morning">Morning</option>
+							<option value="Evening">Evening</option>
+						</select>
+					</div>
+					<div class="form-group">
 						<div class="col-md-12">
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-6" *ngIf="sessionTime == 'Morning'">
 									<label>In Time</label>
-									<input type="time" class="form-control" name="in_time" class="form-control" #in_time="ngModel" [(ngModel)]="updateModel.in_time"
-									 [class.is-invalid]="in_time.invalid && in_time.touched" [class.is-valid]="in_time.valid && in_time.touched" required>
-									<small class="text-danger" [class.d-none]="in_time.valid || in_time.untouched">In Time is required</small>
+									<input type="text" class="form-control" name="in_time" [(ngModel)]="updateModel.in_time" class="form-control" [value]="nowTime" disabled>
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6" *ngIf="sessionTime == 'Evening'">
 									<label>Out Time</label>
-									<input type="time" class="form-control" name="out_time" class="form-control" #out_time="ngModel" [(ngModel)]="updateModel.out_time"
-									 [class.is-invalid]="out_time.invalid && out_time.touched" [class.is-valid]="out_time.valid && out_time.touched"
-									 required>
-									<small class="text-danger" [class.d-none]="out_time.valid || out_time.untouched">Out Time is required</small>
+									<input type="text" class="form-control" name="out_time" [(ngModel)]="updateModel.out_time" class="form-control" [value]="nowTime" disabled>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" [disabled]="tasksForm.form.invalid" class="btn btn-primary">Save</button>
+						<button type="submit" [disabled]="toggleSave || tasksForm.form.invalid" class="btn btn-primary">Save</button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 					</div>
 				</form>

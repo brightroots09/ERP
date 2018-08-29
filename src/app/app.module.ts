@@ -5,6 +5,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { FormsModule } from "@angular/forms";
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
+/**
+ * -------------
+ * ADMIN IMPORTS
+ * -------------
+ */
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './admin/login/login.component';
@@ -24,7 +29,14 @@ import { TaskDetailsComponent } from './admin/task-details/task-details.componen
 import { AddTasksComponent } from './admin/add-tasks/add-tasks.component';
 import { ProjectTaskDetailsComponent } from './admin/project-task-details/project-task-details.component';
 import { ViewQueriesComponent } from './admin/view-queries/view-queries.component' ;
+import { ViewAttendanceComponent } from './admin/view-attendance/view-attendance.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
+/**
+ * ----------------
+ * EMPLOYEE IMPORTS
+ * ----------------
+ */
 import { EmployeeProfileComponent } from './employee/employee-profile/employee-profile.component';
 import { EmployeeLoginComponent } from './employee/employee-login/employee-login.component';
 import { MyProjectsComponent } from './employee/my-projects/my-projects.component';
@@ -67,7 +79,8 @@ import { DailyUpdateComponent } from './employee/daily-update/daily-update.compo
     DailyDiaryComponent,
     MyProjectTaskComponent,
     DailyUpdateComponent,
-    ViewQueriesComponent
+    ViewQueriesComponent,
+    ViewAttendanceComponent
   ],
   imports: [
     BrowserModule,

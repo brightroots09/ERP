@@ -67,4 +67,16 @@ export class QueryComponent implements OnInit {
         console.error(error)
       })
   }
+
+  closeTicket(id){
+    console.log(id);
+    this.user.toggleQueryStatus(id)
+      .subscribe(res => {
+        window.location.reload()
+      }, (error) => {
+        console.error(error)
+      })
+  }
+
+
 }

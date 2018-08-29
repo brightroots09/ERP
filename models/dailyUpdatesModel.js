@@ -11,6 +11,10 @@ var dailyUpdateModel = new Schema({
         type: String,
         default: ""
     },
+    session: {
+        type: String,
+        default: ""
+    },
     in_time: {
         type: String
     },

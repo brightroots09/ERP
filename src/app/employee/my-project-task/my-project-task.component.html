@@ -1,22 +1,30 @@
 <div class="row" *ngIf="filtersLoaded | async">
-    <div *ngIf="tasksModel != ''; else else_block" class="col-md-6 card offset-md-3 mt-4 text-center">
-      <div class="card-body">
-        <h5 class="card-title">
-          Name: {{tasksModel.tasks_details.name}}
-        </h5>
-        <h5 class="card-text">
-          Description: {{ tasksModel.tasks_details.description }}
-        </h5>
+  <div class="col-md-12" *ngIf="tasksModel.length > 0; else else_block">
+    <div class="row">
+      <div class="col-md-4 card mt-4 text-center" *ngFor="let tasks of tasksModel">
+        <div class="card-body">
+          <h5 class="card-title">
+            Name: {{tasks.tasks_details.name}}
+          </h5>
+          <h5 class="card-text">
+            Description: {{ tasks.tasks_details.description }}
+          </h5>
+          <h6>
+            Status: {{ tasks.status }}
+          </h6>
+        </div>
+        <button type="button" [disabled]="tasks.status == 'completed'" class="btn btn0link text-primary mt-4 mb-4" (click)="toggleStatus(tasks._id)">Mark as Complete</button>
       </div>
-      <button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
-        &laquo; Go back
-      </button>
     </div>
-    <ng-template #else_block>
-      <div class="col-md-6 offset-md-3 text-center">
-        <h2>
-          No Tasks
-        </h2>
-      </div>
-    </ng-template>
+    <button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
+      &laquo; Go back
+    </button>
   </div>
+  <ng-template #else_block>
+    <div class="col-md-6 offset-md-3 text-center">
+      <h2>
+        No Tasks
+      </h2>
+    </div>
+  </ng-template>
+</div>

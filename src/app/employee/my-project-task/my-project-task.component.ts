@@ -34,8 +34,8 @@ export class MyProjectTaskComponent implements OnInit {
   getTasksDetails() {
     this.user.myProjectTaskDetails(this.param.id)
       .subscribe(res => {
-        console.log(res[0])
-        this.tasksModel = res[0]
+        console.log(res)
+        this.tasksModel = res
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         console.error(error)
@@ -46,4 +46,17 @@ export class MyProjectTaskComponent implements OnInit {
     this.router.navigate([`/myProjectDetails/${this.param.id}`])
   }
 
+  toggleStatus(id){
+    let obj = {
+      task_id: id,
+      project_id: this.param.id
+    }
+    this.user.toggleTaskStatus(obj)
+      .subscribe(res => {
+        console.log(res)
+        window.location.reload()
+      }, (error) => {
+        console.error(error)
+      })
+  }
 }

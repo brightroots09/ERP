@@ -1,13 +1,17 @@
 <div class="row" *ngIf="filtersLoaded | async">
-	<div *ngIf="tasksModel != ''; else else_block" class="col-md-6 card offset-md-3 mt-4 text-center">
+	<div *ngIf="tasksModel != null; else else_block" class="col-md-6 card offset-md-3 mt-4 text-center">
 		<div class="card-body">
-			<h5 class="card-title">
-				Name: {{tasksModel.tasks_details.name}}
-			</h5>
-			<h5 class="card-text">
-				Description: {{ tasksModel.tasks_details.description }}
-			</h5>
+			<p class="card-title">
+				<b>Name:</b> {{tasksModel.tasks_details.name}}
+			</p>
+			<p class="card-text">
+				<b>Description:</b> {{ tasksModel.tasks_details.description }}
+			</p>
+			<h6>
+				Status: {{ tasksModel.status }}
+			</h6>
 		</div>
+		<button type="button" [disabled]="tasksModel.status == 'completed'" class="btn btn0link text-primary mt-4 mb-4" (click)="toggleStatus(tasksModel._id)">Mark as Complete</button>
 		<button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
 			&laquo; Go back
 		</button>

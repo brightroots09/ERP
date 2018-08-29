@@ -28,6 +28,7 @@ import { QueryDetailsComponent } from './employee/query-details/query-details.co
 import { DailyDiaryComponent } from './employee/daily-diary/daily-diary.component';
 import { MyProjectTaskComponent } from './employee/my-project-task/my-project-task.component';
 import { DailyUpdateComponent } from './employee/daily-update/daily-update.component';
+import { ViewAttendanceComponent } from './admin/view-attendance/view-attendance.component';
 
 const routes: Routes = [
   {
@@ -122,6 +123,11 @@ const routes: Routes = [
   {
     path: "queries",
     component: ViewQueriesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "view_attendance",
+    component: ViewAttendanceComponent,
     canActivate: [AuthGuard]
   },
   {

@@ -22,7 +22,15 @@
 			<p>
 				Message: {{ query.message }}
 			</p>
-			<small class="text-muted float-right">{{ query.date_created | date : 'medium' }}</small>
+			<p>
+				Status: {{ query.status }}
+			</p>
+			<button type="button" class="btn btn-link" *ngIf="query.status != 'closed'" (click)="closeTicket(query._id)">
+				Mark as closed
+			</button>
+		</div>
+		<div class="card-footer p-0">
+			<p class="text-muted text-right mt-auto mb-auto">{{ query.date_created | date : 'medium' }}</p>
 		</div>
 		<ng-template #queryModel_else>
 			No queries asked
@@ -42,7 +50,7 @@
 			<div class="modal-body">
 				<form #queryForm="ngForm" (ngSubmit)="onUpdateFormSubmit()">
 					<div class="form-group" *ngIf="employeeModel != 0; else employeeModel_else">
-						<label>Management</label>
+						<label>Select</label>
 						<select class="form-control" #management_id="ngModel" [(ngModel)]="updateModel.management_id" name="management_id" id="exampleFormControlSelect1">
 							<option *ngFor="let employee of employeeModel" value="{{ employee._id }}">{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})</option>
 						</select>
@@ -59,7 +67,7 @@
 						<small class="text-danger" [class.d-none]="message.valid || message.untouched">Message is required</small>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" [disabled]="queryForm.form.invalid" class="btn btn-primary">Save</button>
+						<button type="submit" [disabled]="queryForm.form.invalid" class="btn btn-primary">Send</button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 					</div>
 				</form>

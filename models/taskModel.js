@@ -13,12 +13,16 @@ var taskModel = new Schema({
             default: ""
         }
     },
+    status: {
+        type: String,
+        default: "in-progress"
+    },
     project_id: [{
         id: {
-          type: Schema.Types.ObjectId,
-          ref: "projectModel"
+            type: Schema.Types.ObjectId,
+            ref: "projectModel"
         }
-      }],
+    }],
     date_created: {
         type: Date
     }

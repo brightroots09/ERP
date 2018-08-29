@@ -58,6 +58,8 @@ export class UserService {
   private _addDailyDiary = "/employee/daily_diary";
   private _dailyDiaryDetailsUrl = "/employee/daily_diary_details";
   private _dailyUpdateUrl = "/employee/daily_tasks";
+  private _toggleQueryStatusUrl = "/employee/toggleQueryStatus";
+  private _toggleTaskStatusUrl = "/employee/toggleTaskSatus";
 
   constructor(private http: HttpClient) { }
 
@@ -234,6 +236,15 @@ export class UserService {
 
   dailyDiaryDetails(): Observable<any> {
     return this.http.get<any>(this._dailyDiaryDetailsUrl)
+  }
+
+  toggleQueryStatus(id): Observable<any>{
+    let url = this._toggleQueryStatusUrl + "/" + id;
+    return this.http.post(url, id)
+  }
+
+  toggleTaskStatus(data): Observable<any>{
+    return this.http.post(this._toggleTaskStatusUrl, data)
   }
 
 }
