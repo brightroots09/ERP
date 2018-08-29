@@ -44,7 +44,7 @@
 										</button>
 									</div>
 									<div class="modal-body">
-										<form #tasksForm="ngForm" (ngSubmit)="onEveningUpdateFormSubmit(task._id)">
+										<form #tasksForm="ngForm" (ngSubmit)="onEveningUpdateFormSubmit(task._id, task.in_time)">
 											<div class="form-group">
 												<label>Task description</label>
 												<textarea name="message" class="form-control" #message="ngModel" [(ngModel)]="updateModel.message" [class.is-invalid]="message.invalid && message.touched"
@@ -74,12 +74,6 @@
 													</div>
 												</div>
 											</div>
-											<div *ngIf="error" class="alert alert-danger alert-danger fade show" role="alert">
-													{{error}}
-													<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-														<span aria-hidden="true">&times;</span>
-													</button>
-												</div>
 											<div class="modal-footer">
 												<button type="submit" [disabled]="toggleSave || tasksForm.form.invalid" class="btn btn-primary">Save</button>
 												<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -100,6 +94,10 @@
 						<span *ngIf="task.out_time != ''">
 							Out-time:
 							<span class="badge badge-danger p-1">{{ task.out_time }} </span>
+						</span>
+						<br>
+						<span *ngIf="task.total_hours != ''">
+							Total Hours Worked: {{ task.total_hours | number:'1.0-1' }} hours
 						</span>
 					</p>
 

@@ -21,6 +21,10 @@ var dailyUpdateModel = new Schema({
     out_time: {
         type: String
     },
+    total_hours: {
+        type: String,
+        default: ""
+    },
     date_created: {
         type: Date
     }

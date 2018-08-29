@@ -17,6 +17,7 @@ export class DailyDiaryComponent implements OnInit {
   nowTime;
   edit: Boolean = false;
   error;
+  message;
   // time = this.nowTime.toLocaleString()
 
   sessionTime;
@@ -89,15 +90,15 @@ export class DailyDiaryComponent implements OnInit {
     this.edit = true
   }
 
-  onEveningUpdateFormSubmit(dailyDiaryId){
-    this.user.addEveningUpdate(dailyDiaryId, this.updateModel)
+  onEveningUpdateFormSubmit(dailyDiaryId, in_time){
+    this.user.addEveningUpdate(dailyDiaryId, this.updateModel, in_time)
       .subscribe(res => {
-        if(res != ""){
-          this.error = res
-        }
-        else{
+        // if(res != ""){
+        //   this.error = res
+        // }
+        // else{
           window.location.reload()
-        }
+        // }
       }, (error) => {
         console.error(error)
       })

@@ -239,9 +239,9 @@ export class UserService {
     return this.http.get<any>(this._dailyDiaryDetailsUrl)
   }
 
-  addEveningUpdate(id, data): Observable<any>{
+  addEveningUpdate(id, data, in_time): Observable<any>{
     let url = this._addEveningUpdate + "/" + id;
-    return this.http.post<any>(url, data)
+    return this.http.post<any>(url, {data, in_time});
   }
 
   toggleQueryStatus(id): Observable<any>{
