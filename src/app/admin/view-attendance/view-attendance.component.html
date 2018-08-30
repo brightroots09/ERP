@@ -1,3 +1,39 @@
-<p>
-  view-attendance works!
-</p>
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="row">
+      <div class="col-md-6 text-left">
+        <button type="button" class="btn btn-link text-primary" (click)="goBack()">
+          &laquo; Go back
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="filtersLoaded | async">
+  <table *ngIf="attendanceModel.length > 0; else attendanceModel_else" class="table table-hover table-responsive" id="table_id">
+    <tr>
+      <th>Name</th>
+      <th>Designation</th>
+      <th>Morning Session</th>
+      <th>Evening Session</th>
+      <th>Total Hours</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+    <tr *ngFor="let attendance of attendanceModel">
+      <td>{{attendance.employee_id.profile.first_name}} {{attendance.employee_id.profile.last_name}}</td>
+      <td>{{attendance.employee_id.designation}}</td>
+      <td>{{attendance.morning_session}}</td>
+      <td>{{attendance.evening_session}}</td>
+      <td>{{attendance.total_hours | number:'1.0-1' }}</td>
+      <td *ngIf="attendance.employee_id.is_active == true; else inactive_else"><span class="badge badge-success p-2">Active</span></td>
+      <ng-template #inactive_else>
+        <td *ngIf="attendance.employee_id.is_active == false"><span class="badge badge-danger p-2">Inactive</span></td>
+      </ng-template>
+      <td>{{attendance.date_created | date:'medium'}}</td>
+    </tr>
+  </table>
+  <ng-template #attendanceModel_else>
+    <div class="col-md-6 offset-md-3 text-center"><h3>No data yet.</h3></div>
+  </ng-template>
+</div>

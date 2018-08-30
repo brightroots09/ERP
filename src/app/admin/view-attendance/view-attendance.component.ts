@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '../../../../node_modules/@angular/router';
+import { UserService } from '../../user.service';
 
 @Component({
   selector: 'app-view-attendance',
@@ -7,9 +9,34 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewAttendanceComponent implements OnInit {
 
-  constructor() { }
+  attendanceModel;
+  filtersLoaded: Promise<boolean>;
 
-  ngOnInit() {
+  constructor(private router: Router, private user: UserService) {
+  }
+
+  async ngOnInit() {
+    try {
+      const details = await this.getAttendance()
+      this.attendanceModel = details
+    } catch (error) {
+      return error
+    }
+  }
+
+  getAttendance(){
+    this.user.getAttendance()
+      .subscribe(res => {
+        this.attendanceModel = res
+        console.log(res)
+        this.filtersLoaded = Promise.resolve(true);
+      }, (error) => {
+        console.error(error)
+      })
+  }
+
+  goBack(){
+    this.router.navigate([`/profile`])
   }
 
 }

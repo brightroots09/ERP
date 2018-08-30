@@ -9,6 +9,7 @@ const projectModel = require("../models/projectModel");
 const tasksModel = require("../models/taskModel");
 const taskUpdateModel = require("../models/taskUpdateModel");
 const queryModel = require("../models/queryModel");
+const dailyUpdatesModel = require("../models/dailyUpdatesModel");
 
 const session = require("express-session");
 
@@ -574,5 +575,24 @@ router.get("/view_daily_updates/:id", verifyToken, function(req, res, callback){
 			}
 		})
  })
+
+
+ /**
+  * --------------------
+  * GET ATTENDANCE ROUTE
+  * --------------------
+  */
+
+  router.get("/attendance", verifyToken, function(req, res, callback){
+	dailyUpdatesModel
+		.find({})
+		.populate({path: 'employee_id', model: employeeModel})
+		.exec(function(error, result){
+			if(error) callback(error)
+			else{
+				res.json(result)
+			}
+		})
+  })
 
 module.exports = router;

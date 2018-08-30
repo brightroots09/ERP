@@ -38,6 +38,7 @@ export class UserService {
   private _deleteTask = "/admin/delete_task";
   private _updateProjectTask = "/admin/update_project_task";
   private _getAllQueries = "/admin/queries";
+  private _viewAttendanceUrl = "/admin/attendance";
 
   /**
    * -------------
@@ -170,6 +171,10 @@ export class UserService {
 
   getAllQueries(): Observable<any> {
     return this.http.get(this._getAllQueries)
+  }
+
+  getAttendance(): Observable<any>{
+    return this.http.get(this._viewAttendanceUrl)
   }
 
   /**
