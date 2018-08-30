@@ -30,11 +30,11 @@ export class DailyDiaryComponent implements OnInit {
       this.param = params
     });
   }
-  
+
   async ngOnInit() {
     try {
       const details = await this.getTasks()
-      if(details != undefined || details != null){
+      if (details != undefined || details != null) {
         this.tasksModel = details
       }
     } catch (error) {
@@ -42,18 +42,20 @@ export class DailyDiaryComponent implements OnInit {
     }
   }
 
-  getTasks(){
+  getTasks() {
     this.user.dailyDiary()
       .subscribe(res => {
         this.tasksModel = res.response
-        if(res.format_date){
+        if (res.format_date) {
           this.total_hours = res.format_date
         }
 
-        let date = new Date().getDate()
-        let date_created = new Date(res.response[0].date_created).getDate()
-        if((date == date_created) && res.response[0].morning_session != ""){
-          this.toggleUpdate = true
+        if (res.response.length > 0) {
+          let date = new Date().getDate()
+          let date_created = new Date(res.response[0].date_created).getDate()
+          if ((date == date_created) && res.response[0].morning_session != "") {
+            this.toggleUpdate = true
+          }
         }
 
         this.filtersLoaded = Promise.resolve(true);
@@ -62,51 +64,52 @@ export class DailyDiaryComponent implements OnInit {
       })
   }
 
-  goBack(){
+  goBack() {
     this.router.navigate([`/employeeProfile`])
   }
 
-  onUpdateFormSubmit(){
+  onUpdateFormSubmit() {
     console.log(this.updateModel)
     this.user.addDailyDiary(this.updateModel)
       .subscribe(res => {
+        this.toggleUpdate = true;
         window.location.reload()
       }, (error) => {
         console.error(error)
       })
   }
 
-  onChange(value){
-    if(value == 'Select Session'){
+  onChange(value) {
+    if (value == 'Select Session') {
       this.toggleSave = true
     }
-    else{
+    else {
       this.toggleSave = false
       this.sessionTime = value
       this.nowTime = new Date().toLocaleTimeString();
-      if(value == 'Morning'){
+      if (value == 'Morning') {
         this.updateModel.in_time = this.nowTime
         this.updateModel.out_time = ""
       }
-      if(value == 'Evening'){
+      if (value == 'Evening') {
         this.updateModel.out_time = this.nowTime
         this.updateModel.in_time = ""
       }
     }
   }
 
-  toggleEveningUpdate(){
+  toggleEveningUpdate() {
     this.edit = true
   }
 
-  onEveningUpdateFormSubmit(dailyDiaryId, total_hours){
+  onEveningUpdateFormSubmit(dailyDiaryId, total_hours) {
     this.user.addEveningUpdate(dailyDiaryId, this.updateModel, total_hours)
       .subscribe(res => {
         // if(res != ""){
         //   this.error = res
         // }
         // else{
-          window.location.reload()
+        window.location.reload()
         // }
       }, (error) => {
         console.error(error)
