@@ -7,7 +7,7 @@
 				</button>
 			</div>
 			<div class="col-md-6 text-right">
-				<button type="button" class="btn btn-link" *ngIf="tasksModel[0].evening_session != ''" data-toggle="modal" data-target="#updateModal">Update Daily Tasks</button>
+				<button type="button" class="btn btn-link" name="morning_session" [disabled]="toggleUpdate" *ngIf="tasksModel[0].evening_session != ''" data-toggle="modal" data-target="#updateModel">Update Daily Tasks</button>
 			</div>
 		</div>
 	</div>
@@ -31,10 +31,10 @@
 					<ng-template #evening_session>
 						<p>
 							<b>Evening Update: </b>
-							<button type="button" class="btn btn-link p-0" data-toggle="modal" data-target="#eveningUpdateModal">Add</button>
+							<button type="button" class="btn btn-link p-0" data-toggle="modal" data-target="#eveningupdateModel">Add</button>
 						</p>
 
-						<div class="modal fade" id="eveningUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal fade" id="eveningupdateModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -44,8 +44,14 @@
 										</button>
 									</div>
 									<div class="modal-body">
-										<form #tasksForm="ngForm" (ngSubmit)="onEveningUpdateFormSubmit(task._id, task.in_time)">
+										<form #tasksForm="ngForm" (ngSubmit)="onEveningUpdateFormSubmit(task._id, total_hours)">
 											<div class="form-group">
+												<div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="total_hours">
+													You have completed: {{ total_hours | number:'1.0-1' }} hours
+													<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
 												<label>Task description</label>
 												<textarea name="message" class="form-control" #message="ngModel" [(ngModel)]="updateModel.message" [class.is-invalid]="message.invalid && message.touched"
 												 [class.is-valid]="message.valid && message.touched" required></textarea>
@@ -63,7 +69,7 @@
 													<div class="row">
 														<div class="col-md-6" *ngIf="sessionTime == 'Morning'">
 															<label>In Time</label>
-															<input type="text" class="form-control" name="in_time" [(ngModel)]="updateModel.in_time" class="form-control" [value]="nowTime"
+															<input type="text" class="form-control" name="in_time" [(ngModel)]="updateModel.date_created" class="form-control" [value]="nowTime"
 															 disabled>
 														</div>
 														<div class="col-md-6" *ngIf="sessionTime == 'Evening'">
@@ -75,7 +81,7 @@
 												</div>
 											</div>
 											<div class="modal-footer">
-												<button type="submit" [disabled]="toggleSave || tasksForm.form.invalid" class="btn btn-primary">Save</button>
+												<button type="submit" name="evening_session" [disabled]="toggleSave || tasksForm.form.invalid" class="btn btn-primary">Save</button>
 												<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 											</div>
 										</form>
@@ -113,7 +119,7 @@
 	</div>
 </div>
 
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">

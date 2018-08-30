@@ -16,8 +16,8 @@ export class DailyDiaryComponent implements OnInit {
   updateDisable: Boolean = false
   nowTime;
   edit: Boolean = false;
-  error;
-  message;
+  total_hours;
+  toggleUpdate: Boolean = false;
   // time = this.nowTime.toLocaleString()
 
   sessionTime;
@@ -45,8 +45,17 @@ export class DailyDiaryComponent implements OnInit {
   getTasks(){
     this.user.dailyDiary()
       .subscribe(res => {
-        this.tasksModel = res
-        console.log(res)
+        this.tasksModel = res.response
+        if(res.format_date){
+          this.total_hours = res.format_date
+        }
+
+        let date = new Date().getDate()
+        let date_created = new Date(res.response[0].date_created).getDate()
+        if((date == date_created) && res.response[0].morning_session != ""){
+          this.toggleUpdate = true
+        }
+
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         console.error(error)
@@ -90,8 +99,8 @@ export class DailyDiaryComponent implements OnInit {
     this.edit = true
   }
 
-  onEveningUpdateFormSubmit(dailyDiaryId, in_time){
-    this.user.addEveningUpdate(dailyDiaryId, this.updateModel, in_time)
+  onEveningUpdateFormSubmit(dailyDiaryId, total_hours){
+    this.user.addEveningUpdate(dailyDiaryId, this.updateModel, total_hours)
       .subscribe(res => {
         // if(res != ""){
         //   this.error = res

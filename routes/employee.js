@@ -314,6 +314,8 @@ router.get("/daily_diary", verifyToken, function (req, res, callback) {
 		id: payload.subject
 	};
 
+	let date = new Date()
+
 	dailyUpdatedModel
 		.find({ employee_id: condition.id })
 		.populate({ path: 'to_id', model: employeeModel })
@@ -321,7 +323,17 @@ router.get("/daily_diary", verifyToken, function (req, res, callback) {
 		.exec(function (error, response) {
 			if (error) callback(error)
 			else {
-				res.json(response)
+				if(response[0].out_time == ""){
+					let in_time = moment(response[0].date_created, 'YYYY-MM-DD HH:mm:ss')
+					let new_date = moment(date, 'YYYY-MM-DD HH:mm:ss')
+					let diff = moment.duration(new_date.diff(in_time))
+					let format_date = diff.asHours();
+
+					res.json({response, format_date})
+				}
+				else{
+					res.json({response})
+				}
 			}
 		})
 
@@ -385,16 +397,16 @@ router.post("/addEveningUpdate/:id", function (req, res, callback) {
 	// 				res.json("You havn't completed 9 hours of your shift")
 	// 			}
 	// 			else{
-		let in_time = moment(req.body.in_time, 'HH:mm A')
-		let new_date = moment(date, 'HH:mm A')
-		let diff = moment.duration(new_date.diff(in_time))
-		let format_date = diff.asHours();
+		// let in_time = moment(req.body.in_time, 'YYYY-MM-DD HH:mm:ss')
+		// let new_date = moment(date, 'YYYY-MM-DD HH:mm:ss')
+		// let diff = moment.duration(new_date.diff(in_time))
+		// let format_date = diff.asHours();
 
 		dailyUpdatedModel
-		.findByIdAndUpdate({ _id: req.params.id }, { $set: { 'evening_session': req.body.data.message, 'out_time': req.body.data.out_time, total_hours: format_date } }, function (error, response) {
+		.findByIdAndUpdate({ _id: req.params.id }, { $set: { 'evening_session': req.body.data.message, 'out_time': req.body.data.out_time, total_hours: req.body.in_time } }, function (error, response) {
 			if (error) callback(error)
 			else {
-				res.json(`You have worked ${format_date} hours`)
+				res.json(`You have worked ${req.body.in_time} hours`)
 			}
 		})
 
