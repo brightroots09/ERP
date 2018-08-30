@@ -318,7 +318,7 @@ router.get("/projects", verifyToken, function (req, res, callback) {
 * ------------------------------------
 * */
 router.get("/project_details/:id", verifyToken, function (req, res, callback) {
-	projectModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'employeeModel', localField: 'employee_id.id', foreignField: '_id', as: 'employees' } }, {$lookup: { from: 'employeeModel', localField: 'responsible_person', foreignField: '_id', as: 'responsible_person'}}, {$lookup: { from: 'employeeModel', localField: 'project_manager', foreignField: '_id', as: 'project_manager'}}, {$lookup: {from: 'taskUpdateModel', localField: '_id', foreignField: 'project_id', as: 'dailyTasksUpdate'}}], function (error, project) {
+	projectModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'employeeModel', localField: 'employee_id.id', foreignField: '_id', as: 'employees' } }, { $lookup: { from: 'employeeModel', localField: 'responsible_person', foreignField: '_id', as: 'responsible_person' } }, { $lookup: { from: 'employeeModel', localField: 'project_manager', foreignField: '_id', as: 'project_manager' } }, { $lookup: { from: 'taskUpdateModel', localField: '_id', foreignField: 'project_id', as: 'dailyTasksUpdate' } }], function (error, project) {
 		if (error) callback(error);
 		else {
 			console.log(project)
@@ -424,7 +424,7 @@ router.get("/project_tasks_details/:id", verifyToken, function (req, res, callba
  * ------------
  */
 
-router.post("/create_tasks", verifyToken, function(req, res, callback){
+router.post("/create_tasks", verifyToken, function (req, res, callback) {
 	let tasks = new tasksModel()
 	let date = new Date()
 
@@ -442,9 +442,9 @@ router.post("/create_tasks", verifyToken, function(req, res, callback){
 	tasks.project_id = arr;
 	tasks.date_created = date;
 
-	tasks.save(function(error, result){
-		if(error) callback(error)
-		else{
+	tasks.save(function (error, result) {
+		if (error) callback(error)
+		else {
 			res.redirect("/admin/tasks")
 		}
 	})
@@ -458,7 +458,7 @@ router.post("/create_tasks", verifyToken, function(req, res, callback){
  * ---------
  */
 
-router.post("/edit_task/:id", verifyToken, function(req, res, callback){
+router.post("/edit_task/:id", verifyToken, function (req, res, callback) {
 	let obj
 	if (req.body.status) {
 		obj = {
@@ -481,7 +481,7 @@ router.post("/edit_task/:id", verifyToken, function(req, res, callback){
 	})
 })
 
-router.post("/edit_project_task/:id", verifyToken, function(req, res, callback){
+router.post("/edit_project_task/:id", verifyToken, function (req, res, callback) {
 	let obj
 	if (req.body.status) {
 		obj = {
@@ -511,10 +511,10 @@ router.post("/edit_project_task/:id", verifyToken, function(req, res, callback){
  * DELETE TASK
  * -----------
  */
-router.post("/delete_task/:id", verifyToken,function(req, res, callback){
-	tasksModel.findByIdAndRemove({_id: req.params.id}, function(error, response){
-		if(error) callback(error)
-		else{
+router.post("/delete_task/:id", verifyToken, function (req, res, callback) {
+	tasksModel.findByIdAndRemove({ _id: req.params.id }, function (error, response) {
+		if (error) callback(error)
+		else {
 			res.redirect("/admin/tasks")
 		}
 	})
@@ -527,7 +527,7 @@ router.post("/delete_task/:id", verifyToken,function(req, res, callback){
  * ---------------------
  */
 
-router.post("/update_project_task", verifyToken, function(req, res, callback){
+router.post("/update_project_task", verifyToken, function (req, res, callback) {
 	let updateModel = new taskUpdateModel()
 	let date = new Date()
 
@@ -535,23 +535,23 @@ router.post("/update_project_task", verifyToken, function(req, res, callback){
 	updateModel.description = req.body.data.description
 	updateModel.date_created = date;
 
-	updateModel.save(function(error, response){
-		if(error) callback(error)
-		else{
+	updateModel.save(function (error, response) {
+		if (error) callback(error)
+		else {
 			res.json(response)
 		}
 	})
 
 })
 
-router.get("/view_daily_updates/:id", verifyToken, function(req, res, callback){
+router.get("/view_daily_updates/:id", verifyToken, function (req, res, callback) {
 	taskUpdateModel
-		.find({project_id: req.params.id})
-		.exec(function(error, response){
-			if(error) {
+		.find({ project_id: req.params.id })
+		.exec(function (error, response) {
+			if (error) {
 				callback(error)
 			}
-			else{
+			else {
 				res.json(response)
 			}
 		})
@@ -564,35 +564,52 @@ router.get("/view_daily_updates/:id", verifyToken, function(req, res, callback){
  * ---------------------
  */
 
- router.get("/queries", verifyToken, function(req, res, callback){
-	 queryModel
-		 .find({})
-		 .populate([{path: 'employee_id', model: employeeModel}, {path: 'management_id', model: employeeModel}])
-		.exec(function(error, response){
-			if(error) callback(error)
-			else{
+router.get("/queries", verifyToken, function (req, res, callback) {
+	queryModel
+		.find({})
+		.populate([{ path: 'employee_id', model: employeeModel }, { path: 'management_id', model: employeeModel }])
+		.exec(function (error, response) {
+			if (error) callback(error)
+			else {
 				res.json(response)
 			}
 		})
- })
+})
 
 
- /**
-  * --------------------
-  * GET ATTENDANCE ROUTE
-  * --------------------
-  */
+/**
+ * --------------------
+ * GET ATTENDANCE ROUTE
+ * --------------------
+ */
 
-  router.get("/attendance", verifyToken, function(req, res, callback){
+router.get("/attendance", verifyToken, function (req, res, callback) {
 	dailyUpdatesModel
 		.find({})
-		.populate({path: 'employee_id', model: employeeModel})
+		.populate({ path: 'employee_id', model: employeeModel })
+		.exec(function (error, result) {
+			if (error) callback(error)
+			else {
+				res.json(result)
+			}
+		})
+})
+
+
+/**
+ * -----------------------
+ * TOGGLE ATTENDANCE ROUTE
+ * -----------------------
+ */
+
+router.post("/toggle_attendance/:id", verifyToken, function (req, res, callback) {
+	dailyUpdatesModel
+		.findByIdAndUpdate({_id: req.params.id}, {$set: req.body})
 		.exec(function(error, result){
 			if(error) callback(error)
 			else{
 				res.json(result)
 			}
 		})
-  })
-
+})
 module.exports = router;

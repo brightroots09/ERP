@@ -39,6 +39,7 @@ export class UserService {
   private _updateProjectTask = "/admin/update_project_task";
   private _getAllQueries = "/admin/queries";
   private _viewAttendanceUrl = "/admin/attendance";
+  private _toggleAttendanceUrl = "/admin/toggle_attendance"
 
   /**
    * -------------
@@ -175,6 +176,11 @@ export class UserService {
 
   getAttendance(): Observable<any>{
     return this.http.get(this._viewAttendanceUrl)
+  }
+
+  toggleAttendance(id, data): Observable<any>{
+    let url = this._toggleAttendanceUrl + "/" + id
+    return this.http.post(url, data)
   }
 
   /**

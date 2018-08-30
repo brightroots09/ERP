@@ -24,7 +24,7 @@ export class ViewAttendanceComponent implements OnInit {
     }
   }
 
-  getAttendance(){
+  getAttendance() {
     this.user.getAttendance()
       .subscribe(res => {
         this.attendanceModel = res
@@ -35,8 +35,26 @@ export class ViewAttendanceComponent implements OnInit {
       })
   }
 
-  goBack(){
+  goBack() {
     this.router.navigate([`/profile`])
+  }
+
+  verify(id) {
+    this.user.toggleAttendance(id, {"status": "Verified"})
+      .subscribe(res => {
+        window.location.reload()
+      }, error => {
+        console.error(error)
+      })
+  }
+
+  notVerify(id) {
+    this.user.toggleAttendance(id, {"status": "Not Verified"})
+      .subscribe(res => {
+        window.location.reload()
+      }, error => {
+        console.error(error)
+      })
   }
 
 }

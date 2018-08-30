@@ -25,6 +25,10 @@ var dailyUpdateModel = new Schema({
         type: String,
         default: ""
     },
+    status: {
+        type: String,
+        default: "Not Verified"
+    },
     date_created: {
         type: Date
     }
