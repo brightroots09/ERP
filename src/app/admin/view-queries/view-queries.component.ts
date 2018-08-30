@@ -46,4 +46,14 @@ export class ViewQueriesComponent implements OnInit {
     this.router.navigate([`/profile`])
   }
 
+  closeTicket(id){
+    console.log(id);
+    this.user.toggleQueryStatus(id)
+      .subscribe(res => {
+        window.location.reload()
+      }, (error) => {
+        console.error(error)
+      })
+  }
+
 }

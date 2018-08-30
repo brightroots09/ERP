@@ -1,32 +1,39 @@
 <div class="row">
-  <div class="col-md-6 offset-md-3">
-    <div class="row">
-      <div class="col-md-6 text-left">
-        <button type="button" class="btn btn-link text-primary" (click)="goBack()">
-          &laquo; Go back
-        </button>
+    <div class="col-md-6 offset-md-3">
+      <div class="row">
+        <div class="col-md-6 text-left">
+          <button type="button" class="btn btn-link text-primary" (click)="goBack()">
+            &laquo; Go back
+          </button>
+        </div>
+        <div class="col-md-6 text-right">
+          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#updateModal">Ask Query</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="row" *ngIf="filtersLoaded | async">
-  <div class="col-md-4 card mt-4 ml-auto mr-auto" *ngFor="let query of queryModel">
-    <div class="card-body" *ngIf="queryModel.length > 0; else queryModel_else">
-      <p>
-        <b>To:</b> {{ query.management_id.profile.first_name }} {{ query.management_id.profile.last_name }} ({{ query.management_id.designation
-        }})
-      </p>
-      <p>
-        <b>From:</b> {{ query.employee_id.profile.first_name }} {{ query.employee_id.profile.last_name }} ({{ query.employee_id.designation
-        }})
-      </p>
-      <p>
-        <b>Message:</b> {{ query.message }}
-      </p>
-      <small class="text-muted float-right">{{ query.date_created | date : 'medium' }}</small>
+  <div class="row" *ngIf="filtersLoaded | async">
+    <div class="col-md-4 card mt-4 ml-auto mr-auto" *ngFor="let query of queryModel">
+      <div class="card-body" *ngIf="queryModel.length > 0; else queryModel_else">
+        <h5>
+          To: {{ query.management_id.profile.first_name }} {{ query.management_id.profile.last_name }} ({{ query.management_id.designation
+          }})
+        </h5>
+        <p>
+          Message: {{ query.message }}
+        </p>
+        <p>
+          Status: {{ query.status }}
+        </p>
+        <button type="button" class="btn btn-link" *ngIf="query.status != 'closed'" (click)="closeTicket(query._id)">
+          Mark as closed
+        </button>
+      </div>
+      <div class="card-footer p-0">
+        <p class="text-muted text-right mt-auto mb-auto">{{ query.date_created | date : 'medium' }}</p>
+      </div>
+      <ng-template #queryModel_else>
+        No queries asked
+      </ng-template>
     </div>
-    <ng-template #queryModel_else>
-      No queries asked
-    </ng-template>
   </div>
-</div>
