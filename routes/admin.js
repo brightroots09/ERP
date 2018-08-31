@@ -479,10 +479,10 @@ router.post("/create_tasks", verifyToken, function (req, res, callback) {
 		})
 
 	}
-	else if(req.body.employees.length > 0){
+	else if (req.body.employees.length > 0) {
 		let arrEmployee = []
 		let employee = req.body.employees
-	
+
 		for (let i in employee) {
 			arrEmployee.push({
 				id: mongoose.Types.ObjectId(employee[i]._id)
@@ -683,6 +683,43 @@ router.post("/reply_to_query/:id", verifyToken, function (req, res, callback) {
 				res.json(result)
 			}
 		})
+})
+
+
+/**
+ * -------------------------
+ * CREATE PROJECT TASK ROUTE
+ * -------------------------
+ */
+router.post("/create_project_task", verifyToken, function (req, res, callback) {
+	let tasks = new tasksModel()
+	let date = new Date()
+
+	let arr = []
+
+	arr.push({id: mongoose.Types.ObjectId(req.body.id)})
+
+	let arrEmployee = []
+	let employee = req.body.employees
+
+	for (let i in employee) {
+		arrEmployee.push({
+			id: mongoose.Types.ObjectId(employee[i]._id)
+		})
+	}
+
+	tasks.tasks_details.name = req.body.data.tasks_name;
+	tasks.tasks_details.description = req.body.data.tasks_description;
+	tasks.project_id = arr;
+	tasks.others = arrEmployee;
+	tasks.date_created = date;
+
+	tasks.save(function (error, result) {
+		if (error) callback(error)
+		else {
+			res.redirect("/admin/tasks")
+		}
+	})
 })
 
 module.exports = router;

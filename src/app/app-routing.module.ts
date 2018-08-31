@@ -30,6 +30,7 @@ import { MyProjectTaskComponent } from './employee/my-project-task/my-project-ta
 import { DailyUpdateComponent } from './employee/daily-update/daily-update.component';
 import { ViewAttendanceComponent } from './admin/view-attendance/view-attendance.component';
 import { IndividualTaskComponent } from './employee/individual-task/individual-task.component';
+import { AddProjectTaskComponent } from './admin/add-project-task/add-project-task.component';
 
 const routes: Routes = [
   {
@@ -129,6 +130,11 @@ const routes: Routes = [
   {
     path: "view_attendance",
     component: ViewAttendanceComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "createProjectTask/:id",
+    component: AddProjectTaskComponent,
     canActivate: [AuthGuard]
   },
   {

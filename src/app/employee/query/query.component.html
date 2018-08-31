@@ -25,6 +25,9 @@
 			<p>
 				Status: {{ query.status }}
 			</p>
+			<p *ngIf="query.reply">
+				Reply: {{ query.reply }}
+			</p>
 			<button type="button" class="btn btn-link" *ngIf="query.status != 'closed'" (click)="closeTicket(query._id)">
 				Mark as closed
 			</button>
@@ -53,9 +56,9 @@
 					<div class="form-group" *ngIf="employeeModel != 0; else employeeModel_else">
 						<label>Select</label>
 						<select class="form-control" #management_id="ngModel" [(ngModel)]="updateModel.management_id" name="management_id" id="exampleFormControlSelect1">
-							<ng-container *ngFor="let employee of employeeModel">								
+							<ng-container *ngFor="let employee of employeeModel">
 								<option *ngIf="userModel._id != employee._id" value="{{ employee._id }}">
-										{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})
+									{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})
 								</option>
 							</ng-container>
 

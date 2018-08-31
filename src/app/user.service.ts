@@ -41,6 +41,7 @@ export class UserService {
   private _viewAttendanceUrl = "/admin/attendance";
   private _toggleAttendanceUrl = "/admin/toggle_attendance";
   private _replyToQuery = "/admin/reply_to_query";
+  private _createProjectTask = "/admin/create_project_task";
 
   /**
    * -------------
@@ -193,6 +194,13 @@ export class UserService {
   replyToQuery(id, data): Observable<any>{
     let url = this._replyToQuery + "/" + id;
     return this.http.post(url, data)
+  }
+
+  createProjectTask(id, data, employees): Observable<any>{
+    let obj = {
+      id, data, employees
+    }
+    return this.http.post(this._createProjectTask, obj)
   }
 
   /**

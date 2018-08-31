@@ -30,6 +30,7 @@ import { AddTasksComponent } from './admin/add-tasks/add-tasks.component';
 import { ProjectTaskDetailsComponent } from './admin/project-task-details/project-task-details.component';
 import { ViewQueriesComponent } from './admin/view-queries/view-queries.component' ;
 import { ViewAttendanceComponent } from './admin/view-attendance/view-attendance.component';
+import { AddProjectTaskComponent } from './admin/add-project-task/add-project-task.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 /**
@@ -82,7 +83,8 @@ import { IndividualTaskComponent } from './employee/individual-task/individual-t
     DailyUpdateComponent,
     ViewQueriesComponent,
     ViewAttendanceComponent,
-    IndividualTaskComponent
+    IndividualTaskComponent,
+    AddProjectTaskComponent
   ],
   imports: [
     BrowserModule,

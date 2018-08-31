@@ -12,10 +12,16 @@
 		<div class="col-md-12 mt-3 mb-3" *ngIf="tasks.my_tasks.length > 0; else no_tasks">
 			<h5 class="card-title">{{ tasks.project_details.name }}</h5>
 			<div class="row">
-				<div class="card ml-1 mr-1" style="width: 18rem;" *ngFor="let myTasks of tasks.my_tasks">
-					<div class="card-body">
-						{{ myTasks.tasks_details.name }}
-					</div>
+				<div class="card p-3 ml-1 mr-1" style="width: 22rem;" *ngFor="let myTasks of tasks.my_tasks">
+					<p class="card-title">
+						<b>Name:</b> {{myTasks.tasks_details.name}}
+					</p>
+					<p class="card-text">
+						<b>Description:</b> {{ myTasks.tasks_details.description }}
+					</p>
+					<p>
+						<b>Status:</b> {{ myTasks.status }}
+					</p>
 					<div class="card-footer text-center">
 						<a class="btn btn-link text-success" routerLink="/myTaskDetails/{{myTasks._id}}">
 							View
