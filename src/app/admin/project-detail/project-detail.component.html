@@ -1,7 +1,7 @@
 <div class="row" *ngIf="filtersLoaded | async">
 	<div class="col-md-6 offset-md-3">
 		<div class="row">
-			
+
 			<ul class="nav justify-content-center">
 				<li class="nav-item">
 					<button type="button" class="nav-link btn btn-link" data-toggle="modal" data-target="#updateModal">Update Daily Tasks</button>
@@ -12,7 +12,7 @@
 				<li class="nav-item">
 					<button type="button" class="nav-link btn btn-link" routerLink="/projectTasksDetails/{{projectModel._id}}">View Tasks</button>
 				</li>
-			  </ul>
+			</ul>
 		</div>
 	</div>
 	<div class="col-md-6 card offset-md-3 mt-4 text-center">
@@ -60,21 +60,92 @@
 					<small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
 				</div>
 
-				<div class="form-group">
-					<div class="form-check form-check-inline" *ngIf="edit">
+				<div class="form-group" *ngIf="edit">
+					<div class="form-check form-check-inline">
 						<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio1"
 						 value="In Progress">
 						<label class="form-check-label" for="inlineRadio1">In Progress</label>
 					</div>
-					<div class="form-check form-check-inline" *ngIf="edit">
+					<div class="form-check form-check-inline">
 						<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio2"
 						 value="On Hold">
 						<label class="form-check-label" for="inlineRadio2">On Hold</label>
 					</div>
-					<div class="form-check form-check-inline" *ngIf="edit">
+					<div class="form-check form-check-inline">
 						<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio3"
 						 value="Completed">
 						<label class="form-check-label" for="inlineRadio3">Completed</label>
+					</div>
+				</div>
+				<div class="form-group" *ngIf="edit">
+					<label for="">Selected Members</label>
+					<div *ngIf="employees.length > 0; else none_block">
+						<div class="btn-group badge badge-info m-2" role="group" *ngFor="let employee of employees">
+							<span class="p-3">{{employee.profile.first_name}} {{employee.profile.last_name}}</span>
+							<button type="button" class="btn btn-link text-white" (click)="remove(employee)">&times;</button>
+						</div>
+					</div>
+					<ng-template #none_block>
+						<p>No Members Selected</p>
+					</ng-template>
+				</div>
+				<div class="form-group" *ngIf="edit">
+					<div class="row">
+						<div class="col-md-12 mt-3">
+							<div class="row">
+								<div class="col-md-4 dropdown mb-2">
+									<button class="form-control dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+									 aria-expanded="false">IOS Developer</button>
+									<div class="dropdown-menu">
+										<ng-container *ngFor="let employee of userModel">
+											<button type="button" *ngIf="employee.designation == 'Developer (IOS)'" class="dropdown-item m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+										</ng-container>
+									</div>
+								</div>
+								<div class="col-md-4 dropdown mb-2">
+									<button class="form-control dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+									 aria-expanded="false">Android Developer</button>
+									<div class="dropdown-menu">
+										<ng-container *ngFor="let employee of userModel">
+											<button type="button" *ngIf="employee.designation == 'Developer (Android)'" class="dropdown-item m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+										</ng-container>
+									</div>
+								</div>
+								<div class="col-md-4 dropdown mb-2">
+									<button class="form-control dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+									 aria-expanded="false">Backend Developer</button>
+									<div class="dropdown-menu">
+										<ng-container *ngFor="let employee of userModel">
+											<button type="button" *ngIf="employee.designation == 'Backend Developer'" class="dropdown-item form-control m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+										</ng-container>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 mt-3">
+							<label>Project Manager</label>
+							<select class="form-control" name="project_manager" #project_manager="ngModel" [(ngModel)]="projectModel.project_manager">
+								<option *ngFor="let manager of projectModel.project_manager" value="{{manager._id}}" selected="selected">
+									{{ manager.profile.first_name }} {{ manager.profile.last_name }}
+								</option>
+								<hr>
+								<option *ngFor="let employee of userModel" value="{{employee._id}}">
+									{{ employee.profile.first_name }} {{ employee.profile.last_name }}
+								</option>
+							</select>
+						</div>
+						<div class="col-md-12 mt-3">
+							<label>Responsible Person</label>
+							<select class="form-control" name="responsible_person" #responsible_person="ngModel" [(ngModel)]="projectModel.responsible_person">
+								<option *ngFor="let responsible of projectModel.responsible_person" value="{{responsible._id}}" selected="selected">
+									{{ responsible.profile.first_name }} {{ responsible.profile.last_name }} ({{ responsible.designation }})
+								</option>
+								<hr>
+								<option *ngFor="let employee of userModel" value="{{employee._id}}">
+									{{ employee.profile.first_name }} {{ employee.profile.last_name }}
+								</option>
+							</select>
+						</div>
 					</div>
 				</div>
 
@@ -84,7 +155,7 @@
 
 		</div>
 
-		<div class="card-footer">
+		<div class="card-footer" *ngIf="!edit">
 			<div class="row">
 				<div class="col-md-12" *ngIf="projectModel.employees.length > 0; else employee_else">
 					<label>Project Members</label>

@@ -1,37 +1,101 @@
 <div class="row">
-    <div class="col-md-12">
-  
-      <form #tasksForm="ngForm" class="form" (ngSubmit)="onFormSubmit()" class="mt-3 mb-3">
-        <div class="form-group">
-          <input type="text" class="form-control" name="tasks_name" placeholder="Tasks Name" #tasks_name="ngModel" [(ngModel)]="tasksModel.tasks_name" [class.is-invalid]="tasks_name.invalid && tasks_name.touched" [class.is-valid]="tasks_name.valid && tasks_name.touched" required>
-          <small class="text-danger" [class.d-none]="tasks_name.valid || tasks_name.untouched">Tasks Name is required</small>
+  <div class="col-md-12">
+
+    <form #tasksForm="ngForm" class="form" (ngSubmit)="onFormSubmit()" class="mt-3 mb-3">
+      <div class="form-group">
+        <input type="text" class="form-control" name="tasks_name" placeholder="Tasks Name" #tasks_name="ngModel" [(ngModel)]="tasksModel.tasks_name"
+          [class.is-invalid]="tasks_name.invalid && tasks_name.touched" [class.is-valid]="tasks_name.valid && tasks_name.touched"
+          required>
+        <small class="text-danger" [class.d-none]="tasks_name.valid || tasks_name.untouched">Tasks Name is required</small>
+      </div>
+      <div class="form-group">
+        <textarea name="tasks_description" class="form-control" #tasks_description="ngModel" placeholder="Tasks Description" [(ngModel)]="tasksModel.tasks_description"
+          [class.is-invalid]="tasks_description.invalid && tasks_description.touched" [class.is-valid]="tasks_description.valid && tasks_description.touched"
+          required></textarea>
+        <small class="text-danger" [class.d-none]="tasks_description.valid || tasks_description.untouched">Tasks Description is required</small>
+      </div>
+
+      <div class="row" *ngIf="!edit">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="">Selected Project</label>
+            <div *ngIf="projects.length > 0; else none_block">
+              <div class="btn-group badge badge-info m-2" role="group" *ngFor="let project of projects">
+                <span class="p-3">{{project.project_details.name}}</span>
+                <button type="button" class="btn btn-link text-white" (click)="remove(project)">&times;</button>
+              </div>
+            </div>
+            <ng-template #none_block>
+              <p>No Projects Selected</p>
+            </ng-template>
+          </div>
+
+
+          <div class="form-group">
+            <button type="button" class="btn btn-outline-info m-2" (click)="add_project(project)" *ngFor="let project of projectsModel">{{ project.project_details.name }}</button>
+            <button type="button" class="btn btn-outline-danger m-2" (click)="otherType()">Select Employees</button>
+          </div>
         </div>
-        <div class="form-group">
-          <textarea name="tasks_description" class="form-control" #tasks_description="ngModel" placeholder="Tasks Description"
-           [(ngModel)]="tasksModel.tasks_description" [class.is-invalid]="tasks_description.invalid && tasks_description.touched" [class.is-valid]="tasks_description.valid && tasks_description.touched" required></textarea>
-           <small class="text-danger" [class.d-none]="tasks_description.valid || tasks_description.untouched">Tasks Description is required</small>
-        </div>
-        
-        <div class="form-group">
-          <label for="">Selected Project</label>
-          <div *ngIf="projects.length > 0; else none_block">
-            <div class="btn-group badge badge-info m-2" role="group" *ngFor="let project of projects">
-              <span class="p-3">{{project.project_details.name}}</span>
-              <button type="button" class="btn btn-link text-white" (click)="remove(project)">&times;</button>
+      </div>
+
+      <div class="row" *ngIf="edit">
+        <div class="col-md-12">
+          <div class="form-group mt-3">
+            <label for="">Selected Members</label>
+            <div *ngIf="employees.length > 0; else none_block">
+              <div class="btn-group badge badge-info m-2" role="group" *ngFor="let employee of employees">
+                <span class="p-3">{{employee.profile.first_name}} {{employee.profile.last_name}}</span>
+                <button type="button" class="btn btn-link text-white" (click)="removeEmployee(employee)">&times;</button>
+              </div>
+            </div>
+            <ng-template #none_block>
+              <p>No Members Selected</p>
+            </ng-template>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-12 mt-3">
+                <div class="row">
+                  <div class="col-md-3 dropdown mb-2">
+                    <button class="form-control dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false">IOS Developer</button>
+                    <div class="dropdown-menu">
+                      <ng-container *ngFor="let employee of userModel">
+                        <button type="button" *ngIf="employee.designation == 'Developer (IOS)'" class="dropdown-item m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="col-md-3 dropdown mb-2">
+                    <button class="form-control dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false">Android Developer</button>
+                    <div class="dropdown-menu">
+                      <ng-container *ngFor="let employee of userModel">
+                        <button type="button" *ngIf="employee.designation == 'Developer (Android)'" class="dropdown-item m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="col-md-3 dropdown mb-2">
+                    <button class="form-control dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false">Backend Developer</button>
+                    <div class="dropdown-menu">
+                      <ng-container *ngFor="let employee of userModel">
+                        <button type="button" *ngIf="employee.designation == 'Backend Developer'" class="dropdown-item form-control m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <button class="btn btn-outline-secondary" type="button" (click)="otherType()">Select projects</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <ng-template #none_block>
-            <p>No Projects Selected</p>
-          </ng-template>
         </div>
-        <div class="form-group">
-          <button type="button" class="btn btn-outline-info m-2" (click)="add_project(project)" *ngFor="let project of projectsModel">{{ project.project_details.name }}</button>
-        </div>
-  
-  
-        <button type="submit" [disabled]="tasksForm.form.invalid" class="btn btn-outline-primary mr-1">Submit</button>
-        <button type="button" class="btn btn-outline-secondary ml-1" (click)="cancelAdd()">Cancel</button>
-      </form>
-  
-    </div>
+      </div>
+
+      <button type="submit" [disabled]="tasksForm.form.invalid" class="btn btn-outline-primary mr-1">Submit</button>
+      <button type="button" class="btn btn-outline-secondary ml-1" (click)="cancelAdd()">Cancel</button>
+    </form>
+
   </div>
+</div>

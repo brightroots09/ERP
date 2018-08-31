@@ -14,6 +14,7 @@ export class ViewQueriesComponent implements OnInit {
   updateModel = new Query;
   employeeModel;
 
+
   filtersLoaded: Promise<boolean>;
   
   constructor(private router: Router, private user: UserService, private route: ActivatedRoute) {
@@ -54,6 +55,16 @@ export class ViewQueriesComponent implements OnInit {
       }, (error) => {
         console.error(error)
       })
+  }
+
+  onFormSubmit(id){
+    this.user.replyToQuery(id, this.updateModel)
+      .subscribe(res => {
+        window.location.reload()
+      }, (error) => {
+        console.error(error)
+      })
+
   }
 
 }

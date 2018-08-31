@@ -29,6 +29,7 @@ import { DailyDiaryComponent } from './employee/daily-diary/daily-diary.componen
 import { MyProjectTaskComponent } from './employee/my-project-task/my-project-task.component';
 import { DailyUpdateComponent } from './employee/daily-update/daily-update.component';
 import { ViewAttendanceComponent } from './admin/view-attendance/view-attendance.component';
+import { IndividualTaskComponent } from './employee/individual-task/individual-task.component';
 
 const routes: Routes = [
   {
@@ -182,6 +183,11 @@ const routes: Routes = [
   {
     path: "dailyDiary",
     component: DailyDiaryComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "individualTask",
+    component: IndividualTaskComponent,
     canActivate: [AuthGuard]
   },
   {

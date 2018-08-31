@@ -23,6 +23,12 @@ var taskModel = new Schema({
             ref: "projectModel"
         }
     }],
+    others: [{
+        id: {
+            type: Schema.Types.ObjectId,
+            ref: "employeeModel"
+        }
+    }],
     date_created: {
         type: Date
     }

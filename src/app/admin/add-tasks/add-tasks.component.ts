@@ -11,21 +11,27 @@ import { Tasks } from "../../tasks";
 export class AddTasksComponent implements OnInit {
 
   projectsModel;
-  tasksModel = new Tasks()
-  projects = []
+  tasksModel = new Tasks();
+  employees = [];
+  projects = [];
+  userModel;
+  edit: Boolean = false
 
   constructor(private router: Router, private user: UserService) { }
 
   async ngOnInit() {
     try {
       const projects = await this.getProjects()
+      const employee = await this.getEmployee()
       if(projects != undefined || projects != null){
         this.projectsModel = projects
+        this.userModel = employee
       }
     } catch (error) {
       
     }
   }
+
   getProjects(){
     this.user.projects()
       .subscribe(res => {
@@ -36,8 +42,37 @@ export class AddTasksComponent implements OnInit {
       })
   }
 
+  getEmployee() {
+    this.user.employee()
+      .subscribe(res => {
+        console.log(res)
+        this.userModel = res
+      },
+        (error) => {
+          console.log(error)
+        }
+      )
+  }
+
+  add_employee(id) {
+    this.employees.push(id)
+    this.employees.forEach((item, index) => {
+      if (index !== this.employees.findIndex(i => i === item)) {
+        this.employees.splice(index, 1);
+      }
+    });
+    this.projects = []
+  }
+
+  removeEmployee(employee) {
+    var index = this.employees.indexOf(employee);
+    if (index > -1) {
+      this.employees.splice(index, 1);
+    }
+  }
+
   onFormSubmit(){
-    this.user.createTasks(this.tasksModel, this.projects)
+    this.user.createTasks(this.tasksModel, this.projects, this.employees)
       .subscribe(res => {
         this.router.navigate(["/tasks"])
       }, (error) => {
@@ -51,6 +86,12 @@ export class AddTasksComponent implements OnInit {
 
   add_project(project) {
     this.projects.push(project)
+    this.projects.forEach((item, index) => {
+      if (index !== this.projects.findIndex(i => i === item)) {
+        this.projects.splice(index, 1);
+      }
+    });
+    this.employees = [];
   }
 
   remove(project) {
@@ -58,6 +99,10 @@ export class AddTasksComponent implements OnInit {
     if (index > -1) {
       this.projects.splice(index, 1);
     }
+  }
+
+  otherType(){
+    this.edit = !this.edit
   }
 
 }

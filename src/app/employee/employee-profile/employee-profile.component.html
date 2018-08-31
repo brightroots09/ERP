@@ -2,7 +2,7 @@
 	<div class="col-md-5 card mt-4 text-center">
 
 		<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
-		 src="/images/{{userModel.profile.image}}" alt="{{ userMOdel.profile.first_name }}">
+		 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
 
 		<ng-template #else_image>
 			<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
@@ -45,6 +45,9 @@
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" routerLink="/dailyDiary">Daily Update</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" routerLink="/individualTask">Individual Task</a>
 			</li>
 		</ul>
 	</div>

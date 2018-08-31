@@ -19,7 +19,11 @@ var adminModel = new Schema({
             type: String,
             default: ""
         }
-    }
+    },
+    is_active: {
+      type: Boolean,
+      default: true
+  },
 });
 
 //Hash the password before even saving to database

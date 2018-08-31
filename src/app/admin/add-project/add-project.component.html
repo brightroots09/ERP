@@ -1,6 +1,11 @@
 <div class="row">
 	<div class="col-md-12">
-
+		<div class="alert alert-danger alert-dismissible fade show" *ngIf="message" role="alert">
+			{{message}}
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
 		<form #projectForm="ngForm" class="form" (ngSubmit)="onFormSubmit()" class="mt-3 mb-3">
 			<div class="form-group">
 				<input type="text" class="form-control" name="project_name" placeholder="Project Name" #project_name="ngModel" [(ngModel)]="projectModel.project_name"

@@ -36,7 +36,7 @@ export class ProjectTaskDetailsComponent implements OnInit {
     this.user.projectTasksDetails(this.param.id)
       .subscribe(res => {
         console.log("***********", res)
-        this.tasksModel = res[0]
+        this.tasksModel = res
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         console.error(error)

@@ -15,6 +15,10 @@ var queryModel = new Schema({
         type: String,
         default: ""
     },
+    reply: {
+        type: String,
+        default: ""
+    },
     status: {
         type: String,
         default: "open"

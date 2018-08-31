@@ -14,6 +14,7 @@ export class QueryComponent implements OnInit {
   param;
   updateModel = new Query;
   employeeModel;
+  userModel;
 
   filtersLoaded: Promise<boolean>;
 
@@ -27,8 +28,10 @@ export class QueryComponent implements OnInit {
     try {
       const details = await this.getTasks()
       const employees = await this.getEmployees()
+      const profile = await this.getProfile()
       this.queryModel = details
       this.employeeModel = employees
+      this.userModel = profile
     } catch (error) {
       return error
     }
@@ -53,6 +56,17 @@ export class QueryComponent implements OnInit {
       }, (error) => {
         console.error(error)
       })
+  }
+
+  getProfile(){
+    this.user.employeeProfile()
+        .subscribe(res => {
+          this.userModel = res
+          console.log("==================>",res)
+          this.filtersLoaded = Promise.resolve(true);
+        }, (error) => {
+          console.error(error)
+        })
   }
 
   goBack(){

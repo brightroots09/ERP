@@ -65,7 +65,7 @@ router.post("/employee_login", function (req, res, callback) {
 		if (error) callback(error)
 		else {
 			req.user = result.user
-			res.send(result)
+			res.json(result)
 		}
 	})
 });
@@ -163,6 +163,28 @@ router.get("/my_tasks", verifyToken, function (req, res, callback) {
 		})
 
 })
+
+/**
+ * -----------------
+ * OTHER TASKS ROUTE
+ * -----------------
+ */
+
+ router.get("/others", verifyToken, function(req, res, callback){
+	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
+	let payload = jwt.verify(token, 'secretKey');
+	let condition = {
+		id: payload.subject
+	};
+
+	taskModel.find({ "others.id": condition.id }, function(error, result){
+		if(error) callback(error)
+		else{
+			console.log(result)
+			res.json(result)
+		}
+	})
+ })
 
 router.get("/my_project_task/:id", verifyToken, function (req, res, callback) {
 	taskModel

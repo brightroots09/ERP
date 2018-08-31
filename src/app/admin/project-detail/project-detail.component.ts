@@ -14,13 +14,15 @@ export class ProjectDetailComponent implements OnInit {
   param;
   filtersLoaded: Promise<boolean>;
   updateModel = new Updates;
+  userModel;
+  employees = []
 
   private edit: boolean = false;
 
-  constructor(private router: Router, private user: UserService, private route: ActivatedRoute) { 
+  constructor(private router: Router, private user: UserService, private route: ActivatedRoute) {
 
-    this.route.params.subscribe( params => {
-      this.param = params 
+    this.route.params.subscribe(params => {
+      this.param = params
     });
 
   }
@@ -28,67 +30,98 @@ export class ProjectDetailComponent implements OnInit {
   async ngOnInit() {
     try {
       const details = await this.getProjectDetails()
-      if(details != undefined || details != null){
+      const users = await this.getEmployee()
+      if (details != undefined || details != null) {
         this.projectModel = details
+        this.userModel = users
       }
     } catch (error) {
       return error
     }
   }
 
-  getProjectDetails(){
+  getProjectDetails() {
     this.user.projectDetails(this.param.id)
       .subscribe(res => {
         console.log("===========>", res[0])
         this.projectModel = res[0]
+        this.employees = res[0].employees
         this.filtersLoaded = Promise.resolve(true);
-      }, 
-      (error) => {
-        console.error(error)
-      }
-    )
+      },
+        (error) => {
+          console.error(error)
+        }
+      )
+  }
+  getEmployee() {
+    this.user.employee()
+      .subscribe(res => {
+        console.log(res)
+        this.userModel = res
+      },
+        (error) => {
+          console.log(error)
+        }
+      )
   }
 
-  toggleEdit(){
+  toggleEdit() {
     this.edit = true
   }
 
-  onFormSubmit(){
+  onFormSubmit() {
     this.edit = false
-    this.user.editProject(this.param.id, this.projectModel)
+    this.user.editProject(this.param.id, this.projectModel, this.employees)
       .subscribe(res => {
-        this.router.navigate([`/project_details/${this.param.id}`])
+        window.location.reload()
+        // this.router.navigate([`/project_details/${this.param.id}`])
       },
-      (error) => {
-        console.error(error)
-      })
-    }
-    
-    cancelUpdate(){
-      this.edit = false;
-    }
-    
-    goBack(){
-      this.router.navigate(["/projects"])
-    }
-    
-    deleteProject(){
-      this.user.deleteProject(this.param.id)
+        (error) => {
+          console.error(error)
+        })
+  }
+
+  cancelUpdate() {
+    this.edit = false;
+  }
+
+  goBack() {
+    this.router.navigate(["/projects"])
+  }
+
+  deleteProject() {
+    this.user.deleteProject(this.param.id)
       .subscribe(res => {
         this.router.navigate(["/projects"])
       }, (error) => {
         console.error(error)
       })
-    }
-    
-    onUpdateFormSubmit(){
-      this.user.updateProjectTasks(this.param.id, this.updateModel)
+  }
+
+  onUpdateFormSubmit() {
+    this.user.updateProjectTasks(this.param.id, this.updateModel)
       .subscribe(res => {
         console.log(this.updateModel)
         window.location.reload()
       }, (error) => {
         console.error(error)
       })
+  }
+
+  add_employee(id) {
+    this.employees.push(id)
+    this.employees.forEach((item, index) => {
+      if (index !== this.employees.findIndex(i => i === item)) {
+        this.employees.splice(index, 1);
+      }
+    });
+  }
+
+  remove(employee) {
+    var index = this.employees.indexOf(employee);
+    if (index > -1) {
+      this.employees.splice(index, 1);
+    }
   }
 
 }

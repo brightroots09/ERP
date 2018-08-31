@@ -30,7 +30,7 @@ var employeeModel = new Schema({
     },
     is_active: {
         type: Boolean,
-        default: false
+        default: true
     },
     date_created: {
         type: Date

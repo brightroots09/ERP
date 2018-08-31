@@ -1,0 +1,22 @@
+
+** 1. New employee by default status should be active right now its inactive.
+
+** 2. If Employee is inactive he/she should not be able to login their account and message will be shown at the time of login at their end ‘Your account is not Active’.
+
+** 3. In Add Project when we are adding team member ,now I can able to add 1 employee more then 1 time. 1 employee will be added 1 time.
+
+** 4. In Project add task I have added 3 but only first created one is showing ..rest are showing in Task section .. It should also shown in project->View Tasks.
+
+** 5. I am able to create project without adding team members i.e iOS, android ,project manage ,responsible person ..fix it ..admin must enter all info to create project .. 
+
+** 6. In Edit admin can also edit the Team members iOS, android ,project manage ,responsible person right now only title, description, status is editable.
+
+7. In Task details add project name (if task added in project) otherwise add in ‘Others’. If other then then employees name to whom it assign..
+
+** 8. Add Task status both admin and employee side .
+
+** 9. In Queries/Request section admin can reply to employee with text ..Its not there.
+
+10. On employee section display same Task info. As you did in project details.
+
+** 11. In queries/requests now I can able to send queries/request to myself also fix it .

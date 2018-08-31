@@ -48,6 +48,7 @@ import { QueryDetailsComponent } from './employee/query-details/query-details.co
 import { DailyDiaryComponent } from './employee/daily-diary/daily-diary.component';
 import { MyProjectTaskComponent } from './employee/my-project-task/my-project-task.component';
 import { DailyUpdateComponent } from './employee/daily-update/daily-update.component';
+import { IndividualTaskComponent } from './employee/individual-task/individual-task.component';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import { DailyUpdateComponent } from './employee/daily-update/daily-update.compo
     MyProjectTaskComponent,
     DailyUpdateComponent,
     ViewQueriesComponent,
-    ViewAttendanceComponent
+    ViewAttendanceComponent,
+    IndividualTaskComponent
   ],
   imports: [
     BrowserModule,

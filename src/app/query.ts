@@ -3,4 +3,5 @@ export class Query {
     employee_id: String;
     management_id: String;
     message: String;
+    reply: String;
 }

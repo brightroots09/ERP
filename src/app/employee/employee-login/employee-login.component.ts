@@ -11,8 +11,9 @@ import { AuthService } from "../../auth.service"
 export class EmployeeLoginComponent implements OnInit {
 
   userModel = new User()
+  message;
 
-  constructor(private _router: Router, private _auth: AuthService ) { }
+  constructor(private _router: Router, private _auth: AuthService) { }
 
   ngOnInit() {
   }
@@ -22,8 +23,13 @@ export class EmployeeLoginComponent implements OnInit {
       .subscribe(
         res => {
           console.log(res)
-          localStorage.setItem('token', res.token)
-          this._router.navigate(["/employeeProfile"])
+          if (res.token) {
+            localStorage.setItem('token', res.token)
+            this._router.navigate(["/employeeProfile"])
+          }
+          else {
+            this.message = res
+          }
         },
         error => console.log(error)
       )

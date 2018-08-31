@@ -39,7 +39,8 @@ export class UserService {
   private _updateProjectTask = "/admin/update_project_task";
   private _getAllQueries = "/admin/queries";
   private _viewAttendanceUrl = "/admin/attendance";
-  private _toggleAttendanceUrl = "/admin/toggle_attendance"
+  private _toggleAttendanceUrl = "/admin/toggle_attendance";
+  private _replyToQuery = "/admin/reply_to_query";
 
   /**
    * -------------
@@ -63,6 +64,7 @@ export class UserService {
   private _dailyUpdateUrl = "/employee/daily_tasks";
   private _toggleQueryStatusUrl = "/employee/toggleQueryStatus";
   private _toggleTaskStatusUrl = "/employee/toggleTaskSatus";
+  private _invidualTaskUrl = "/employee/others";
 
   constructor(private http: HttpClient) { }
 
@@ -107,9 +109,13 @@ export class UserService {
     return this.http.get<any>(url)
   }
 
-  editProject(id, data) {
+  editProject(id, data, employees) {
     let url = this._editProject + "/" + id
-    return this.http.post<any>(url, data)
+    let obj = {
+      data,
+      employees
+    }
+    return this.http.post<any>(url, obj)
   }
 
   addProject(project, employee) {
@@ -134,10 +140,11 @@ export class UserService {
     return this.http.get<any>(url)
   }
 
-  createTasks(tasks, projects): Observable<any> {
+  createTasks(tasks, projects, employees): Observable<any> {
     let obj = {
       tasks,
-      projects
+      projects,
+      employees
     }
     return this.http.post<any>(this._createTasks, obj)
   }
@@ -180,6 +187,11 @@ export class UserService {
 
   toggleAttendance(id, data): Observable<any>{
     let url = this._toggleAttendanceUrl + "/" + id
+    return this.http.post(url, data)
+  }
+
+  replyToQuery(id, data): Observable<any>{
+    let url = this._replyToQuery + "/" + id;
     return this.http.post(url, data)
   }
 
@@ -262,6 +274,10 @@ export class UserService {
 
   toggleTaskStatus(data): Observable<any>{
     return this.http.post(this._toggleTaskStatusUrl, data)
+  }
+
+  invidualTaskUrl(): Observable<any>{
+    return this.http.get(this._invidualTaskUrl)
   }
 
 }

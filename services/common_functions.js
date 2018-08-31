@@ -29,6 +29,10 @@ function loginUser(db, condition, cb){
       return cb(null, "Wrong Password")
     }
 
+    if(!user.is_active){
+      return cb(null, "Your account is not active")
+    }
+
     else{
       let payload = { subject: user._id }
       let token = jwt.sign(payload, "secretKey")

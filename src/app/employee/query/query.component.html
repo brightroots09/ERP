@@ -38,7 +38,8 @@
 	</div>
 </div>
 
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div *ngIf="filtersLoaded | async" class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -52,7 +53,12 @@
 					<div class="form-group" *ngIf="employeeModel != 0; else employeeModel_else">
 						<label>Select</label>
 						<select class="form-control" #management_id="ngModel" [(ngModel)]="updateModel.management_id" name="management_id" id="exampleFormControlSelect1">
-							<option *ngFor="let employee of employeeModel" value="{{ employee._id }}">{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})</option>
+							<ng-container *ngFor="let employee of employeeModel">								
+								<option *ngIf="userModel._id != employee._id" value="{{ employee._id }}">
+										{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})
+								</option>
+							</ng-container>
+
 						</select>
 					</div>
 					<ng-template #employeeModel_else>

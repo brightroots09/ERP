@@ -82,7 +82,7 @@ router.post("/login", function (req, res, callback) {
 	commonFunction.loginUser(adminModel, condition, function (error, result) {
 		if (error) callback(error)
 		else {
-			res.send(result)
+			res.json(result)
 		}
 	})
 });
@@ -334,18 +334,34 @@ router.get("/project_details/:id", verifyToken, function (req, res, callback) {
  */
 
 router.post("/edit_project/:id", verifyToken, function (req, res, callback) {
-	let obj
+	let obj;
+
+	let arr = []
+	let employee = req.body.employees
+
+	for (let i in employee) {
+		arr.push({
+			id: mongoose.Types.ObjectId(employee[i]._id)
+		})
+	}
+
 	if (req.body.status) {
 		obj = {
-			"project_details.name": req.body.project_details.name,
-			"project_details.description": req.body.project_details.description,
-			"status": req.body.status
+			"project_details.name": req.body.data.project_details.name,
+			"project_details.description": req.body.data.project_details.description,
+			"status": req.body.data.status,
+			"employee_id": arr,
+			"project_manager": req.body.data.project_manager,
+			"responsible_person": req.body.data.responsible_person
 		}
 	}
 	else {
 		obj = {
-			"project_details.name": req.body.project_details.name,
-			"project_details.description": req.body.project_details.description
+			"project_details.name": req.body.data.project_details.name,
+			"project_details.description": req.body.data.project_details.description,
+			"employee_id": arr,
+			"project_manager": req.body.data.project_manager,
+			"responsible_person": req.body.data.responsible_person
 		}
 	}
 	projectModel.findByIdAndUpdate({ _id: req.params.id }, { $set: obj }, function (error, response) {
@@ -409,13 +425,25 @@ router.get("/tasks_details/:id", verifyToken, function (req, res, callback) {
  */
 
 router.get("/project_tasks_details/:id", verifyToken, function (req, res, callback) {
-	tasksModel.aggregate([{ $match: { 'project_id.id': mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'projectModel', localField: 'project_id.id', foreignField: '_id', as: 'projects' } }], function (error, response) {
-		if (error) callback(error)
-		else {
-			console.log(response)
-			res.json(response)
-		}
-	})
+	// tasksModel.aggregate([{ $match: { 'project_id.id': mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'projectModel', localField: 'project_id.id', foreignField: '_id', as: 'projects' } }], function (error, response) {
+	// 	if (error) callback(error)
+	// 	else {
+	// 		console.log(response)
+	// 		res.json(response)
+	// 	}
+	// })
+
+	tasksModel
+		.find({ "project_id.id": req.params.id })
+		.populate({ path: "project_id.id", model: projectModel })
+		.exec(function (error, result) {
+			if (error) callback(error)
+			else {
+				console.log(result)
+				res.json(result)
+			}
+		})
+
 })
 
 /**
@@ -428,26 +456,54 @@ router.post("/create_tasks", verifyToken, function (req, res, callback) {
 	let tasks = new tasksModel()
 	let date = new Date()
 
-	let arr = []
-	let projects = req.body.projects
+	if (req.body.projects.length > 0) {
+		let arr = []
+		let projects = req.body.projects
 
-	for (let i in projects) {
-		arr.push({
-			id: mongoose.Types.ObjectId(projects[i]._id)
+		for (let i in projects) {
+			arr.push({
+				id: mongoose.Types.ObjectId(projects[i]._id)
+			})
+		}
+
+		tasks.tasks_details.name = req.body.tasks.tasks_name;
+		tasks.tasks_details.description = req.body.tasks.tasks_description;
+		tasks.project_id = arr;
+		tasks.date_created = date;
+
+		tasks.save(function (error, result) {
+			if (error) callback(error)
+			else {
+				res.redirect("/admin/tasks")
+			}
 		})
+
+	}
+	else if(req.body.employees.length > 0){
+		let arrEmployee = []
+		let employee = req.body.employees
+	
+		for (let i in employee) {
+			arrEmployee.push({
+				id: mongoose.Types.ObjectId(employee[i]._id)
+			})
+		}
+
+		tasks.tasks_details.name = req.body.tasks.tasks_name;
+		tasks.tasks_details.description = req.body.tasks.tasks_description;
+		tasks.others = arrEmployee;
+		tasks.date_created = date;
+
+		tasks.save(function (error, result) {
+			if (error) callback(error)
+			else {
+				res.redirect("/admin/tasks")
+			}
+		})
+
 	}
 
-	tasks.tasks_details.name = req.body.tasks.tasks_name;
-	tasks.tasks_details.description = req.body.tasks.tasks_description;
-	tasks.project_id = arr;
-	tasks.date_created = date;
 
-	tasks.save(function (error, result) {
-		if (error) callback(error)
-		else {
-			res.redirect("/admin/tasks")
-		}
-	})
 
 })
 
@@ -604,12 +660,29 @@ router.get("/attendance", verifyToken, function (req, res, callback) {
 
 router.post("/toggle_attendance/:id", verifyToken, function (req, res, callback) {
 	dailyUpdatesModel
-		.findByIdAndUpdate({_id: req.params.id}, {$set: req.body})
-		.exec(function(error, result){
-			if(error) callback(error)
-			else{
+		.findByIdAndUpdate({ _id: req.params.id }, { $set: req.body })
+		.exec(function (error, result) {
+			if (error) callback(error)
+			else {
 				res.json(result)
 			}
 		})
 })
+
+/**
+ * --------------------
+ * REPLY TO QUERY ROUTE
+ * --------------------
+ */
+router.post("/reply_to_query/:id", verifyToken, function (req, res, callback) {
+	queryModel
+		.findByIdAndUpdate({ _id: req.params.id }, { $set: req.body })
+		.exec(function (error, result) {
+			if (error) callback(error)
+			else {
+				res.json(result)
+			}
+		})
+})
+
 module.exports = router;

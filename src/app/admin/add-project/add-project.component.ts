@@ -13,6 +13,8 @@ export class AddProjectComponent implements OnInit {
   userModel;
   projectModel = new Project;
   employees = [];
+  message;
+
 
   constructor(private router: Router, private user: UserService) { }
 
@@ -39,12 +41,17 @@ export class AddProjectComponent implements OnInit {
       )
   }
   onFormSubmit() {
-    this.user.addProject(this.projectModel, this.employees)
+    if(this.employees.length > 0){
+      this.user.addProject(this.projectModel, this.employees)
       .subscribe(res => {
         this.router.navigate(["/projects"])
       }, (error) => {
         console.error(error)
       })
+    }
+    else{
+      this.message = "You must select at least one member"
+    }
   }
 
   cancelAdd() {
@@ -53,6 +60,11 @@ export class AddProjectComponent implements OnInit {
 
   add_employee(id) {
     this.employees.push(id)
+    this.employees.forEach((item, index) => {
+      if (index !== this.employees.findIndex(i => i === item)) {
+        this.employees.splice(index, 1);
+      }
+    });
   }
 
   remove(employee) {
