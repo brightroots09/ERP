@@ -12,7 +12,7 @@
 			<div *ngIf="tasks.my_tasks.length > 0; else no_tasks">
 			<h5 class="card-title">{{ tasks.project_details.name }}</h5>
 			<div class="row">
-				<div class="card p-3 ml-1 mr-1" style="width: 22rem;" *ngFor="let myTasks of tasks.my_tasks">
+				<div class="card p-3 ml-auto mr-auto" style="width: 22rem;" *ngFor="let myTasks of tasks.my_tasks">
 					<p class="card-title">
 						<b>Name:</b> {{myTasks.tasks_details.name}}
 					</p>

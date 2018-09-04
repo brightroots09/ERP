@@ -29,6 +29,7 @@ import { TaskDetailsComponent } from './admin/task-details/task-details.componen
 import { AddTasksComponent } from './admin/add-tasks/add-tasks.component';
 import { ProjectTaskDetailsComponent } from './admin/project-task-details/project-task-details.component';
 import { ViewQueriesComponent } from './admin/view-queries/view-queries.component' ;
+import { AttendanceComponent } from './admin/attendance/attendance.component';
 import { ViewAttendanceComponent } from './admin/view-attendance/view-attendance.component';
 import { AddProjectTaskComponent } from './admin/add-project-task/add-project-task.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -50,6 +51,7 @@ import { DailyDiaryComponent } from './employee/daily-diary/daily-diary.componen
 import { MyProjectTaskComponent } from './employee/my-project-task/my-project-task.component';
 import { DailyUpdateComponent } from './employee/daily-update/daily-update.component';
 import { IndividualTaskComponent } from './employee/individual-task/individual-task.component';
+import { MyAttendanceComponent } from './employee/my-attendance/my-attendance.component';
 
 
 @NgModule({
@@ -84,13 +86,15 @@ import { IndividualTaskComponent } from './employee/individual-task/individual-t
     ViewQueriesComponent,
     ViewAttendanceComponent,
     IndividualTaskComponent,
-    AddProjectTaskComponent
+    AddProjectTaskComponent,
+    MyAttendanceComponent,
+    AttendanceComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule 
   ],
   providers: [AuthGuard, {
     provide: HTTP_INTERCEPTORS,

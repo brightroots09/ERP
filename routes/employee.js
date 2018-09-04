@@ -170,21 +170,21 @@ router.get("/my_tasks", verifyToken, function (req, res, callback) {
  * -----------------
  */
 
- router.get("/others", verifyToken, function(req, res, callback){
+router.get("/others", verifyToken, function (req, res, callback) {
 	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
 	let payload = jwt.verify(token, 'secretKey');
 	let condition = {
 		id: payload.subject
 	};
 
-	taskModel.find({ "others.id": condition.id }, function(error, result){
-		if(error) callback(error)
-		else{
+	taskModel.find({ "others.id": condition.id }, function (error, result) {
+		if (error) callback(error)
+		else {
 			console.log(result)
 			res.json(result)
 		}
 	})
- })
+})
 
 router.get("/my_project_task/:id", verifyToken, function (req, res, callback) {
 	taskModel
@@ -345,18 +345,18 @@ router.get("/daily_diary", verifyToken, function (req, res, callback) {
 		.exec(function (error, response) {
 			if (error) callback(error)
 			else {
-				if(response.length > 0){
-					if(response[0].out_time || response[0].out_time == ""){
+				if (response.length > 0) {
+					if (response[0].out_time || response[0].out_time == "") {
 						let in_time = moment(response[0].date_created, 'YYYY-MM-DD HH:mm:ss')
 						let new_date = moment(date, 'YYYY-MM-DD HH:mm:ss')
 						let diff = moment.duration(new_date.diff(in_time))
 						let format_date = diff.asHours();
-	
-						res.json({response, format_date})
+
+						res.json({ response, format_date })
 					}
 				}
-				else{
-					res.json({response})
+				else {
+					res.json({ response })
 				}
 			}
 		})
@@ -421,12 +421,12 @@ router.post("/addEveningUpdate/:id", function (req, res, callback) {
 	// 				res.json("You havn't completed 9 hours of your shift")
 	// 			}
 	// 			else{
-		// let in_time = moment(req.body.in_time, 'YYYY-MM-DD HH:mm:ss')
-		// let new_date = moment(date, 'YYYY-MM-DD HH:mm:ss')
-		// let diff = moment.duration(new_date.diff(in_time))
-		// let format_date = diff.asHours();
-		console.log(req.body)
-		dailyUpdatedModel
+	// let in_time = moment(req.body.in_time, 'YYYY-MM-DD HH:mm:ss')
+	// let new_date = moment(date, 'YYYY-MM-DD HH:mm:ss')
+	// let diff = moment.duration(new_date.diff(in_time))
+	// let format_date = diff.asHours();
+	console.log(req.body)
+	dailyUpdatedModel
 		.findByIdAndUpdate({ _id: req.params.id }, { $set: { 'evening_session': req.body.data.message, 'out_time': req.body.data.out_time, total_hours: req.body.in_time } }, function (error, response) {
 			if (error) callback(error)
 			else {
@@ -484,6 +484,32 @@ router.post("/toggleTaskSatus", verifyToken, function (req, res, callback) {
 			res.json(response)
 		}
 	})
+});
+
+
+/**
+ * ---------------------
+ * VIEW ATTENDANCE ROUTE
+ * ---------------------
+ */
+
+router.get("/my_attendance", verifyToken, function (req, res, callback) {
+	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
+	let payload = jwt.verify(token, 'secretKey');
+	let condition = {
+		id: payload.subject
+	};
+
+	dailyUpdatedModel
+		.find({ employee_id: condition.id })
+		.populate({ path: 'employee_id', model: employeeModel })
+		.exec(function (error, result) {
+			if (error) callback(error)
+			else {
+				res.json(result)
+			}
+		})
+
 })
 
 module.exports = router;

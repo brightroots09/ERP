@@ -1,0 +1,27 @@
+<div class="jumbotron jumbotron-fluid bg-white text-center">
+    <div class="container d-flex justify-content-center align-items-center">
+        <h1>
+            Pick a date
+        </h1>
+        <br>
+
+        <form #dateForm="ngForm" class="form ml-auto mr-auto" method="POST" (ngSubmit)="onFormSubmit()">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <input type="date" class="form-control" name="date" [(ngModel)]="dateModel">
+                </div>
+                <div class="input-group-text" id="btnGroupAddon">
+                    <button type="Submit" class="btn btn-outline-secondary">View Attendance</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="error">
+            <p>Please select a date!</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div>

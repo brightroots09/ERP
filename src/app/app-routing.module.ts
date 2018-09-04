@@ -31,6 +31,8 @@ import { DailyUpdateComponent } from './employee/daily-update/daily-update.compo
 import { ViewAttendanceComponent } from './admin/view-attendance/view-attendance.component';
 import { IndividualTaskComponent } from './employee/individual-task/individual-task.component';
 import { AddProjectTaskComponent } from './admin/add-project-task/add-project-task.component';
+import { MyAttendanceComponent } from './employee/my-attendance/my-attendance.component';
+import { AttendanceComponent } from './admin/attendance/attendance.component';
 
 const routes: Routes = [
   {
@@ -128,7 +130,12 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "view_attendance",
+    path: "attendance",
+    component: AttendanceComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "view_attendance/:date",
     component: ViewAttendanceComponent,
     canActivate: [AuthGuard]
   },
@@ -194,6 +201,11 @@ const routes: Routes = [
   {
     path: "individualTask",
     component: IndividualTaskComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "myAttendance",
+    component: MyAttendanceComponent,
     canActivate: [AuthGuard]
   },
   {

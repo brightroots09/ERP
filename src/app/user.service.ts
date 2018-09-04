@@ -66,6 +66,7 @@ export class UserService {
   private _toggleQueryStatusUrl = "/employee/toggleQueryStatus";
   private _toggleTaskStatusUrl = "/employee/toggleTaskSatus";
   private _invidualTaskUrl = "/employee/others";
+  private _myAttendanceUrl = "/employee/my_attendance";
 
   constructor(private http: HttpClient) { }
 
@@ -182,8 +183,9 @@ export class UserService {
     return this.http.get(this._getAllQueries)
   }
 
-  getAttendance(): Observable<any>{
-    return this.http.get(this._viewAttendanceUrl)
+  getAttendance(date): Observable<any>{
+    let url = this._viewAttendanceUrl + "/" + date
+    return this.http.get(url)
   }
 
   toggleAttendance(id, data): Observable<any>{
@@ -287,5 +289,10 @@ export class UserService {
   invidualTaskUrl(): Observable<any>{
     return this.http.get(this._invidualTaskUrl)
   }
+
+  myAttendance(): Observable<any>{
+    return this.http.get(this._myAttendanceUrl)
+  }
+
 
 }

@@ -12,6 +12,7 @@ const queryModel = require("../models/queryModel");
 const dailyUpdatesModel = require("../models/dailyUpdatesModel");
 
 const session = require("express-session");
+const moment = require("moment");
 
 const commonFunction = require("../services/common_functions");
 const mongoose = require("mongoose");
@@ -639,9 +640,12 @@ router.get("/queries", verifyToken, function (req, res, callback) {
  * --------------------
  */
 
-router.get("/attendance", verifyToken, function (req, res, callback) {
+router.get("/attendance/:date", verifyToken, function (req, res, callback) {
+	let date = new Date(`${req.params.date}`)
+	let nextDate = new Date(moment(date).add('24', 'hours'))
+
 	dailyUpdatesModel
-		.find({})
+		.find({"date_created" : {"$gte": date, "$lte": nextDate}})
 		.populate({ path: 'employee_id', model: employeeModel })
 		.exec(function (error, result) {
 			if (error) callback(error)
