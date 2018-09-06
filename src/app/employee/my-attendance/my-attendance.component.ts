@@ -50,22 +50,22 @@ export class MyAttendanceComponent implements OnInit {
     return total
   }
 
-  htmlToExcel(){
+  // htmlToExcel(){
 
-    let arr = []
+  //   let arr = []
 
-    for(let i=0; i<this.attendanceModel.length; i++){
-      arr.push({
-        morning_session: this.attendanceModel[i].morning_session,
-        evening_session: this.attendanceModel[i].evening_session,
-        total_hours: this.attendanceModel[i].total_hours,
-        status: this.attendanceModel[i].status,
-        in_time: this.attendanceModel[i].in_time,
-        out_time: this.attendanceModel[i].out_time,
-        date: new Date(this.attendanceModel[i].date_created).toLocaleDateString()
-      })
-    }
-    this.excelService.exportAsExcelFile(arr, `Attendance Sheet`)
-  }
+  //   for(let i=0; i<this.attendanceModel.length; i++){
+  //     arr.push({
+  //       morning_session: this.attendanceModel[i].morning_session,
+  //       evening_session: this.attendanceModel[i].evening_session,
+  //       total_hours: this.attendanceModel[i].total_hours,
+  //       status: this.attendanceModel[i].status,
+  //       in_time: this.attendanceModel[i].in_time,
+  //       out_time: this.attendanceModel[i].out_time,
+  //       date: new Date(this.attendanceModel[i].date_created).toLocaleDateString()
+  //     })
+  //   }
+  //   this.excelService.exportAsExcelFile(arr, `Attendance Sheet`)
+  // }
 
 }

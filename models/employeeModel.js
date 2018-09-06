@@ -32,6 +32,10 @@ var employeeModel = new Schema({
         type: Boolean,
         default: true
     },
+    salary: {
+        type: Number,
+        default: 0
+    },
     date_created: {
         type: Date
     }

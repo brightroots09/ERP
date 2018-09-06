@@ -31,6 +31,7 @@ import { ProjectTaskDetailsComponent } from './admin/project-task-details/projec
 import { ViewQueriesComponent } from './admin/view-queries/view-queries.component' ;
 import { AttendanceComponent } from './admin/attendance/attendance.component';
 import { ViewAttendanceComponent } from './admin/view-attendance/view-attendance.component';
+import { ViewAllAttendanceComponent } from './admin/view-all-attendance/view-all-attendance.component';
 import { AddProjectTaskComponent } from './admin/add-project-task/add-project-task.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
@@ -52,6 +53,7 @@ import { MyProjectTaskComponent } from './employee/my-project-task/my-project-ta
 import { DailyUpdateComponent } from './employee/daily-update/daily-update.component';
 import { IndividualTaskComponent } from './employee/individual-task/individual-task.component';
 import { MyAttendanceComponent } from './employee/my-attendance/my-attendance.component';
+import { GroupByPipe } from './group-by.service';
 
 
 @NgModule({
@@ -88,7 +90,9 @@ import { MyAttendanceComponent } from './employee/my-attendance/my-attendance.co
     IndividualTaskComponent,
     AddProjectTaskComponent,
     MyAttendanceComponent,
-    AttendanceComponent
+    AttendanceComponent,
+    ViewAllAttendanceComponent,
+    GroupByPipe
   ],
   imports: [
     BrowserModule,

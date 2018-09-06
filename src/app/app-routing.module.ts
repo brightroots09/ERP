@@ -33,6 +33,7 @@ import { IndividualTaskComponent } from './employee/individual-task/individual-t
 import { AddProjectTaskComponent } from './admin/add-project-task/add-project-task.component';
 import { MyAttendanceComponent } from './employee/my-attendance/my-attendance.component';
 import { AttendanceComponent } from './admin/attendance/attendance.component';
+import { ViewAllAttendanceComponent } from './admin/view-all-attendance/view-all-attendance.component';
 
 const routes: Routes = [
   {
@@ -137,6 +138,11 @@ const routes: Routes = [
   {
     path: "view_attendance/:date",
     component: ViewAttendanceComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "all_attendance",
+    component: ViewAllAttendanceComponent,
     canActivate: [AuthGuard]
   },
   {

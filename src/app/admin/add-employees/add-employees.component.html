@@ -36,16 +36,22 @@
 			</div>
 
 			<div class="form-group">
-				<label for="first_name">Designation: </label>
+				<label for="designation">Designation: </label>
 				<select #designation="ngModel" [(ngModel)]="userModel.designation" name="designation" class="form-control" id="designation"
 				 [class.is-invalid]="designation.invalid && designation.touched">
 					<option>Project Manager</option>
 					<option>Developer (IOS)</option>
 					<option>Developer (Android)</option>
 					<option>Backend Developer</option>
+					<option>Designer</option>
 					<option>HR</option>
 				</select>
 				<small class="text-danger" [class.d-none]="designation.valid || designation.untouched">Designation is required</small>
+			</div>
+			<div class="form-group">
+				<label for="salary">Salary: </label>
+				<input type="number" id="salary" name="salary" class="form-control" #salary="ngModel" [class.in-valid]="salary.invalid && salary.touched" [class.is-valid]="salary.valid && salary.untouched" [(ngModel)]="userModel.salary" required>
+				<small class="text-danger" [class.d-none]="salary.valid || salary.untouched">Salary is required</small>
 			</div>
 			<button type="submit" [disabled]="employeeForm.form.invalid" class="btn btn-outline-primary mr-2">Add</button>
 			<button type="button" class="btn btn-outline-secondary" (click)="cancelAdd()">Cancel</button>

@@ -39,6 +39,7 @@ export class UserService {
   private _updateProjectTask = "/admin/update_project_task";
   private _getAllQueries = "/admin/queries";
   private _viewAttendanceUrl = "/admin/attendance";
+  private _viewAllAttendanceUrl = "/admin/allAttendance";
   private _toggleAttendanceUrl = "/admin/toggle_attendance";
   private _replyToQuery = "/admin/reply_to_query";
   private _createProjectTask = "/admin/create_project_task";
@@ -186,6 +187,10 @@ export class UserService {
   getAttendance(date): Observable<any>{
     let url = this._viewAttendanceUrl + "/" + date
     return this.http.get(url)
+  }
+
+  getAllAttendance(): Observable<any>{
+    return this.http.get(this._viewAllAttendanceUrl)
   }
 
   toggleAttendance(id, data): Observable<any>{

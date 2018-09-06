@@ -32,7 +32,7 @@
           </button>
         </div>
         <div class="col-md-6">
-          <button type="button" class="btn btn-link" data-toggle="modal" attr.data-target="#replyModal{{query._id}}">
+          <button type="button" class="btn btn-link" [disabled]="query.reply != ''" data-toggle="modal" attr.data-target="#replyModal{{query._id}}">
             Reply
           </button>
         </div>

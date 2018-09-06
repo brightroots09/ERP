@@ -6,5 +6,6 @@ export class User {
     last_name: String;
     image: String;
     designation: String;
+    Salary: Number;
     is_active: Boolean;
 }

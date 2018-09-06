@@ -7,14 +7,14 @@
           </button>
         </div>
         <div class="col-md-6 text-right">
-            <button type="button" class="btn btn-link text-primary" (click)="viewAllAttendance()">View All</button>
+            <button type="button" class="btn btn-link text-primary" (click)="htmlToExcel()">Export to Excel</button>
         </div>
       </div>
     </div>
   </div>
   <div class="row" *ngIf="filtersLoaded | async">
     <div class="col-md-12">
-      <table *ngIf="attendanceModel.length > 0; else attendanceModel_else" class="table table-responsive" id="table_id">
+      <table *ngIf="attendanceModel.length > 0; else attendanceModel_else" class="table table-responsive" id="table">
         <thead>
           <tr>
             <th>Name</th>

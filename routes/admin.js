@@ -163,6 +163,7 @@ router.post("/add_employee", verifyToken, function (req, res, callback) {
 	employee.profile.last_name = req.body.last_name;
 
 	employee.designation = req.body.designation;
+	employee.salary = req.body.salary;
 	employee.date_created = date;
 
 	employeeModel.findOne({ email: req.body.email }, function (error, exists) {
@@ -207,7 +208,8 @@ router.post("/edit_employee/:id", verifyToken, function (req, res, callback) {
 			"profile.first_name": req.body.profile.first_name,
 			"profile.last_name": req.body.profile.last_name,
 			"email": req.body.email,
-			"designation": req.body.designation,
+			"designation": req.body.designaion,
+			"salary": req.body.salary,
 			"is_active": req.body.is_active
 		}
 	}
@@ -216,7 +218,8 @@ router.post("/edit_employee/:id", verifyToken, function (req, res, callback) {
 			"profile.first_name": req.body.profile.first_name,
 			"profile.last_name": req.body.profile.last_name,
 			"email": req.body.email,
-			"designation": req.body.designation
+			"designation": req.body.designation,
+			"salary": req.body.salary
 		}
 	}
 
@@ -646,6 +649,18 @@ router.get("/attendance/:date", verifyToken, function (req, res, callback) {
 
 	dailyUpdatesModel
 		.find({"date_created" : {"$gte": date, "$lte": nextDate}})
+		.populate({ path: 'employee_id', model: employeeModel })
+		.exec(function (error, result) {
+			if (error) callback(error)
+			else {
+				res.json(result)
+			}
+		})
+})
+
+router.get("/allAttendance", verifyToken, function (req, res, callback) {
+	dailyUpdatesModel
+		.find({})
 		.populate({ path: 'employee_id', model: employeeModel })
 		.exec(function (error, result) {
 			if (error) callback(error)

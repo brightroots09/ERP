@@ -1,5 +1,5 @@
 <div class="row" *ngIf="filtersLoaded | async">
-	<div class="col-md-5 card mt-4 text-center">
+	<div class="col-md-4 offset-md-2 card mt-4 text-center">
 
 		<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
 		 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
@@ -9,16 +9,19 @@
 		</ng-template>
 
 		<div class="card-body">
-			<h5 class="card-title" *ngIf="!edit">
+			<h5 class="card-title">
 				Name: {{userModel.profile.first_name}} {{ userModel.profile.last_name }}
 			</h5>
-			<h5 class="card-text" *ngIf="!edit">
+			<h5 class="card-text">
 				Email: {{ userModel.email }}
 			</h5>
-			<h5 class="card-text" *ngIf="!edit">
+			<h5 class="card-text">
 				Dsignation: {{ userModel.designation }}
 			</h5>
-			<div *ngIf="!edit">
+			<h5 class="card-text">
+				Salary: {{ userModel.salary | currency:'INR' }}
+			</h5>
+			<div>
 				<h5 class="card-text" *ngIf="userModel.is_active; else else_block">
 					Status:
 					<span class="badge badge-info p-2">Active</span>
