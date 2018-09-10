@@ -10,16 +10,29 @@ export class GroupByPipe implements PipeTransform {
         if(!collection) {
             return null;
         }
-        const groupedCollection = collection.reduce((previous, current)=> {
-          var date = new Date(current[property]).toLocaleDateString()
-            if(!previous[date]) {
-              previous[date] = [current];
-            } else {
-                previous[date].push(current);
-            }
-
-            return previous;
-        }, {});
-        return Object.keys(groupedCollection).map(key => ({ key, value: groupedCollection[key] }));
+        if(property == 'employee_id'){
+            const groupedCollection = collection.reduce((previous, current)=> {
+                //   var date = new Date(current[property]).toLocaleDateString()
+                    if(!previous[current[property].profile.first_name]) {
+                      previous[current[property].profile.first_name] = [current];
+                    } else {
+                        previous[current[property].profile.first_name].push(current);
+                    }
+                    return previous;
+                }, {});
+                return Object.keys(groupedCollection).map(key => ({ key, value: groupedCollection[key]}));
+        }
+        else{
+            const groupedCollection = collection.reduce((previous, current)=> {
+                  var date = new Date(current[property]).toLocaleDateString()
+                    if(!previous[date]) {
+                      previous[date] = [current];
+                    } else {
+                        previous[date].push(current);
+                    }
+                    return previous;
+                }, {});
+                return Object.keys(groupedCollection).map(key => ({ key, value: groupedCollection[key]}));
+        }
     }
 }

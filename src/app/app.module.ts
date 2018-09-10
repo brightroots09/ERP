@@ -33,6 +33,9 @@ import { AttendanceComponent } from './admin/attendance/attendance.component';
 import { ViewAttendanceComponent } from './admin/view-attendance/view-attendance.component';
 import { ViewAllAttendanceComponent } from './admin/view-all-attendance/view-all-attendance.component';
 import { AddProjectTaskComponent } from './admin/add-project-task/add-project-task.component';
+import { ExportToPdfComponent } from './admin/export-to-pdf/export-to-pdf.component';
+
+
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 /**
@@ -92,7 +95,8 @@ import { GroupByPipe } from './group-by.service';
     MyAttendanceComponent,
     AttendanceComponent,
     ViewAllAttendanceComponent,
-    GroupByPipe
+    GroupByPipe,
+    ExportToPdfComponent
   ],
   imports: [
     BrowserModule,

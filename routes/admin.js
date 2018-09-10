@@ -208,7 +208,7 @@ router.post("/edit_employee/:id", verifyToken, function (req, res, callback) {
 			"profile.first_name": req.body.profile.first_name,
 			"profile.last_name": req.body.profile.last_name,
 			"email": req.body.email,
-			"designation": req.body.designaion,
+			"designation": req.body.designation,
 			"salary": req.body.salary,
 			"is_active": req.body.is_active
 		}
@@ -648,7 +648,7 @@ router.get("/attendance/:date", verifyToken, function (req, res, callback) {
 	let nextDate = new Date(moment(date).add('24', 'hours'))
 
 	dailyUpdatesModel
-		.find({"date_created" : {"$gte": date, "$lte": nextDate}})
+		.find({ "date_created": { "$gte": date, "$lte": nextDate } })
 		.populate({ path: 'employee_id', model: employeeModel })
 		.exec(function (error, result) {
 			if (error) callback(error)
@@ -659,13 +659,42 @@ router.get("/attendance/:date", verifyToken, function (req, res, callback) {
 })
 
 router.get("/allAttendance", verifyToken, function (req, res, callback) {
+	let array = []
 	dailyUpdatesModel
 		.find({})
 		.populate({ path: 'employee_id', model: employeeModel })
 		.exec(function (error, result) {
 			if (error) callback(error)
 			else {
-				res.json(result)
+
+
+				result.sort(function (a, b) {
+					var nameA = a.employee_id._id, nameB = b.employee_id._id
+			  
+					if (nameA < nameB) //sort string ascending
+					  return -1
+					if (nameA > nameB)
+					  return 1
+					return 0 //default return value (no sorting)
+				  })
+			  
+				  var current = null;
+				  var count = 0;
+				  for (var i = 0; i < result.length; i++) {
+					if (result[i].employee_id._id != current) {
+					  if (count > 0) {
+						array.push({ current, count })
+					  }
+					  current = result[i].employee_id._id;
+					  count = 1;
+					} else {
+					  count++;
+					}
+				  }
+				  if (count > 0) {
+					array.push({ current, count })
+				  }
+				res.json({result, array})
 			}
 		})
 })
@@ -716,7 +745,7 @@ router.post("/create_project_task", verifyToken, function (req, res, callback) {
 
 	let arr = []
 
-	arr.push({id: mongoose.Types.ObjectId(req.body.id)})
+	arr.push({ id: mongoose.Types.ObjectId(req.body.id) })
 
 	let arrEmployee = []
 	let employee = req.body.employees

@@ -34,6 +34,7 @@ import { AddProjectTaskComponent } from './admin/add-project-task/add-project-ta
 import { MyAttendanceComponent } from './employee/my-attendance/my-attendance.component';
 import { AttendanceComponent } from './admin/attendance/attendance.component';
 import { ViewAllAttendanceComponent } from './admin/view-all-attendance/view-all-attendance.component';
+import { ExportToPdfComponent } from './admin/export-to-pdf/export-to-pdf.component';
 
 const routes: Routes = [
   {
@@ -143,6 +144,11 @@ const routes: Routes = [
   {
     path: "all_attendance",
     component: ViewAllAttendanceComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "export_to_pdf",
+    component: ExportToPdfComponent,
     canActivate: [AuthGuard]
   },
   {

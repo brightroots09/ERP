@@ -1,20 +1,34 @@
-<div class="jumbotron jumbotron-fluid bg-white text-center">
-    <div class="container d-flex justify-content-center align-items-center">
-        <h1>
-            Pick a date
-        </h1>
-        <br>
-
-        <form #dateForm="ngForm" class="form ml-auto mr-auto" method="POST" (ngSubmit)="onFormSubmit()">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <input type="date" class="form-control" name="date" [(ngModel)]="dateModel">
-                </div>
-                <div class="input-group-text" id="btnGroupAddon">
-                    <button type="Submit" class="btn btn-outline-secondary">View Attendance</button>
-                </div>
+<div class="container">
+    <div class="row">
+            <div class="col-md-6">
+                    <a class="btn btn-link" routerLink="/profile">&laquo; Go back</a>
             </div>
-        </form>
+            <div class="col-md-6 text-right">
+                <a class="btn btn-link" routerLink="/all_attendance">View All Attendance &raquo;</a>
+            </div>
+    </div>
+</div>
+<div class="jumbotron jumbotron-fluid bg-white text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>
+                    Pick a date
+                </h1>
+            </div>
+            <div class="col-md-6">
+                <form #dateForm="ngForm" class="form ml-auto mr-auto" method="POST" (ngSubmit)="onFormSubmit()">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <input type="date" class="form-control" name="date" [(ngModel)]="dateModel">
+                        </div>
+                        <div class="input-group-text" id="btnGroupAddon">
+                            <button type="Submit" class="btn btn-outline-secondary">View Attendance</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <div class="container">
         <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="error">
