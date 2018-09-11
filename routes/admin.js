@@ -649,6 +649,7 @@ router.get("/attendance/:date", verifyToken, function (req, res, callback) {
 
 	dailyUpdatesModel
 		.find({ "date_created": { "$gte": date, "$lte": nextDate } })
+		.sort({"date_created": -1})
 		.populate({ path: 'employee_id', model: employeeModel })
 		.exec(function (error, result) {
 			if (error) callback(error)
@@ -662,39 +663,40 @@ router.get("/allAttendance", verifyToken, function (req, res, callback) {
 	let array = []
 	dailyUpdatesModel
 		.find({})
+		.sort({"date_created": -1})
 		.populate({ path: 'employee_id', model: employeeModel })
 		.exec(function (error, result) {
 			if (error) callback(error)
 			else {
 
+				// var sort_array = result;
+				// sort_array.sort(function (a, b) {
+				// 	var nameA = a.employee_id._id, nameB = b.employee_id._id
 
-				result.sort(function (a, b) {
-					var nameA = a.employee_id._id, nameB = b.employee_id._id
-			  
-					if (nameA < nameB) //sort string ascending
-					  return -1
-					if (nameA > nameB)
-					  return 1
-					return 0 //default return value (no sorting)
-				  })
-			  
-				  var current = null;
-				  var count = 0;
-				  for (var i = 0; i < result.length; i++) {
-					if (result[i].employee_id._id != current) {
-					  if (count > 0) {
-						array.push({ current, count })
-					  }
-					  current = result[i].employee_id._id;
-					  count = 1;
-					} else {
-					  count++;
-					}
-				  }
-				  if (count > 0) {
-					array.push({ current, count })
-				  }
-				res.json({result, array})
+				// 	if (nameA < nameB) //sort string ascending
+				// 		return -1
+				// 	if (nameA > nameB)
+				// 		return 1
+				// 	return 0 //default return value (no sorting)
+				// })
+
+				// var current = null;
+				// var count = 0;
+				// for (var i = 0; i < sort_array.length; i++) {
+				// 	if (sort_array[i].employee_id._id != current) {
+				// 		if (count > 0) {
+				// 			array.push({ current, count })
+				// 		}
+				// 		current = sort_array[i].employee_id._id;
+				// 		count = 1;
+				// 	} else {
+				// 		count++;
+				// 	}
+				// }
+				// if (count > 0) {
+				// 	array.push({ current, count })
+				// }
+				res.json({ result, array })
 			}
 		})
 })
@@ -769,5 +771,34 @@ router.post("/create_project_task", verifyToken, function (req, res, callback) {
 		}
 	})
 })
+
+
+/**
+ * -------------------
+ * ADD ABSENTIES ROUTE
+ * -------------------
+ */
+
+router.post("/add_absenties", verifyToken, function (req, res, callback) {
+	let date = new Date(req.body.date)
+	let dailyUpdate = new dailyUpdatesModel()
+
+	dailyUpdate.employee_id = req.body.id;
+	dailyUpdate.morning_session = "Absent";
+	dailyUpdate.evening_session = "Absent";
+	dailyUpdate.in_time = "-";
+	dailyUpdate.out_time = "-";
+	dailyUpdate.total_hours = "0";
+	dailyUpdate.date_created = date
+
+	dailyUpdate.save(function(error, response){
+		if(error) callback(error)
+		else{
+			res.json(response)
+		}
+	})
+
+})
+
 
 module.exports = router;

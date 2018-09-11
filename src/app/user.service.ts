@@ -43,7 +43,7 @@ export class UserService {
   private _toggleAttendanceUrl = "/admin/toggle_attendance";
   private _replyToQuery = "/admin/reply_to_query";
   private _createProjectTask = "/admin/create_project_task";
-
+  private _addAbsenties = "/admin/add_absenties";
   /**
    * -------------
    * EMPLOYEE URLs
@@ -208,6 +208,10 @@ export class UserService {
       id, data, employees
     }
     return this.http.post(this._createProjectTask, obj)
+  }
+
+  addAbsenties(id, date): Observable<any>{
+    return this.http.post(this._addAbsenties, {id, date})
   }
 
   /**

@@ -1,11 +1,11 @@
-import { Component, OnInit, ElementRef ,ViewChild, Pipe, PipeTransform, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Pipe, PipeTransform, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
 import { UserService } from '../../user.service';
 import { ExcelService } from '../../excel.service';
 
 import { ExportToCsv } from 'export-to-csv';
-import * as jspdf from 'jspdf';  
-import html2canvas from 'html2canvas'; 
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-export-to-pdf',
@@ -18,6 +18,9 @@ export class ExportToPdfComponent implements OnInit {
   filtersLoaded: Promise<boolean>;
   param;
   array;
+  halfDayLeave;
+  fullDayLeave;
+
   constructor(private router: Router, private user: UserService, private excelService: ExcelService, private route: ActivatedRoute) {
     this.route.params.subscribe(params => {
       this.param = params
@@ -118,21 +121,53 @@ export class ExportToPdfComponent implements OnInit {
   }
 
 
-  htmlToPDF(){
-    var data = document.getElementById('contentToConvert');  
-    html2canvas(data).then(canvas => {  
+  htmlToPDF() {
+    var data = document.getElementById('contentToConvert');
+    html2canvas(data).then(canvas => {
       // Few necessary setting options  
-      var imgWidth = 208;   
-      var pageHeight = 295;    
-      var imgHeight = canvas.height * imgWidth / canvas.width;  
-      var heightLeft = imgHeight;  
-  
-      const contentDataURL = canvas.toDataURL('image/png')  
+      var imgWidth = 208;
+      var pageHeight = 295;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+      var heightLeft = imgHeight;
+
+      const contentDataURL = canvas.toDataURL('image/png')
       let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;  
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+      var position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
       pdf.save('MYPdf.pdf'); // Generated PDF   
-    });  
+    });
+  }
+
+  getTotalHours(model){
+    return model.map(tag => parseFloat(tag.total_hours)).reduce((a, b) => a + b, 0)
+  }
+
+  calculateSalary(model){
+    let halfLeaveCount = 0;
+    let fullLeaveCount = 0
+    for(let i = 0; i < model.length; i++){
+      if(parseFloat(model[i].total_hours) > 1 && parseFloat(model[i].total_hours) < 9){
+        halfLeaveCount += 0.5
+      }
+      else if(parseFloat(model[i].total_hours) == 0){
+        fullLeaveCount++
+      }
+    }
+    // this.halfDayLeave = halfLeaveCount;
+    // this.fullDayLeave = fullLeaveCount
+    if(halfLeaveCount == 0 || halfLeaveCount <= 1){
+      this.halfDayLeave = 0
+    }
+    else if(halfLeaveCount > 1){
+      this.halfDayLeave = halfLeaveCount - 1;
+    }
+    
+    if(fullLeaveCount == 0 || fullLeaveCount == 1){
+      this.fullDayLeave = 0
+    }
+    else if(fullLeaveCount > 1){
+      this.fullDayLeave = fullLeaveCount - 1
+    }
   }
 
 }

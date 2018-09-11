@@ -63,7 +63,7 @@ export class ProjectTaskDetailsComponent implements OnInit {
   }
 
   goBack(){
-    this.router.navigate(["/projects"])
+    this.router.navigate([`/project_details/${this.param.id}`])
   }
 
   deleteTask(id){
