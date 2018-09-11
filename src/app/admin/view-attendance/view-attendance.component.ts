@@ -14,6 +14,8 @@ export class ViewAttendanceComponent implements OnInit {
   employeeModel;
   filtersLoaded: Promise<boolean>;
   param;
+  dateModel;
+  error;
 
   constructor(private router: Router, private user: UserService, private excelService:ExcelService, private route: ActivatedRoute) {
     this.route.params.subscribe(params => {
@@ -95,7 +97,7 @@ export class ViewAttendanceComponent implements OnInit {
   // }
 
   viewAllAttendance(){
-    this.router.navigate(["/all_attendance"])
+    this.router.navigate([`/all_attendance/${this.param.date}`])
   }
 
 }

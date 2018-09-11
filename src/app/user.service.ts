@@ -189,8 +189,9 @@ export class UserService {
     return this.http.get(url)
   }
 
-  getAllAttendance(): Observable<any>{
-    return this.http.get(this._viewAllAttendanceUrl)
+  getAllAttendance(date): Observable<any>{
+    let url = this._viewAllAttendanceUrl + "/" + date
+    return this.http.get(url)
   }
 
   toggleAttendance(id, data): Observable<any>{

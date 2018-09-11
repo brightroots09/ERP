@@ -649,7 +649,7 @@ router.get("/attendance/:date", verifyToken, function (req, res, callback) {
 
 	dailyUpdatesModel
 		.find({ "date_created": { "$gte": date, "$lte": nextDate } })
-		.sort({"date_created": -1})
+		.sort({ "date_created": -1 })
 		.populate({ path: 'employee_id', model: employeeModel })
 		.exec(function (error, result) {
 			if (error) callback(error)
@@ -659,44 +659,25 @@ router.get("/attendance/:date", verifyToken, function (req, res, callback) {
 		})
 })
 
-router.get("/allAttendance", verifyToken, function (req, res, callback) {
-	let array = []
+router.get("/allAttendance/:date", verifyToken, function (req, res, callback) {
+	let date = new Date(`${req.params.date}`)
+
+	let month = date.getMonth()
+	let year = date.getFullYear()
+
+	let prevDate = new Date(year, month, 1)
+	let nextDate = new Date(year, month + 1, 1)
+
+	console.log(prevDate, " ============ ", nextDate)
+
 	dailyUpdatesModel
-		.find({})
-		.sort({"date_created": -1})
+		.find({ "date_created": { "$gt": prevDate, "$lte": nextDate } })
 		.populate({ path: 'employee_id', model: employeeModel })
+		.sort({ date_created: -1 })
 		.exec(function (error, result) {
 			if (error) callback(error)
 			else {
-
-				// var sort_array = result;
-				// sort_array.sort(function (a, b) {
-				// 	var nameA = a.employee_id._id, nameB = b.employee_id._id
-
-				// 	if (nameA < nameB) //sort string ascending
-				// 		return -1
-				// 	if (nameA > nameB)
-				// 		return 1
-				// 	return 0 //default return value (no sorting)
-				// })
-
-				// var current = null;
-				// var count = 0;
-				// for (var i = 0; i < sort_array.length; i++) {
-				// 	if (sort_array[i].employee_id._id != current) {
-				// 		if (count > 0) {
-				// 			array.push({ current, count })
-				// 		}
-				// 		current = sort_array[i].employee_id._id;
-				// 		count = 1;
-				// 	} else {
-				// 		count++;
-				// 	}
-				// }
-				// if (count > 0) {
-				// 	array.push({ current, count })
-				// }
-				res.json({ result, array })
+				res.json({ result })
 			}
 		})
 })
@@ -791,9 +772,9 @@ router.post("/add_absenties", verifyToken, function (req, res, callback) {
 	dailyUpdate.total_hours = "0";
 	dailyUpdate.date_created = date
 
-	dailyUpdate.save(function(error, response){
-		if(error) callback(error)
-		else{
+	dailyUpdate.save(function (error, response) {
+		if (error) callback(error)
+		else {
 			res.json(response)
 		}
 	})

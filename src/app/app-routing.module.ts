@@ -143,12 +143,12 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "all_attendance",
+    path: "all_attendance/:date",
     component: ViewAllAttendanceComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: "export_to_pdf",
+    path: "export_to_pdf/:date",
     component: ExportToPdfComponent,
     canActivate: [AuthGuard]
   },

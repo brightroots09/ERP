@@ -26,4 +26,13 @@ export class AttendanceComponent implements OnInit {
     }
   }
 
+  getAllAttendance(){
+    if(this.dateModel == undefined){
+      this.error = true
+    }
+    else{
+      this.router.navigate([`/all_attendance/${this.dateModel}`])
+    }
+  }
+
 }

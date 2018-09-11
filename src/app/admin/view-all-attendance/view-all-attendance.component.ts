@@ -37,7 +37,7 @@ export class ViewAllAttendanceComponent implements OnInit {
   }
 
   getAttendance() {
-    this.user.getAllAttendance()
+    this.user.getAllAttendance(this.param.date)
       .subscribe(res => {
         this.attendanceModel = res.result
         this.array = res.array
@@ -77,6 +77,10 @@ export class ViewAllAttendanceComponent implements OnInit {
       }, error => {
         console.error(error)
       })
+  }
+
+  exportToPdf(){
+    this.router.navigate([`/export_to_pdf/${this.param.date}`])
   }
 
   // htmlToExcel() {

@@ -38,7 +38,7 @@ export class ExportToPdfComponent implements OnInit {
   }
 
   getAttendance() {
-    this.user.getAllAttendance()
+    this.user.getAllAttendance(this.param.date)
       .subscribe(res => {
         this.attendanceModel = res.result
         this.array = res.array
@@ -59,7 +59,7 @@ export class ExportToPdfComponent implements OnInit {
 
 
   goBack() {
-    this.router.navigate([`/all_attendance`])
+    this.router.navigate([`/all_attendance/${this.param.date}`])
   }
 
   verify(id) {
