@@ -1,122 +1,135 @@
 <div class="row" *ngIf="filtersLoaded | async">
-	<div class="col-md-6 card offset-md-3 mt-4 text-center">
+	<div class="col-md-4 mr-auto ml-auto">
+		<nb-card accent="primary" class="text-center">
+			<nb-card-header>
+				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 100px; height: 100px;" *ngIf="userModel.profile.image != ''; else else_image"
+				 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
 
-		<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
-		 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
-
-		<ng-template #else_image>
-			<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
-		</ng-template>
-
-		<div class="card-body">
-			<h5 class="card-title" *ngIf="!edit">
-				Name: {{userModel.profile.first_name}} {{ userModel.profile.last_name }}
-			</h5>
-			<h5 class="card-text" *ngIf="!edit">
-				Email: {{ userModel.email }}
-			</h5>
-			<h5 class="card-text" *ngIf="!edit">
-				Dsignation: {{ userModel.designation }}
-			</h5>
-			<h5 class="card-text" *ngIf="!edit">
-				Salary: {{ userModel.salary | currency:'INR' }}
-			</h5>
-			<div *ngIf="!edit">
-				<h5 class="card-text" *ngIf="userModel.is_active; else else_block">
-					Status:
-					<span class="badge badge-info p-2">Active</span>
-				</h5>
-				<ng-template #else_block>
-					<h5 class="card-text">
-						Status:
-						<span class="badge badge-info p-2">Inactive</span>
-					</h5>
+				<ng-template #else_image>
+					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 100px; height: 100px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
 				</ng-template>
-			</div>
-
-			<div class="card-text">
-				<div class="col-md-12">
-
-					<div class="row">
-						<div class="col-md-6">
-							<button type="button" *ngIf="!edit" class="btn btn-outline-primary ml-auto mr-auto" (click)="toggleEdit()">Edit</button>
-						</div>
-						<div class="col-md-6">
-							<button type="button" *ngIf="!edit" (click)="deleteEmployee()" class="btn btn-outline-danger ml-auto mr-auto">Delete</button>
-						</div>
-					</div>
-
+			</nb-card-header>
+			<nb-card-body style="flex: inherit !important;">
+				<h5 class="card-title">
+					Name: {{userModel.profile.first_name}} {{ userModel.profile.last_name }}
+				</h5>
+				<h5 class="card-text">
+					Email: {{ userModel.email }}
+				</h5>
+				<h5 class="card-text">
+					Dsignation: {{ userModel.designation }}
+				</h5>
+				<h5 class="card-text">
+					Salary: {{ userModel.salary | currency:'INR' }}
+				</h5>
+				<div>
+					<h5 class="card-text" *ngIf="userModel.is_active; else else_block">
+						Status:
+						<span class="badge badge-info p-2">Active</span>
+					</h5>
+					<ng-template #else_block>
+						<h5 class="card-text">
+							Status:
+							<span class="badge badge-info p-2">Inactive</span>
+						</h5>
+					</ng-template>
 				</div>
-			</div>
-		</div>
-		<form (ngSubmit)="onFormSubmit()" class="mb-3">
-
-			<div class="form-group" *ngIf="edit">
+			</nb-card-body>
+			<nb-card-body>
 				<div class="row">
 					<div class="col-md-6">
-						<label for="first_name">First Name: </label>
-						<input type="text" id="first_name" #first_name="ngModel" class="form-control" name="first_name" [(ngModel)]="userModel.profile.first_name"
-						 [class.is-invalid]="first_name.invalid && first_name.touched" [class.is-valid]="first_name.valid && first_name.touched"
-						 required>
-						<small class="text-danger" [class.d-none]="first_name.valid || first_name.untouched">First Name is required</small>
+						<button nbButton outline status="primary" class="mr-2" size="xsmall" *ngIf="!edit" (click)="toggleEdit()">Edit</button>
 					</div>
 					<div class="col-md-6">
-						<label for="last_name">Last Name: </label>
-						<input type="text" id="last_name" #last_name="ngModel" class="form-control" name="last_name" [(ngModel)]="userModel.profile.last_name"
-						 [class.is-invalid]="last_name.invalid && last_name.touched" [class.is-valid]="last_name.valid && last_name.touched"
-						 required>
-						<small class="text-danger" [class.d-none]="last_name.valid || last_name.untouched">Last Name is required</small>
+						<button size="xsmall" *ngIf="!edit" class="mr-2" (click)="deleteEmployee()" nbButton outline status="danger">Delete</button>
 					</div>
 				</div>
-				<div class="form-group mt-2 mb-2">
-					<label for="">Status: </label> <br>
-					<div class="form-check form-check-inline" id="status" *ngIf="edit">
-						<input class="form-check-input" type="radio" name="status" #is_active="ngModel" [(ngModel)]="userModel.is_active" id="inlineRadio1"
-						 value="true">
-						<label class="form-check-label" for="inlineRadio1">Active</label>
-					</div>
-					<div class="form-check form-check-inline" *ngIf="edit">
-						<input class="form-check-input" type="radio" name="status" #is_active="ngModel" [(ngModel)]="userModel.is_active" id="inlineRadio2"
-						 value="false">
-						<label class="form-check-label" for="inlineRadio2">Inactive</label>
-					</div>
-				</div>
-			</div>
+			</nb-card-body>
+		</nb-card>
+	</div>
+	<div class="col-md-4 mr-auto ml-auto" *ngIf="edit">
+		<nb-card class="text-center" accent="info">
+			<nb-card-header>
+				Edit Employee
+			</nb-card-header>
+			<nb-card-body>
+				<form (ngSubmit)="onFormSubmit()" class="mb-3">
 
-			<div class="form-group" *ngIf="edit">
-				<label for="first_name">Email: </label>
-				<input type="text" id="email" #email="ngModel" class="form-control" name="email" [(ngModel)]="userModel.email" [class.is-invalid]="email.invalid && email.touched"
-				 [class.is-valid]="email.valid && email.touched" required>
-				<small class="text-danger" [class.d-none]="email.valid || email.untouched">Email is required</small>
-			</div>
+					<div class="form-group" *ngIf="edit">
+						<div class="row">
+							<div class="col-md-6">
+								<label for="first_name">First Name: </label>
+								<input type="text" id="first_name" #first_name="ngModel" class="form-control" name="first_name" [(ngModel)]="userModel.profile.first_name"
+								 [class.is-invalid]="first_name.invalid && first_name.touched" [class.is-valid]="first_name.valid && first_name.touched"
+								 required>
+								<small class="text-danger" [class.d-none]="first_name.valid || first_name.untouched">First Name is required</small>
+							</div>
+							<div class="col-md-6">
+								<label for="last_name">Last Name: </label>
+								<input type="text" id="last_name" #last_name="ngModel" class="form-control" name="last_name" [(ngModel)]="userModel.profile.last_name"
+								 [class.is-invalid]="last_name.invalid && last_name.touched" [class.is-valid]="last_name.valid && last_name.touched"
+								 required>
+								<small class="text-danger" [class.d-none]="last_name.valid || last_name.untouched">Last Name is required</small>
+							</div>
+						</div>
+						<div class="form-group mt-2 mb-2">
+							<label for="">Status: </label>
+							<br>
+							<div class="form-check form-check-inline" id="status" *ngIf="edit">
+								<input class="form-check-input" type="radio" name="status" #is_active="ngModel" [(ngModel)]="userModel.is_active" id="inlineRadio1"
+								 value="true">
+								<label class="form-check-label" for="inlineRadio1">Active</label>
+							</div>
+							<div class="form-check form-check-inline" *ngIf="edit">
+								<input class="form-check-input" type="radio" name="status" #is_active="ngModel" [(ngModel)]="userModel.is_active" id="inlineRadio2"
+								 value="false">
+								<label class="form-check-label" for="inlineRadio2">Inactive</label>
+							</div>
+						</div>
+					</div>
 
-			<div class="form-group" *ngIf="edit">
-				<label for="first_name">Designation: </label>
-				<select #designation="ngModel" [(ngModel)]="userModel.designation" name="designation" class="form-control" id="designation"
-				 [class.is-invalid]="designation.invalid && designation.touched">
-					<option>Project Manager</option>
-					<option>Developer (IOS)</option>
-					<option>Developer (Android)</option>
-					<option>Backend Developer</option>
-				</select>
-				<small class="text-danger" [class.d-none]="designation.valid || designation.untouched">Designation is required</small>
-			</div>
-			<div class="form-group" *ngIf="edit">
-				<label for="salary">Salary: </label>
-				<input type="number" id="salary" name="salary" class="form-control" #salary="ngModel" [class.in-valid]="salary.invalid && salary.touched" [class.is-valid]="salary.valid && salary.untouched" [(ngModel)]="userModel.salary" required>
-				<small class="text-danger" [class.d-none]="salary.valid || salary.untouched">Salary is required</small>
-			</div>
-			<button type="submit" *ngIf="edit" class="btn btn-outline-primary mr-2">Update</button>
-			<button type="button" *ngIf="edit" class="btn btn-outline-secondary ml-2" (click)="cancelUpdate()">Cancel</button>
-		</form>
-		<div class="card-footer">
-			<div class="row">
-				<div class="col-md-12" *ngIf="userModel.projects.length > 0; else project_else">
-					<label>Assigned Projects</label>
-					<ul>
-						<li *ngFor="let project of userModel.projects" class="text-left">{{ project.project_details.name }}</li>
-					</ul>
-				</div>
+					<div class="form-group" *ngIf="edit">
+						<label for="first_name">Email: </label>
+						<input type="text" id="email" #email="ngModel" class="form-control" name="email" [(ngModel)]="userModel.email" [class.is-invalid]="email.invalid && email.touched"
+						 [class.is-valid]="email.valid && email.touched" required>
+						<small class="text-danger" [class.d-none]="email.valid || email.untouched">Email is required</small>
+					</div>
+
+					<div class="form-group" *ngIf="edit">
+						<label for="first_name">Designation: </label>
+						<select #designation="ngModel" [(ngModel)]="userModel.designation" name="designation" class="form-control" id="designation"
+						 [class.is-invalid]="designation.invalid && designation.touched">
+							<option>Project Manager</option>
+							<option>Developer (IOS)</option>
+							<option>Developer (Android)</option>
+							<option>Backend Developer</option>
+						</select>
+						<small class="text-danger" [class.d-none]="designation.valid || designation.untouched">Designation is required</small>
+					</div>
+					<div class="form-group" *ngIf="edit">
+						<label for="salary">Salary: </label>
+						<input type="number" id="salary" name="salary" class="form-control" #salary="ngModel" [class.in-valid]="salary.invalid && salary.touched"
+						 [class.is-valid]="salary.valid && salary.untouched" [(ngModel)]="userModel.salary" required>
+						<small class="text-danger" [class.d-none]="salary.valid || salary.untouched">Salary is required</small>
+					</div>
+					<button nbButton outline status="primary" size="xsmall" *ngIf="edit" class="mr-2">Update</button>
+					<button nbButton outline status="danger" size="xsmall" *ngIf="edit" class="mr-2" (click)="cancelUpdate()">Cancel</button>
+				</form>
+			</nb-card-body>
+		</nb-card>
+	</div>
+	<div class="col-md-4 mr-auto ml-auto">
+		<nb-card accent="danger">
+			<nb-card-header class="text-center">
+				Assigned Projects
+			</nb-card-header>
+			<nb-card-body>
+				<nb-list *ngIf="userModel.projects.length > 0; else project_else">
+					<nb-list-item *ngFor="let project of userModel.projects">
+						<nb-user [name]="project.project_details.name" [title]="project.project_details.description">
+						</nb-user>
+					</nb-list-item>
+				</nb-list>
 				<ng-template #project_else>
 					<div class="col-md-12">
 						<p class="mt-auto mb-auto">
@@ -124,10 +137,7 @@
 						</p>
 					</div>
 				</ng-template>
-			</div>
-		</div>
-		<button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
-			&laquo; Go back
-		</button>
+			</nb-card-body>
+		</nb-card>
 	</div>
 </div>
