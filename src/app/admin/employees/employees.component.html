@@ -1,21 +1,15 @@
 <div class="row">
 	<div class="col-md-12">
-		<div class="row">
-			<div class="col-md-6 text-left">
-				<button type="button" class="btn btn-link text-primary mt-2 mb-2" (click)="goBack()">
-					&laquo; Go back
-				</button>
-			</div>
-			<div class="col-md-6 text-right">
-				<button class="btn btn-link text-primary mt-2 mb-2" routerLink="/add_employee">Add Employee</button>
-			</div>
-		</div>
-	</div>
-
-	<div class="col-md-12">
-		<nb-card size="large">
+		<nb-card>
 			<nb-card-header>
-				List of Employees
+				<div class="row">
+					<div class="col-md-6 text-left">
+						List of Employees
+					</div>
+					<div class="col-md-6 text-right">
+						<button class="btn btn-link text-primary p-0" routerLink="/add_employee">Add Employee</button>
+					</div>
+				</div>
 			</nb-card-header>
 			<nb-card-body>
 				<div class="table-responsive">
