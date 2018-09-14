@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './auth.service'
+import { NbSidebarService, NbMenuItem } from '@nebular/theme';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,49 @@ import { AuthService } from './auth.service'
 export class AppComponent {
   title = 'app';
 
-  constructor (private _authService: AuthService ){ }
+  items: NbMenuItem[] = [
+    {
+      title: "Add Employee",
+      icon: 'fas fa-plus-circle',
+      link: '/add_employee'
+    },
+    {
+      title: "View Employees",
+      icon: "far fa-user",
+      link: '/employees'
+    },
+    {
+      title: "Projects",
+      icon: "fas fa-project-diagram",
+      link: '/projects'
+    },
+    {
+      title: "Tasks",
+      icon: "fas fa-tasks",
+      link: '/tasks'
+    },
+    {
+      title: "Queries / Requests",
+      icon: "fas fa-question-circle",
+      link: '/queries'
+    },
+    {
+      title: "View Attendance",
+      icon: "far fa-eye",
+      link: '/attendance'
+    },
+    {
+      title: "Add Absenties",
+      icon: "far fa-times-circle",
+      link: "/absenties"
+    }
+   ];
+
+  constructor (private _authService: AuthService, private sidebarService: NbSidebarService ){ }
+
+  toggle() {
+    this.sidebarService.toggle(true);
+    return false;
+  }
 
 }

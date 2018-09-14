@@ -1,45 +1,83 @@
 <div class="row" *ngIf="filtersLoaded | async">
-	<div class="col-md-12">
-		<div class="row">
-			<div class="col-md-5 mr-auto ml-auto">
-				<div class="card">
-					<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
-					 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
 
-					<ng-template #else_image>
-						<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
-					</ng-template>
-					<div class="card-body">
-						<h5 class="card-title">{{userModel.profile.name}}</h5>
-						<p class="card-text">{{userModel.email}}</p>
+	<div class="col-lg-6 mr-auto ml-auto">
+		<nb-card size="large">
+			<nb-card-header>
+				Summary
+			</nb-card-header>
+			<nb-card-body style="padding: 0 0 1.2rem 0">
+				<div class="summary-container">
+					<div class="col-md-3">
+						<div class="title">
+							Employees
+						</div>
+						<div class="value" *ngIf="employeesLoaded | async">
+							{{ employeeModel.length }}
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="title">Projects</div>
+						<div class="value" *ngIf="projectsLoaded | async">{{ projectModel.length }}</div>
+					</div>
+					<div class="col-md-3">
+						<div class="title">Tasks</div>
+						<div class="value" *ngIf="tasksLoaded | async"> {{ taskModel.length }} </div>
+					</div>
+					<div class="col-md-3">
+						<div class="title">Queries</div>
+						<div class="value" *ngIf="queriesLoaded | async"> {{ queryModel.length }} </div>
 					</div>
 				</div>
+					<ngx-charts-bar-vertical [view]="view" [scheme]="colorScheme" [results]="summaryChart" [gradient]="gradient" [xAxis]="showXAxis"
+					 [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+					 [yAxisLabel]="yAxisLabel">
+					</ngx-charts-bar-vertical>
+			</nb-card-body>
+		</nb-card>
+	</div>
+
+	<div class="col-lg-4 ml-auto mr-auto text-center">
+		<nb-card>
+			<nb-card-header>
+				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
+				 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
+
+				<ng-template #else_image>
+					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
+				</ng-template>
+			</nb-card-header>
+			<nb-card-body>
+				<h5 class="card-title">{{userModel.profile.name}}</h5>
+				<p class="card-text">{{userModel.email}}</p>
+			</nb-card-body>
+		</nb-card>
+	</div>
+</div>
+<!-- 
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-5">
+			<div class="card">
+
+				</ng-template>
+				<div class="card-body">
+					
+				</div>
 			</div>
-			<div class="col-md-4 mr-auto ml-auto">
-				<ul class="nav flex-column">
-					<li class="nav-item">
-						<a class="nav-link active" routerLink="/add_employee">Add Employee</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" routerLink="/employees">View Employee</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" routerLink="/projects">Projects</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" routerLink="/tasks">Tasks</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" routerLink="/queries">Queries / Requests</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" routerLink="/attendance">View Attendance</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" routerLink="/absenties">Add Absenties</a>
-					</li>
-				</ul>
+		</div>
+		<div class="col-md-5" *ngIf="filtersLoaded | async">
+			<div class="card">
+				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
+				 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
+
+				<ng-template #else_image>
+					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
+				</ng-template>
+				<div class="card-body">
+					<h5 class="card-title">{{userModel.profile.name}}</h5>
+					<p class="card-text">{{userModel.email}}</p>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->

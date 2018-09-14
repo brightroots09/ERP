@@ -1,61 +1,69 @@
-<div class="row mt-4">
+<div class="row">
 	<div class="col-md-12">
 
-		<form #employeeForm="ngForm" (ngSubmit)="onFormSubmit()" class="mt-3 mb-3">
-
-			<div class="form-group">
-				<div class="row">
-					<div class="col-md-6">
-						<label for="first_name">First Name: </label>
-						<input type="text" id="first_name" #first_name="ngModel" class="form-control" name="first_name" [(ngModel)]="userModel.first_name"
-						 [class.is-invalid]="first_name.invalid && first_name.touched" [class.is-valid]="first_name.valid && first_name.touched"
-						 required>
-						<small class="text-danger" [class.d-none]="first_name.valid || first_name.untouched">First Name is required</small>
+		<nb-card>
+			<nb-card-header>
+				Add Employees
+			</nb-card-header>
+			<nb-card-body>
+				<form #employeeForm="ngForm" (ngSubmit)="onFormSubmit()" class="mt-3 mb-3">
+		
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-6">
+								<label for="first_name">First Name: </label>
+								<input type="text" id="first_name" #first_name="ngModel" class="form-control" name="first_name" [(ngModel)]="userModel.first_name"
+								 [class.is-invalid]="first_name.invalid && first_name.touched" [class.is-valid]="first_name.valid && first_name.touched"
+								 required>
+								<small class="text-danger" [class.d-none]="first_name.valid || first_name.untouched">First Name is required</small>
+							</div>
+							<div class="col-md-6">
+								<label for="last_name">Last Name: </label>
+								<input type="text" id="last_name" #last_name="ngModel" class="form-control" name="last_name" [(ngModel)]="userModel.last_name"
+								 [class.is-invalid]="last_name.invalid && last_name.touched" [class.is-valid]="last_name.valid && last_name.touched"
+								 required>
+								<small class="text-danger" [class.d-none]="last_name.valid || last_name.untouched">Last Name is required</small>
+							</div>
+						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="last_name">Last Name: </label>
-						<input type="text" id="last_name" #last_name="ngModel" class="form-control" name="last_name" [(ngModel)]="userModel.last_name"
-						 [class.is-invalid]="last_name.invalid && last_name.touched" [class.is-valid]="last_name.valid && last_name.touched"
-						 required>
-						<small class="text-danger" [class.d-none]="last_name.valid || last_name.untouched">Last Name is required</small>
+		
+					<div class="form-group">
+						<label for="first_name">Email: </label>
+						<input type="text" id="email" #email="ngModel" class="form-control" name="email" [(ngModel)]="userModel.email" [class.is-invalid]="email.invalid && email.touched"
+						 [class.is-valid]="email.valid && email.touched" required>
+						<small class="text-danger" [class.d-none]="email.valid || email.untouched">Email is required</small>
 					</div>
-				</div>
-			</div>
+					<div class="form-group">
+						<label for="password">Password: </label>
+						<input type="password" id="password" name="password" class="form-control" #password="ngModel" [class.is-invalid]="password.invalid && password.touched"
+						 [class.is-valid]="password.valid && password.touched" [(ngModel)]="userModel.password" required>
+						<small class="text-danger" [class.d-none]="password.valid || password.untouched">Password Required</small>
+					</div>
+		
+					<div class="form-group">
+						<label for="designation">Designation: </label>
+						<select #designation="ngModel" [(ngModel)]="userModel.designation" name="designation" class="form-control" id="designation"
+						 [class.is-invalid]="designation.invalid && designation.touched">
+							<option>Project Manager</option>
+							<option>Developer (IOS)</option>
+							<option>Developer (Android)</option>
+							<option>Backend Developer</option>
+							<option>Designer</option>
+							<option>HR</option>
+						</select>
+						<small class="text-danger" [class.d-none]="designation.valid || designation.untouched">Designation is required</small>
+					</div>
+					<div class="form-group">
+						<label for="salary">Salary: </label>
+						<input type="number" id="salary" name="salary" class="form-control" #salary="ngModel" [class.in-valid]="salary.invalid && salary.touched" [class.is-valid]="salary.valid && salary.untouched" [(ngModel)]="userModel.salary" required>
+						<small class="text-danger" [class.d-none]="salary.valid || salary.untouched">Salary is required</small>
+					</div>
+					<button type="submit" [disabled]="employeeForm.form.invalid" class="btn btn-outline-primary mr-2">Add</button>
+					<button type="button" class="btn btn-outline-secondary" (click)="cancelAdd()">Cancel</button>
+				</form>
+			</nb-card-body>
+		</nb-card>
 
-			<div class="form-group">
-				<label for="first_name">Email: </label>
-				<input type="text" id="email" #email="ngModel" class="form-control" name="email" [(ngModel)]="userModel.email" [class.is-invalid]="email.invalid && email.touched"
-				 [class.is-valid]="email.valid && email.touched" required>
-				<small class="text-danger" [class.d-none]="email.valid || email.untouched">Email is required</small>
-			</div>
-			<div class="form-group">
-				<label for="password">Password: </label>
-				<input type="password" id="password" name="password" class="form-control" #password="ngModel" [class.is-invalid]="password.invalid && password.touched"
-				 [class.is-valid]="password.valid && password.touched" [(ngModel)]="userModel.password" required>
-				<small class="text-danger" [class.d-none]="password.valid || password.untouched">Password Required</small>
-			</div>
-
-			<div class="form-group">
-				<label for="designation">Designation: </label>
-				<select #designation="ngModel" [(ngModel)]="userModel.designation" name="designation" class="form-control" id="designation"
-				 [class.is-invalid]="designation.invalid && designation.touched">
-					<option>Project Manager</option>
-					<option>Developer (IOS)</option>
-					<option>Developer (Android)</option>
-					<option>Backend Developer</option>
-					<option>Designer</option>
-					<option>HR</option>
-				</select>
-				<small class="text-danger" [class.d-none]="designation.valid || designation.untouched">Designation is required</small>
-			</div>
-			<div class="form-group">
-				<label for="salary">Salary: </label>
-				<input type="number" id="salary" name="salary" class="form-control" #salary="ngModel" [class.in-valid]="salary.invalid && salary.touched" [class.is-valid]="salary.valid && salary.untouched" [(ngModel)]="userModel.salary" required>
-				<small class="text-danger" [class.d-none]="salary.valid || salary.untouched">Salary is required</small>
-			</div>
-			<button type="submit" [disabled]="employeeForm.form.invalid" class="btn btn-outline-primary mr-2">Add</button>
-			<button type="button" class="btn btn-outline-secondary" (click)="cancelAdd()">Cancel</button>
-		</form>
 
 	</div>
 </div>

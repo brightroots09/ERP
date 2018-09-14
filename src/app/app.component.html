@@ -1,4 +1,37 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nb-layout>
+	<nb-layout-header fixed>
+		<a href="#" class="text-primary" (click)="toggle()">
+			<i class="fas fa-bars"></i>
+		</a>
+		<div class="container">
+			<div>
+				<a class="nav-link" routerLink="/" routerLinkActive="active">Home
+					<span class="sr-only">(current)</span>
+				</a>
+			</div>
+			<div>
+				<a class="nav-link" routerLink="/profile" routerLinkActive="active">Profile</a>
+			</div>
+			<div class="ml-auto">
+				<a class="nav-link" *ngIf="!_authService.loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
+			</div>
+			<div class="ml-auto">
+				<a class="nav-link" *ngIf="!_authService.loggedIn()" routerLink="/employeeLogin" routerLinkActive="active">EmployeeLogin</a>
+			</div>
+			<div class="ml-auto">
+				<a class="nav-link text-danger" *ngIf="_authService.loggedIn()" style="cursor: pointer;" (click)="_authService.logoutUser()">Logout</a>
+			</div>
+		</div>
+	</nb-layout-header>
+	<nb-sidebar>
+		<nb-menu [items]="items" size="small"></nb-menu>
+	</nb-sidebar>
+	<nb-layout-column class="main-content">
+		<router-outlet></router-outlet>
+	</nb-layout-column>
+</nb-layout>
+
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
 	<a class="navbar-brand" href="#">Navbar</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
 	 aria-expanded="false" aria-label="Toggle navigation">
@@ -31,5 +64,4 @@
 </nav>
 
 <div class="container-fluid">
-	<router-outlet></router-outlet>
-</div>
+</div> -->

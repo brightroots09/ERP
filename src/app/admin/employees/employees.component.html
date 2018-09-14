@@ -7,12 +7,48 @@
 				</button>
 			</div>
 			<div class="col-md-6 text-right">
-				<button class="btn btn-link mt-2 mb-2" routerLink="/add_employee">Add Employee</button>
+				<button class="btn btn-link text-primary mt-2 mb-2" routerLink="/add_employee">Add Employee</button>
 			</div>
 		</div>
 	</div>
 
-	<div class="card mt-4 mb-4 ml-auto mr-auto" style="width: 18rem;" *ngFor="let employee of userModel">
+	<div class="col-md-12">
+		<nb-card size="large">
+			<nb-card-header>
+				List of Employees
+			</nb-card-header>
+			<nb-card-body>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Email</th>
+								<th>Designation</th>
+								<th>Date Created</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let user of userModel">
+								<td> {{ user.profile.first_name }} </td>
+								<td> {{ user.profile.last_name }} </td>
+								<td> {{ user.email }} </td>
+								<td> {{ user.designation }} </td>
+								<td> {{ user.date_created | date:'mediumDate' }} </td>
+								<td>
+									<a class="btn btn-link text-primary p-0 m-0" routerLink="/employee_details/{{ user._id }}">View</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</nb-card-body>
+		</nb-card>
+	</div>
+
+	<!-- <div class="card mt-4 mb-4 ml-auto mr-auto" style="width: 18rem;" *ngFor="let employee of userModel">
 		<img class="card-img-top ml-auto mr-auto mt-2" style="width: 200px; height: 200px;" *ngIf="employee.profile.image != ''; else else_block" src="/images/{{ employee.profile.image }}" alt="{{ employee.profile.first_name }}">
 		<ng-template #else_block>
 				<img class="card-img-top ml-auto mr-auto mt-2" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ employee.profile.first_name }}">
@@ -33,5 +69,5 @@
 			</a>
 		</div>
 
-	</div>
+	</div> -->
 </div>
