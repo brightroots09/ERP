@@ -10,6 +10,7 @@ import { UserService } from '../../user.service';
 export class MyProjectsComponent implements OnInit {
 
   projects;
+  filtersLoaded: Promise<boolean>;
 
   constructor(private router: Router, private user: UserService) { }
 
@@ -29,6 +30,7 @@ export class MyProjectsComponent implements OnInit {
       .subscribe(res => {
         console.log("======>", res)
         this.projects = res
+        this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         console.error(error)
       })

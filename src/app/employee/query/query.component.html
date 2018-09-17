@@ -1,47 +1,69 @@
-<div class="row">
-	<div class="col-md-6 offset-md-3">
-		<div class="row">
-			<div class="col-md-6 text-left">
-				<button type="button" class="btn btn-link text-primary" (click)="goBack()">
-					&laquo; Go back
-				</button>
-			</div>
-			<div class="col-md-6 text-right">
-				<button type="button" class="btn btn-link" data-toggle="modal" data-target="#updateModal">Ask Query</button>
-			</div>
-		</div>
-	</div>
-</div>
 <div class="row" *ngIf="filtersLoaded | async">
-	<div class="col-md-4 card mt-4 ml-auto mr-auto" *ngFor="let query of queryModel">
-		<div class="card-body" *ngIf="queryModel.length > 0; else queryModel_else">
-			<h5>
-				To: {{ query.management_id.profile.first_name }} {{ query.management_id.profile.last_name }} ({{ query.management_id.designation
-				}})
-			</h5>
-			<p>
-				Message: {{ query.message }}
-			</p>
-			<p>
-				Status: {{ query.status }}
-			</p>
-			<p *ngIf="query.reply">
-				Reply: {{ query.reply }}
-			</p>
-			<button type="button" class="btn btn-link" *ngIf="query.status != 'closed'" (click)="closeTicket(query._id)">
-				Mark as closed
-			</button>
-		</div>
-		<div class="card-footer p-0">
-			<p class="text-muted text-right mt-auto mb-auto">{{ query.date_created | date : 'medium' }}</p>
-		</div>
-		<ng-template #queryModel_else>
-			No queries asked
-		</ng-template>
+
+	<div class="col-md-12">
+		<nb-card>
+			<nb-card-header>
+				<div class="row">
+					<div class="col-md-6">
+						List of Queries/Requests
+					</div>
+					<div class="col-md-6 text-right">
+						<button type="button" class="btn btn-link text-primary p-0" data-toggle="modal" data-target="#updateModal">Ask Query</button>
+					</div>
+				</div>
+			</nb-card-header>
+			<nb-card-body>
+				<div class="table-responsice">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>To</th>
+								<th>Designation</th>
+								<th>Message</th>
+								<th>Status</th>
+								<th>Reply</th>
+								<th>Action</th>
+								<th>Date Created</th>
+							</tr>
+						</thead>
+						<tbody *ngIf="queryModel.length > 0; else queryModel_else">
+							<tr *ngFor="let query of queryModel">
+								<td>{{ query.management_id.profile.first_name }} {{ query.management_id.profile.last_name }}</td>
+								<td>{{ query.management_id.designation }}</td>
+								<td>{{ query.message }}</td>
+								<td>{{ query.status }}</td>
+								<td *ngIf="query.reply; else query_else">{{ query.reply }}</td>
+								<ng-template #query_else>
+									<td>-</td>
+								</ng-template>
+								<td>
+									<button type="button" [class]="query.status == 'closed' ? 'text-success btn btn-link p-0' : 'text-danger btn btn-link p-0'"
+									 [disabled]="query.status == 'closed'" (click)="closeTicket(query._id)">
+										Mark as closed
+									</button>
+								</td>
+								<td>{{ query.date_created | date : 'mediumDate' }}</td>
+							</tr>
+						</tbody>
+						<ng-template #queryModel_else>
+							<tbody>
+								<tr>
+									<td colspan="7">
+										<h3>
+											No queries asked
+										</h3>
+									</td>
+								</tr>
+							</tbody>
+						</ng-template>
+					</table>
+				</div>
+			</nb-card-body>
+		</nb-card>
 	</div>
 </div>
 
-<div *ngIf="filtersLoaded | async" class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div *ngIf="(employeeLoaded && profileLoaded) | async" class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
  aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">

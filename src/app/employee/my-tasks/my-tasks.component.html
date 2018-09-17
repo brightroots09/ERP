@@ -1,41 +1,44 @@
 <div class="row">
-	<div class="col-md-12">
-		<div class="row">
-			<div class="col-md-6 text-left">
-				<button type="button" class="btn btn-link text-primary mt-2 mb-2" (click)="goBack()">
-					&laquo; Go back
-				</button>
+	<div class="col-md-4" *ngFor="let tasks of tasksModel">
+		<ng-container *ngIf="tasks.my_tasks.length > 0; else no_tasks">
+			<nb-card>
+				<nb-card-header>
+					{{ tasks.project_details.name }}
+				</nb-card-header>
+				<nb-card-body>
+					<nb-list>
+						<nb-list-item *ngFor="let myTasks of tasks.my_tasks" class="text-left">
+
+							<nb-card [accent]="myTasks.status == 'completed' ? 'success' : 'danger'">
+								<nb-card-header>
+									<nb-user [name]="myTasks.tasks_details.name" [title]="myTasks.tasks_details.description">
+									</nb-user>
+								</nb-card-header>
+								<nb-card-body>
+									<nb-list>
+										<nb-list-item>
+											Status: {{ myTasks.status }}
+										</nb-list-item>
+										<nb-list-item>
+											<a class="btn btn-link" [class]="myTasks.status == 'completed' ? 'text-success' : 'text-danger'" routerLink="/myTaskDetails/{{myTasks._id}}">
+												View
+											</a>
+										</nb-list-item>
+									</nb-list>
+								</nb-card-body>
+							</nb-card>
+
+						</nb-list-item>
+					</nb-list>
+				</nb-card-body>
+			</nb-card>
+		</ng-container>
+		<ng-template #no_tasks>
+			<div class="col-md-6 offset-md-3 text-center">
+				<h3>
+					No Task
+				</h3>
 			</div>
-		</div>
+		</ng-template>
 	</div>
-		<div class="col-md-12 mt-3 mb-3" *ngFor="let tasks of tasksModel">
-			<div *ngIf="tasks.my_tasks.length > 0; else no_tasks">
-			<h5 class="card-title">{{ tasks.project_details.name }}</h5>
-			<div class="row">
-				<div class="card p-3 ml-auto mr-auto" style="width: 22rem;" *ngFor="let myTasks of tasks.my_tasks">
-					<p class="card-title">
-						<b>Name:</b> {{myTasks.tasks_details.name}}
-					</p>
-					<p class="card-text">
-						<b>Description:</b> {{ myTasks.tasks_details.description }}
-					</p>
-					<p>
-						<b>Status:</b> {{ myTasks.status }}
-					</p>
-					<div class="card-footer text-center">
-						<a class="btn btn-link text-success" routerLink="/myTaskDetails/{{myTasks._id}}">
-							View
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<ng-template #no_tasks>
-		<div class="col-md-6 offset-md-3 text-center">
-			<h3>
-				No Task
-			</h3>
-		</div>
-	</ng-template>
 </div>

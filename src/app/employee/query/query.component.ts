@@ -17,6 +17,8 @@ export class QueryComponent implements OnInit {
   userModel;
 
   filtersLoaded: Promise<boolean>;
+  employeeLoaded: Promise<boolean>;
+  profileLoaded: Promise<boolean>;
 
   constructor(private router: Router, private user: UserService, private route: ActivatedRoute) {
     this.route.params.subscribe(params => {
@@ -53,6 +55,7 @@ export class QueryComponent implements OnInit {
       .subscribe(res => {
         console.log("======>", res)
         this.employeeModel = res
+        this.employeeLoaded = Promise.resolve(true)
       }, (error) => {
         console.error(error)
       })
@@ -63,7 +66,7 @@ export class QueryComponent implements OnInit {
         .subscribe(res => {
           this.userModel = res
           console.log("==================>",res)
-          this.filtersLoaded = Promise.resolve(true);
+          this.profileLoaded = Promise.resolve(true);
         }, (error) => {
           console.error(error)
         })

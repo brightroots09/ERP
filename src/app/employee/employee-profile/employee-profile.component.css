@@ -1,0 +1,29 @@
+.value{
+    font-size: 2rem;
+    color: #2a2a2a;
+    transition: ease-in-out 0.4s;
+}
+
+.summary-container{
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    background-color: #ecf2f5;
+    box-shadow: none;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 1.5rem 4rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ebeff1;
+    border-left: none;
+    border-right: none;
+
+    -webkit-box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.6);
+    -moz-box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.6);
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.6);
+}

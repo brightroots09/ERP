@@ -1,8 +1,6 @@
 <div class="row" *ngIf="filtersLoaded | async">
-
-
-	<div class="col-lg-4 ml-auto mr-auto text-center">
-		<nb-card>
+	<div class="col-lg-6 ml-auto mr-auto text-center">
+		<nb-card accent="info">
 			<nb-card-header>
 				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
 				 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
@@ -12,47 +10,28 @@
 				</ng-template>
 			</nb-card-header>
 			<nb-card-body>
-				<h5 class="card-title">{{userModel.profile.name}}</h5>
-				<p class="card-text">{{userModel.email}}</p>
-				<p class="card-text">{{ userModel.designation }}</p>
+				<nb-list>
+					<nb-list-item>
+						Name: {{ userModel.profile.first_name + ' ' + userModel.profile.last_name }} 
+					</nb-list-item>
+					<nb-list-item>
+						Designation: {{ userModel.designation }}
+					</nb-list-item>
+					<nb-list-item>
+						Email: {{userModel.email}}
+					</nb-list-item>
+					<nb-list-item>
+						Salary: {{ userModel.salary | currency:'INR' }}
+					</nb-list-item>
+					<nb-list-item>
+						Status:
+						<span class="badge badge-info p-2" *ngIf="userModel.is_active; else else_block">Active</span>
+						<ng-template #else_block>
+							<span class="badge badge-info p-2">Inactive</span>
+						</ng-template>
+					</nb-list-item>
+				</nb-list>
 			</nb-card-body>
 		</nb-card>
-	</div>
-
-	<div class="col-md-4 offset-md-2 card mt-4 text-center">
-
-		<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
-		 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
-
-		<ng-template #else_image>
-			<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
-		</ng-template>
-
-		<div class="card-body">
-			<h5 class="card-title">
-				Name: {{userModel.profile.first_name}} {{ userModel.profile.last_name }}
-			</h5>
-			<h5 class="card-text">
-				Email: {{ userModel.email }}
-			</h5>
-			<h5 class="card-text">
-				Dsignation: {{  }}
-			</h5>
-			<h5 class="card-text">
-				Salary: {{ userModel.salary | currency:'INR' }}
-			</h5>
-			<div>
-				<h5 class="card-text" *ngIf="userModel.is_active; else else_block">
-					Status:
-					<span class="badge badge-info p-2">Active</span>
-				</h5>
-				<ng-template #else_block>
-					<h5 class="card-text">
-						Status:
-						<span class="badge badge-info p-2">Inactive</span>
-					</h5>
-				</ng-template>
-			</div>
-		</div>
 	</div>
 </div>
