@@ -1,6 +1,6 @@
-<div class="row">
+<div class="row" *ngIf="filtersLoaded | async">
 	<div class="col-md-12">
-		<nb-card>
+		<nb-card accent="primary">
 			<nb-card-header>
 				<div class="row">
 					<div class="col-md-6 text-left">
@@ -24,7 +24,7 @@
 								<th>Action</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody *ngIf="userModel.length > 0; else else_block">
 							<tr *ngFor="let user of userModel">
 								<td> {{ user.profile.first_name }} </td>
 								<td> {{ user.profile.last_name }} </td>
@@ -36,6 +36,9 @@
 								</td>
 							</tr>
 						</tbody>
+						<ng-template #else_block>
+							No Employee are there
+						</ng-template>
 					</table>
 				</div>
 			</nb-card-body>

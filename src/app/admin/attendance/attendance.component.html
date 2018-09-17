@@ -1,41 +1,27 @@
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-            <div class="col-md-6">
-                    <a class="btn btn-link" routerLink="/profile">&laquo; Go back</a>
-            </div>
-            <div class="col-md-6 text-right">
-                <a class="btn btn-link"   (click)="getAllAttendance()">View All Attendance &raquo;</a>
-            </div>
-    </div>
-</div>
-<div class="jumbotron jumbotron-fluid bg-white text-center">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <h1>
-                    Pick a date
-                </h1>
-            </div>
-            <div class="col-md-6">
-                <form #dateForm="ngForm" class="form ml-auto mr-auto" method="POST" (ngSubmit)="onFormSubmit()">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <input type="date" class="form-control" name="date" [(ngModel)]="dateModel">
-                        </div>
-                        <div class="input-group-text" id="btnGroupAddon">
-                            <button type="Submit" class="btn btn-outline-secondary">View Attendance</button>
-                        </div>
+        <div class="col-md-12 text-center ml-auto mr-auto">
+            <nb-card accent="danger">
+                <nb-card-header>
+                    View Attendance
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="col-md-4 offset-md-4">
+                            <form #dateForm="ngForm" class="form form-inline ml-auto mr-auto" method="POST" (ngSubmit)="onFormSubmit()">
+                                    <input type="date" class="form-control" name="date" [(ngModel)]="dateModel">
+                                    <button nbButton outline status="danger" size="xsmall">View Attendance</button>
+                                </form>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="error">
-            <p>Please select a date!</p>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+                </nb-card-body>
+                <nb-card-body *ngIf="error">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <p>Please select a date!</p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </nb-card-body>
+            </nb-card>
         </div>
     </div>
 </div>

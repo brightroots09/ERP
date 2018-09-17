@@ -1,6 +1,6 @@
-<div class="row">
+<div class="row" *ngIf="filtersLoaded | async"> 
 	<div class="col-md-12">
-		<nb-card>
+		<nb-card accent="warning">
 			<nb-card-header>
 				<div class="row">
 					<div class="col-md-6 text-left">
@@ -23,7 +23,7 @@
 								<th>Action</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody *ngIf="projects.length > 0; else else_block">
 							<tr *ngFor="let project of projects">
 								<td>{{ project.project_details.name }}</td>
 								<td>{{ project.project_details.description }}</td>
@@ -38,6 +38,9 @@
 								</td>
 							</tr>
 						</tbody>
+						<ng-template #else_block>
+							No project is added
+						</ng-template>
 					</table>
 				</div>
 			</nb-card-body>

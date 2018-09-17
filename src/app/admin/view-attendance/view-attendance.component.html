@@ -1,72 +1,70 @@
-<div class="row">
-  <div class="col-md-6 offset-md-3">
-    <div class="row">
-      <div class="col-md-6 text-left">
-        <button type="button" class="btn btn-link text-primary" (click)="goBack()">
-          &laquo; Go back
-        </button>
-      </div>
-      <div class="col-md-6 text-right">
-        <button type="button" class="btn btn-link text-primary" (click)="viewAllAttendance()">View All</button>
-      </div>
-    </div>
+<div class="row" *ngIf="filtersLoaded | async">
+  <div class="col-md-12">
+
+    <nb-card accent="info">
+      <nb-card-header>
+        Attendance
+        <button type="button" class="btn btn-link text-primary p-0 float-right" (click)="viewAllAttendance()">View All</button>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="table-responsive">
+          <table *ngIf="attendanceModel.length > 0; else attendanceModel_else" class="table">
+            <thead>
+              <tr>
+                <!-- <th>Name</th> -->
+                <!-- <th>Designation</th> -->
+                <th>Morning Session</th>
+                <th>Evening Session</th>
+                <th>Total Hours</th>
+                <th>Status</th>
+                <!-- <th>Salary</th> -->
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let attendance of attendanceModel | groupBy:'employee_id'">
+                <tr>
+                  <td colspan="6" class="text-center text-muted">
+                    <span class="mr-3">
+                      <b>Name:</b> {{ attendance.key }}</span>
+                    <ng-container *ngFor="let attendance of attendance.value; index as i; first as isFirst">
+                      <span *ngIf="isFirst" class="ml-3">
+                        <b>Designation:</b> {{attendance.employee_id.designation}}</span>
+                    </ng-container>
+                  </td>
+                </tr>
+                <tr *ngFor="let attendance of attendance.value">
+                  <!-- <td>{{attendance.employee_id.profile.first_name}} {{attendance.employee_id.profile.last_name}}</td> -->
+                  <!-- <td>{{attendance.employee_id.designation}}</td> -->
+                  <td>{{attendance.morning_session}}</td>
+                  <td>{{attendance.evening_session}}</td>
+                  <td>{{attendance.total_hours | number:'1.0-1' }}</td>
+                  <td *ngIf="attendance.status == 'Verified'; else inactive_else">
+                    <a class="btn btn-link text-success p-0" (click)="notVerify(attendance._id)">{{attendance.status}}</a>
+                  </td>
+                  <ng-template #inactive_else>
+                    <td *ngIf="attendance.status == 'Not Verified'">
+                      <a class="btn btn-link text-danger p-0" (click)="verify(attendance._id)">{{attendance.status}}</a>
+                    </td>
+                  </ng-template>
+                  <!-- <td>
+                      {{ attendance.employee_id.salary }}
+                    </td> -->
+                  <td>
+                    {{ attendance.date_created | date:'mediumDate' }}
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #attendanceModel_else>
+          <div class="col-md-6 offset-md-3 text-center">
+            <h3>No data yet.</h3>
+          </div>
+        </ng-template>
+      </nb-card-body>
+    </nb-card>
+
   </div>
 </div>
-<div class="row" *ngIf="filtersLoaded | async">
-    <div class="col-md-12">
-      <div class="table-responsive">
-        <table *ngIf="attendanceModel.length > 0; else attendanceModel_else" class="table">
-          <thead>
-            <tr>
-              <!-- <th>Name</th> -->
-              <!-- <th>Designation</th> -->
-              <th>Morning Session</th>
-              <th>Evening Session</th>
-              <th>Total Hours</th>
-              <th>Status</th>
-              <!-- <th>Salary</th> -->
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let attendance of attendanceModel | groupBy:'employee_id'">
-              <tr>
-                <td colspan="6" class="text-center text-muted">
-                  <span class="mr-3"><b>Name:</b> {{ attendance.key }}</span>
-                  <ng-container *ngFor="let attendance of attendance.value; index as i; first as isFirst">
-                      <span *ngIf="isFirst" class="ml-3"><b>Designation:</b> {{attendance.employee_id.designation}}</span>
-                  </ng-container>
-                </td>
-              </tr>
-              <tr *ngFor="let attendance of attendance.value">
-                <!-- <td>{{attendance.employee_id.profile.first_name}} {{attendance.employee_id.profile.last_name}}</td> -->
-                <!-- <td>{{attendance.employee_id.designation}}</td> -->
-                <td>{{attendance.morning_session}}</td>
-                <td>{{attendance.evening_session}}</td>
-                <td>{{attendance.total_hours | number:'1.0-1' }}</td>
-                <td *ngIf="attendance.status == 'Verified'; else inactive_else">
-                  <a class="btn btn-link text-success p-0" (click)="notVerify(attendance._id)">{{attendance.status}}</a>
-                </td>
-                <ng-template #inactive_else>
-                  <td *ngIf="attendance.status == 'Not Verified'">
-                    <a class="btn btn-link text-danger p-0" (click)="verify(attendance._id)">{{attendance.status}}</a>
-                  </td>
-                </ng-template>
-                <!-- <td>
-                  {{ attendance.employee_id.salary }}
-                </td> -->
-                <td>
-                  {{ attendance.date_created | date:'mediumDate' }}
-                </td>
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <ng-template #attendanceModel_else>
-      <div class="col-md-6 offset-md-3 text-center">
-        <h3>No data yet.</h3>
-      </div>
-    </ng-template>
-  </div>

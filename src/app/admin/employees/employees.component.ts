@@ -12,6 +12,7 @@ import { UserService } from '../../user.service';
 export class EmployeesComponent implements OnInit {
   
   userModel;
+  filtersLoaded: Promise<boolean>;
 
   constructor(private router: Router, private user: UserService) { }
 
@@ -31,6 +32,7 @@ export class EmployeesComponent implements OnInit {
       .subscribe(res => {
         console.log(res)
         this.userModel = res
+        this.filtersLoaded = Promise.resolve(true);
       },
       (error)=>{
         console.log(error)

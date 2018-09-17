@@ -1,66 +1,71 @@
-<div class="row">
-  <div class="col-md-6 offset-md-3">
-    <div class="row">
-      <div class="col-md-6 text-left">
-        <button type="button" class="btn btn-link text-primary" (click)="goBack()">
-          &laquo; Go back
-        </button>
-      </div>
-      <div class="col-md-6 text-right">
-        <button type="button" class="btn btn-link text-primary" (click)="htmlToPDF()">Save</button>
-        <!-- <a class="btn btn-link" routerLink="/export_to_pdf">Export to PDF &raquo;</a> -->
-      </div>
-    </div>
-  </div>
-</div>
 <div class="row" *ngIf="filtersLoaded | async">
   <div class="col-md-12">
-    <div class="table-responsive">
-      <table id="contentToConvert" *ngIf="attendanceModel.length > 0; else attendanceModel_else" class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Designation</th>
-            <th *ngFor="let attendance of attendanceModel | groupBy:'date_created'">{{ attendance.key | date:'mediumDate' }}</th>
-            <th>Total Hours Worked</th>
-            <th>Salary</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let attendance of attendanceModel | groupBy:'employee_id'">
-            
-            <tr>
-              <td>{{ attendance.key }}</td>
-              <td>
-                <ng-container *ngFor="let attendance of attendance.value; index as i; first as isFirst">
-                  <span *ngIf="isFirst">{{attendance.employee_id.designation}}</span>
-                </ng-container>
-              </td>
-              <td *ngFor="let attendance of attendance.value">
-                <span *ngIf="attendance.total_hours != ''; else else_hours">{{attendance.total_hours | number: '1.0-2' }} Hours</span>
-                <ng-template #else_hours>
-                  <span class="text-muted">Currently Working</span>
-                </ng-template>
-              </td>
-              <td>
-                <ng-container *ngFor="let attend of attendance.value; index as i; first as isFirst">
-                  <span *ngIf="isFirst">{{ (getTotalHours(attendance.value)) | number: '1.0-1' }} Hours</span>
-                </ng-container>
-              </td>
-              <td>
-                <ng-container *ngFor="let attend of attendance.value; index as i; first as isFirst">
-                  <span *ngIf="isFirst">{{ calculateSalary(attendance.value) }}{{ ((attend.employee_id.salary/30) * attendance.value.length) - ((attend.employee_id.salary/30) * halfDayLeave) - ((attend.employee_id.salary/30) * fullDayLeave) | currency: 'INR'}}</span>
-                </ng-container>
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
+    <nb-card accent="danger">
+      <nb-card-header>
+        <div class="row">
+          <div class="col-md-6 text-left">
+            <button type="button" class="btn btn-link p-0 text-primary" (click)="goBack()">
+              &laquo; Go back
+            </button>
+          </div>
+          <div class="col-md-6 text-right">
+            <button type="button" class="btn btn-link p-0 text-primary" (click)="htmlToPDF()">Save</button>
+            <!-- <a class="btn btn-link" routerLink="/export_to_pdf">Export to PDF &raquo;</a> -->
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="table-responsive">
+          <table id="contentToConvert" *ngIf="attendanceModel.length > 0; else attendanceModel_else" class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Designation</th>
+                <th *ngFor="let attendance of attendanceModel | groupBy:'date_created'">{{ attendance.key | date:'mediumDate' }}</th>
+                <th>Total Hours Worked</th>
+                <th>Salary</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let attendance of attendanceModel | groupBy:'employee_id'">
+
+                <tr>
+                  <td>{{ attendance.key }}</td>
+                  <td>
+                    <ng-container *ngFor="let attendance of attendance.value; index as i; first as isFirst">
+                      <span *ngIf="isFirst">{{attendance.employee_id.designation}}</span>
+                    </ng-container>
+                  </td>
+                  <td *ngFor="let attendance of attendance.value">
+                    <span *ngIf="attendance.total_hours != ''; else else_hours">{{attendance.total_hours | number: '1.0-2' }} Hours</span>
+                    <ng-template #else_hours>
+                      <span class="text-muted">Currently Working</span>
+                    </ng-template>
+                  </td>
+                  <td>
+                    <ng-container *ngFor="let attend of attendance.value; index as i; first as isFirst">
+                      <span *ngIf="isFirst">{{ (getTotalHours(attendance.value)) | number: '1.0-1' }} Hours</span>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngFor="let attend of attendance.value; index as i; first as isFirst">
+                      <span *ngIf="isFirst">{{ calculateSalary(attendance.value) }}{{ ((attend.employee_id.salary/30) * attendance.value.length)
+                        - ((attend.employee_id.salary/30) * halfDayLeave) - ((attend.employee_id.salary/30) * fullDayLeave)
+                        | currency: 'INR'}}
+                      </span>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #attendanceModel_else>
+          <div class="col-md-6 offset-md-3 text-center">
+            <h3>No data yet.</h3>
+          </div>
+        </ng-template>
+      </nb-card-body>
+    </nb-card>
   </div>
-  <ng-template #attendanceModel_else>
-    <div class="col-md-6 offset-md-3 text-center">
-      <h3>No data yet.</h3>
-    </div>
-  </ng-template>
 </div>

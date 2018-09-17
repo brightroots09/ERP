@@ -1,171 +1,176 @@
 <div class="row" *ngIf="filtersLoaded | async">
-	<div class="col-md-6 offset-md-3">
-		<div class="row">
-
-			<ul class="nav justify-content-center">
-				<li class="nav-item">
-					<button type="button" class="nav-link btn btn-link" data-toggle="modal" data-target="#updateModal">Update Daily Tasks</button>
-				</li>
-				<li class="nav-item">
-					<button type="button" class="nav-link btn btn-link" data-toggle="modal" data-target="#viewModal">View Daily Updates</button>
-				</li>
-				<li class="nav-item">
-					<button type="button" class="nav-link btn btn-link" routerLink="/projectTasksDetails/{{projectModel._id}}">View Tasks</button>
-				</li>
-			</ul>
-		</div>
+	<div class="col-md-4 mr-auto ml-auto">
+		<nb-card accent="primary" class="text-center">
+			<nb-card-body style="flex: inherit !important;">
+				<h5 class="card-title">
+					Name: {{projectModel.project_details.name}}
+				</h5>
+				<h5 class="card-text">
+					Description: {{ projectModel.project_details.description }}
+				</h5>
+				<h5 class="card-text">
+					Status:
+					<span class="badge badge-info p-2">{{ projectModel.status }}</span>
+				</h5>
+			</nb-card-body>
+			<nb-card-body>
+				<div class="row">
+					<div class="col-md-6">
+						<button nbButton outline status="primary" class="mr-2" size="xsmall" *ngIf="!edit" (click)="toggleEdit()">Edit</button>
+					</div>
+					<div class="col-md-6">
+						<button size="xsmall" *ngIf="!edit" class="mr-2" (click)="deleteProject()" nbButton outline status="danger">Delete</button>
+					</div>
+				</div>
+			</nb-card-body>
+			<nb-card-body>
+				<nb-list>
+					<nb-list-item>
+						<button type="button" class="btn btn-link text-danger p-0 btn-xs" data-toggle="modal" data-target="#updateModal">Update Daily Tasks</button>
+					</nb-list-item>
+					<nb-list-item>
+						<button type="button" class="btn btn-link text-danger p-0 btn-xs" data-toggle="modal" data-target="#viewModal">View Daily Updates</button>
+					</nb-list-item>
+					<nb-list-item>
+						<button type="button" class="btn btn-link text-danger p-0 btn-xs" routerLink="/projectTasksDetails/{{projectModel._id}}">View Tasks</button>
+					</nb-list-item>
+				</nb-list>
+			</nb-card-body>
+		</nb-card>
 	</div>
-	<div class="col-md-6 card offset-md-3 mt-4 text-center">
-		<div class="card-body">
-			<h5 class="card-title" *ngIf="!edit">
-				Name: {{projectModel.project_details.name}}
-			</h5>
-			<h5 class="card-text" *ngIf="!edit">
-				Description: {{ projectModel.project_details.description }}
-			</h5>
-			<h5 class="card-text" *ngIf="!edit">
-				Status:
-				<span class="badge badge-info p-2">{{ projectModel.status }}</span>
-			</h5>
 
-			<div class="card-text">
-				<div class="col-md-12">
+	<div class="col-md-4 mr-auto ml-auto" *ngIf="edit">
+		<nb-card accent="info" class="text-center">
+			<nb-card-header>
+				Edit Project
+			</nb-card-header>
+			<nb-card-body>
+				<form (ngSubmit)="onFormSubmit()" class="mb-3">
+					<div class="form-group" *ngIf="edit">
+						<label for="name">Name: </label>
+						<input type="text" id="name" #name="ngModel" class="form-control" name="name" [(ngModel)]="projectModel.project_details.name"
+						 [class.is-invalid]="name.invalid && name.touched" [class.is-valid]="name.valid && name.touched" required>
+						<small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
 
-					<div class="row">
-						<div class="col-md-6">
-							<button type="button" *ngIf="!edit" class="btn btn-outline-primary ml-auto mr-auto" (click)="toggleEdit()">Edit</button>
+					</div>
+
+					<div class="form-group" *ngIf="edit">
+						<label for="first_name">Description: </label>
+						<input type="text" id="description" #description="ngModel" class="form-control" name="description" [(ngModel)]="projectModel.project_details.description"
+						 [class.is-invalid]="description.invalid && description.touched" [class.is-valid]="description.valid && description.touched"
+						 required>
+						<small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
+					</div>
+
+					<div class="form-group" *ngIf="edit">
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio1"
+							 value="In Progress">
+							<label class="form-check-label" for="inlineRadio1">In Progress</label>
 						</div>
-						<div class="col-md-6">
-							<button type="button" *ngIf="!edit" (click)="deleteProject()" class="btn btn-outline-danger ml-auto mr-auto">Delete</button>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio2"
+							 value="On Hold">
+							<label class="form-check-label" for="inlineRadio2">On Hold</label>
 						</div>
-					</div>
-
-				</div>
-			</div>
-
-			<form (ngSubmit)="onFormSubmit()" class="mb-3">
-				<div class="form-group" *ngIf="edit">
-					<label for="name">Name: </label>
-					<input type="text" id="name" #name="ngModel" class="form-control" name="name" [(ngModel)]="projectModel.project_details.name"
-					 [class.is-invalid]="name.invalid && name.touched" [class.is-valid]="name.valid && name.touched" required>
-					<small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
-
-				</div>
-
-				<div class="form-group" *ngIf="edit">
-					<label for="first_name">Description: </label>
-					<input type="text" id="description" #description="ngModel" class="form-control" name="description" [(ngModel)]="projectModel.project_details.description"
-					 [class.is-invalid]="description.invalid && description.touched" [class.is-valid]="description.valid && description.touched"
-					 required>
-					<small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
-				</div>
-
-				<div class="form-group" *ngIf="edit">
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio1"
-						 value="In Progress">
-						<label class="form-check-label" for="inlineRadio1">In Progress</label>
-					</div>
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio2"
-						 value="On Hold">
-						<label class="form-check-label" for="inlineRadio2">On Hold</label>
-					</div>
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio3"
-						 value="Completed">
-						<label class="form-check-label" for="inlineRadio3">Completed</label>
-					</div>
-				</div>
-				<div class="form-group" *ngIf="edit">
-					<label for="">Selected Members</label>
-					<div *ngIf="employees.length > 0; else none_block">
-						<div class="btn-group badge badge-info m-2" role="group" *ngFor="let employee of employees">
-							<span class="p-3">{{employee.profile.first_name}} {{employee.profile.last_name}}</span>
-							<button type="button" class="btn btn-link text-white" (click)="remove(employee)">&times;</button>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio3"
+							 value="Completed">
+							<label class="form-check-label" for="inlineRadio3">Completed</label>
 						</div>
 					</div>
-					<ng-template #none_block>
-						<p>No Members Selected</p>
-					</ng-template>
-				</div>
-				<div class="form-group" *ngIf="edit">
-					<div class="row">
-						<div class="col-md-12 mt-3">
-							<div class="row">
-								<div class="col-md-4 dropdown mb-2">
-									<button class="form-control dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-									 aria-expanded="false">IOS Developer</button>
-									<div class="dropdown-menu">
-										<ng-container *ngFor="let employee of userModel">
-											<button type="button" *ngIf="employee.designation == 'Developer (IOS)'" class="dropdown-item m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
-										</ng-container>
+					<div class="form-group" *ngIf="edit">
+						<label for="">Selected Members</label>
+						<div *ngIf="employees.length > 0; else none_block">
+							<div class="btn-group badge badge-info m-2" role="group" *ngFor="let employee of employees">
+								<span class="p-3">{{employee.profile.first_name}} {{employee.profile.last_name}}</span>
+								<button type="button" class="btn btn-link text-white" (click)="remove(employee)">&times;</button>
+							</div>
+						</div>
+						<ng-template #none_block>
+							<p>No Members Selected</p>
+						</ng-template>
+					</div>
+					<div class="form-group" *ngIf="edit">
+						<div class="row">
+							<div class="col-md-12 mt-3">
+								<div class="row">
+									<div class="col-md-12 dropdown mb-2">
+										<button class="dropdown-toggle p-2" type="button" id="dropdownMenuButtonIOS" data-toggle="dropdown" aria-haspopup="true"
+										 aria-expanded="false">IOS Developer</button>
+										<div class="dropdown-menu">
+											<ng-container *ngFor="let employee of userModel">
+												<button type="button" *ngIf="employee.designation == 'Developer (IOS)'" class="dropdown-item m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+											</ng-container>
+										</div>
 									</div>
-								</div>
-								<div class="col-md-4 dropdown mb-2">
-									<button class="form-control dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-									 aria-expanded="false">Android Developer</button>
-									<div class="dropdown-menu">
-										<ng-container *ngFor="let employee of userModel">
-											<button type="button" *ngIf="employee.designation == 'Developer (Android)'" class="dropdown-item m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
-										</ng-container>
+									<div class="col-md-12 dropdown mb-2">
+										<button class="dropdown-toggle p-2" type="button" id="dropdownMenuButtonANDROID" data-toggle="dropdown" aria-haspopup="true"
+										 aria-expanded="false">Android Developer</button>
+										<div class="dropdown-menu">
+											<ng-container *ngFor="let employee of userModel">
+												<button type="button" *ngIf="employee.designation == 'Developer (Android)'" class="dropdown-item m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+											</ng-container>
+										</div>
 									</div>
-								</div>
-								<div class="col-md-4 dropdown mb-2">
-									<button class="form-control dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-									 aria-expanded="false">Backend Developer</button>
-									<div class="dropdown-menu">
-										<ng-container *ngFor="let employee of userModel">
-											<button type="button" *ngIf="employee.designation == 'Backend Developer'" class="dropdown-item form-control m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
-										</ng-container>
+									<div class="col-md-12 dropdown mb-2">
+										<button class="dropdown-toggle p-2" type="button" id="dropdownMenuButtonBACKEND" data-toggle="dropdown" aria-haspopup="true"
+										 aria-expanded="false">Backend Developer</button>
+										<div class="dropdown-menu">
+											<ng-container *ngFor="let employee of userModel">
+												<button type="button" *ngIf="employee.designation == 'Backend Developer'" class="dropdown-item form-control m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+											</ng-container>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-12 mt-3">
-							<label>Project Manager</label>
-							<select class="form-control" name="project_manager" #project_manager="ngModel" [(ngModel)]="projectModel.project_manager">
-								<option *ngFor="let manager of projectModel.project_manager" value="{{manager._id}}" selected="selected">
-									{{ manager.profile.first_name }} {{ manager.profile.last_name }}
-								</option>
-								<hr>
-								<option *ngFor="let employee of userModel" value="{{employee._id}}">
-									{{ employee.profile.first_name }} {{ employee.profile.last_name }}
-								</option>
-							</select>
-						</div>
-						<div class="col-md-12 mt-3">
-							<label>Responsible Person</label>
-							<select class="form-control" name="responsible_person" #responsible_person="ngModel" [(ngModel)]="projectModel.responsible_person">
-								<option *ngFor="let responsible of projectModel.responsible_person" value="{{responsible._id}}" selected="selected">
-									{{ responsible.profile.first_name }} {{ responsible.profile.last_name }} ({{ responsible.designation }})
-								</option>
-								<hr>
-								<option *ngFor="let employee of userModel" value="{{employee._id}}">
-									{{ employee.profile.first_name }} {{ employee.profile.last_name }}
-								</option>
-							</select>
+							<div class="col-md-12 mt-3">
+								<label>Project Manager</label>
+								<select class="form-control" name="project_manager" #project_manager="ngModel" [(ngModel)]="projectModel.project_manager">
+									<option *ngFor="let manager of projectModel.project_manager" value="{{manager._id}}" selected="selected">
+										{{ manager.profile.first_name }} {{ manager.profile.last_name }}
+									</option>
+									<hr>
+									<option *ngFor="let employee of userModel" value="{{employee._id}}">
+										{{ employee.profile.first_name }} {{ employee.profile.last_name }}
+									</option>
+								</select>
+							</div>
+							<div class="col-md-12 mt-3">
+								<label>Responsible Person</label>
+								<select class="form-control" name="responsible_person" #responsible_person="ngModel" [(ngModel)]="projectModel.responsible_person">
+									<option *ngFor="let responsible of projectModel.responsible_person" value="{{responsible._id}}" selected="selected">
+										{{ responsible.profile.first_name }} {{ responsible.profile.last_name }} ({{ responsible.designation }})
+									</option>
+									<hr>
+									<option *ngFor="let employee of userModel" value="{{employee._id}}">
+										{{ employee.profile.first_name }} {{ employee.profile.last_name }}
+									</option>
+								</select>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<button type="submit" *ngIf="edit" class="btn btn-outline-primary mr-2">Update</button>
-				<button type="button" *ngIf="edit" class="btn btn-outline-secondary ml-2" (click)="cancelUpdate()">Cancel</button>
-			</form>
+					<button nbButton outline status="primary" size="xsmall" *ngIf="edit" class="mr-2">Update</button>
+					<button nbButton outline status="danger" size="xsmall" *ngIf="edit" class="mr-2" (click)="cancelUpdate()">Cancel</button>
+				</form>
+			</nb-card-body>
+		</nb-card>
+	</div>
 
-		</div>
-
-		<div class="card-footer" *ngIf="!edit">
-			<div class="row">
-				<div class="col-md-12" *ngIf="projectModel.employees.length > 0; else employee_else">
-					<label>Project Members</label>
-					<ul>
-						<li *ngFor="let employee of projectModel.employees" class="text-left">
-							{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})
-						</li>
-					</ul>
-
-				</div>
+	<div class="col-md-4 mr-auto ml-auto">
+		<nb-card accent="danger" class="text-center">
+			<nb-card-header>
+				Project Members
+			</nb-card-header>
+			<nb-card-body>
+				<h6>Employees</h6>
+				<nb-list *ngIf="projectModel.employees.length > 0; else employee_else">
+					<nb-list-item *ngFor="let employee of projectModel.employees" class="text-left">
+						<nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name" [title]="employee.designation">
+						</nb-user>
+					</nb-list-item>
+				</nb-list>
 				<ng-template #employee_else>
 					<div class="col-md-12">
 						<p class="mt-auto mb-auto">
@@ -173,17 +178,15 @@
 						</p>
 					</div>
 				</ng-template>
-			</div>
-			<div class="row">
-				<div class="col-md-12" *ngIf="projectModel.project_manager.length > 0; else manager_else">
-					<label>Project Manager</label>
-					<ul>
-						<li *ngFor="let manager of projectModel.project_manager" class="text-left">
-							{{ manager.profile.first_name }} {{ manager.profile.last_name }}
-						</li>
-					</ul>
-
-				</div>
+			</nb-card-body>
+			<nb-card-body>
+				<h6>Project Manager</h6>
+				<nb-list *ngIf="projectModel.project_manager.length > 0; else manager_else">
+					<nb-list-item *ngFor="let manager of projectModel.project_manager" class="text-left">
+						<nb-user [name]="manager.profile.first_name + ' ' + manager.profile.last_name" [title]="manager.designation">
+						</nb-user>
+					</nb-list-item>
+				</nb-list>
 				<ng-template #manager_else>
 					<div class="col-md-12">
 						<p class="mt-auto mb-auto">
@@ -191,17 +194,15 @@
 						</p>
 					</div>
 				</ng-template>
-			</div>
-			<div class="row">
-				<div class="col-md-12" *ngIf="projectModel.responsible_person.length > 0; else responsible_else">
-					<label>Responsible Person</label>
-					<ul>
-						<li *ngFor="let responsible of projectModel.responsible_person" class="text-left">
-							{{ responsible.profile.first_name }} {{ responsible.profile.last_name }} ({{ responsible.designation }})
-						</li>
-					</ul>
-
-				</div>
+			</nb-card-body>
+			<nb-card-body>
+				<h6>Responsible Person</h6>
+				<nb-list *ngIf="projectModel.responsible_person.length > 0; else responsible_else">
+					<nb-list-item *ngFor="let responsible of projectModel.responsible_person" class="text-left">
+						<nb-user [name]="responsible.profile.first_name + ' ' + responsible.profile.last_name" [title]="responsible.designation">
+						</nb-user>
+					</nb-list-item>
+				</nb-list>
 				<ng-template #responsible_else>
 					<div class="col-md-12">
 						<p class="mt-auto mb-auto">
@@ -209,63 +210,63 @@
 						</p>
 					</div>
 				</ng-template>
-			</div>
-		</div>
-		<button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
-			&laquo; Go back
-		</button>
+			</nb-card-body>
+		</nb-card>
 	</div>
+</div>
 
 
-	<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Update Daily Task</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form (ngSubmit)="onUpdateFormSubmit()">
-						<div class="form-group">
-							<textarea name="updates" class="form-control" #description="ngModel" [(ngModel)]="updateModel.description" [class.is-invalid]="description.invalid && description.touched"
-							 [class.is-valid]="description.valid && description.touched" required>
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Update Daily Task</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form (ngSubmit)="onUpdateFormSubmit()">
+					<div class="form-group">
+						<textarea name="updates" class="form-control" #description="ngModel" [(ngModel)]="updateModel.description" [class.is-invalid]="description.invalid && description.touched"
+						 [class.is-valid]="description.valid && description.touched" required>
 							</textarea>
-							<small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
-						</div>
-						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">Save</button>
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						</div>
-					</form>
-				</div>
+						<small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Save</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">View Daily Task</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<ul *ngIf="projectModel.dailyTasksUpdate != ''; else dailyTasksUpdate_else">
-						<li *ngFor="let tasksUpdates of projectModel.dailyTasksUpdate">{{tasksUpdates.description}}</li>
+<div class="modal fade" *ngIf="filtersLoaded | async" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">View Daily Task</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<nb-list *ngIf="projectModel.dailyTasksUpdate.length > 0; else dailyTasksUpdate_else">
+					<nb-list-item *ngFor="let tasksUpdates of projectModel.dailyTasksUpdate" class="text-left">
+						<nb-user [name]="tasksUpdates.description">
+						</nb-user>
+					</nb-list-item>
+				</nb-list>
+				<ng-template #dailyTasksUpdate_else>
+					<ul>
+						<li>No daily updates found.</li>
 					</ul>
-					<ng-template #dailyTasksUpdate_else>
-						<ul>
-							<li>No daily updates found.</li>
-						</ul>
-					</ng-template>
-				</div>
-				<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+				</ng-template>
 			</div>
+			<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
 		</div>
 	</div>
-
 </div>
