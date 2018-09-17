@@ -24,7 +24,7 @@ export class EmployeeLoginComponent implements OnInit {
         res => {
           console.log(res)
           if (res.token) {
-            localStorage.setItem('token', res.token)
+            localStorage.setItem('employeeToken', res.token)
             this._router.navigate(["/employeeProfile"])
           }
           else {

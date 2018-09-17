@@ -48,6 +48,39 @@ export class AppComponent {
     }
    ];
 
+   itemsEmployee: NbMenuItem[] = [
+    {
+      title: "My Projects",
+      icon: 'fas fa-project-diagram',
+      link: '/myProjects'
+    },
+    {
+      title: "My Tasks",
+      icon: "fas fa-tasks",
+      link: '/myTasks'
+    },
+    {
+      title: "Query / Request",
+      icon: "fas fa-question-circle",
+      link: '/query'
+    },
+    {
+      title: "Daily Update",
+      icon: "fas fa-tasks",
+      link: '/dailyDiary'
+    },
+    {
+      title: "Individual Task",
+      icon: "fas fa-briefcase",
+      link: '/individualTask'
+    },
+    {
+      title: "View Attendance",
+      icon: "far fa-eye",
+      link: '/myAttendance'
+    }
+   ]
+
   constructor (private _authService: AuthService, private sidebarService: NbSidebarService ){ }
 
   toggle() {

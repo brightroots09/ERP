@@ -1,4 +1,24 @@
 <div class="row" *ngIf="filtersLoaded | async">
+
+
+	<div class="col-lg-4 ml-auto mr-auto text-center">
+		<nb-card>
+			<nb-card-header>
+				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
+				 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
+
+				<ng-template #else_image>
+					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
+				</ng-template>
+			</nb-card-header>
+			<nb-card-body>
+				<h5 class="card-title">{{userModel.profile.name}}</h5>
+				<p class="card-text">{{userModel.email}}</p>
+				<p class="card-text">{{ userModel.designation }}</p>
+			</nb-card-body>
+		</nb-card>
+	</div>
+
 	<div class="col-md-4 offset-md-2 card mt-4 text-center">
 
 		<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
@@ -16,7 +36,7 @@
 				Email: {{ userModel.email }}
 			</h5>
 			<h5 class="card-text">
-				Dsignation: {{ userModel.designation }}
+				Dsignation: {{  }}
 			</h5>
 			<h5 class="card-text">
 				Salary: {{ userModel.salary | currency:'INR' }}
@@ -34,27 +54,5 @@
 				</ng-template>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-4 mr-auto mt-4 ml-auto">
-		<ul class="nav flex-column">
-			<li class="nav-item">
-				<a class="nav-link active" routerLink="/myProjects">My Projects</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" routerLink="/myTasks">My Tasks</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" routerLink="/query">Query / Request</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" routerLink="/dailyDiary">Daily Update</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" routerLink="/individualTask">Individual Task</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" routerLink="/myAttendance">View Attendance</a>
-			</li>
-		</ul>
 	</div>
 </div>

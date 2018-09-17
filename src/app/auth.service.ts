@@ -23,14 +23,22 @@ export class AuthService {
   loggedIn(){
     return !!localStorage.getItem('token')
   }
-
   logoutUser(user){
     localStorage.removeItem('token')
     this.router.navigate(['/login'])
   }
 
+  employeeLoggedIn(){
+    return !!localStorage.getItem('employeeToken')
+  }
+
+  employeeLogout(){
+    localStorage.removeItem("employeeToken")
+    this.router.navigate(["/employeeLogin"])
+  }
+
   getToken(){
-    return localStorage.getItem('token')
+    return localStorage.getItem('token') ? localStorage.getItem('token') : localStorage.getItem('employeeToken')
   }
 
 }

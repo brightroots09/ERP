@@ -27,7 +27,6 @@ export class ProfileComponent implements OnInit {
   queryModel;
 
   BarChart = [];
-  @ViewChild('canvas') canvas: ElementRef;
 
   constructor(private router: Router, private user: UserService) { }
   view: any[] = [650, 350];
@@ -60,22 +59,24 @@ export class ProfileComponent implements OnInit {
       this.taskModel = task;
       this.queryModel = query;
 
-      this.summaryChart.push({
-      "name": "Employee",
-      "value": 5
-    },
-    {
-      "name": "Projects",
-      "value": 15
-    },
-    {
-      "name": "Tasks",
-      "value": 5
-    },
-    {
-      "name": "Queries / Requests",
-      "value": 14
-    })
+      this.summaryChart.push(
+        {
+          "name": "Employee",
+          "value": 5
+        },
+        {
+          "name": "Projects",
+          "value": 15
+        },
+        {
+          "name": "Tasks",
+          "value": 5
+        },
+        {
+          "name": "Queries / Requests",
+          "value": 14
+        }
+      )
 
       Object.assign(this.summaryChart)
 
@@ -87,22 +88,22 @@ export class ProfileComponent implements OnInit {
   summaryChart = []
 
   // summaryChart = [
-    // {
-    //   "name": "Employee",
-    //   "value": ''
-    // },
-    // {
-    //   "name": "Projects",
-    //   "value": 15
-    // },
-    // {
-    //   "name": "Tasks",
-    //   "value": 5
-    // },
-    // {
-    //   "name": "Queries / Requests",
-    //   "value": 14
-    // }
+  // {
+  //   "name": "Employee",
+  //   "value": ''
+  // },
+  // {
+  //   "name": "Projects",
+  //   "value": 15
+  // },
+  // {
+  //   "name": "Tasks",
+  //   "value": 5
+  // },
+  // {
+  //   "name": "Queries / Requests",
+  //   "value": 14
+  // }
   // ];
 
   getProfile() {

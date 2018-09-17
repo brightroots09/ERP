@@ -14,17 +14,57 @@ export class EmployeeProfileComponent implements OnInit {
   filtersLoaded: Promise<boolean>;
 
   userModel;
-
+  BarChart = [];
+  
   constructor(private router: Router, private user: UserService) { }
+  view: any[] = [650, 350];
+
+   // options
+   showXAxis = true;
+   showYAxis = true;
+   gradient = false;
+   showLegend = false;
+   showXAxisLabel = false;
+   xAxisLabel = 'Country';
+   showYAxisLabel = false;
+   yAxisLabel = 'Amount';
+ 
+   colorScheme = {
+     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+   };
 
   async ngOnInit() {
       try {
         const profile = await this.getProfile()
           this.userModel = profile
+
+          this.summaryChart.push(
+            {
+              "name": "Projects",
+              "value": 5
+            },
+            {
+              "name": "Tasks",
+              "value": 15
+            },
+            {
+              "name": "Individual Tasks",
+              "value": 5
+            },
+            {
+              "name": "Queries / Requests",
+              "value": 14
+            }
+          )
+    
+          Object.assign(this.summaryChart)
+
       } catch (error) {
         return error
       }
   }
+
+  summaryChart = []
 
   getProfile(){
     this.user.employeeProfile()
