@@ -36,11 +36,17 @@ import { AttendanceComponent } from './admin/attendance/attendance.component';
 import { ViewAllAttendanceComponent } from './admin/view-all-attendance/view-all-attendance.component';
 import { ExportToPdfComponent } from './admin/export-to-pdf/export-to-pdf.component';
 import { AddAbsentiesComponent } from './admin/add-absenties/add-absenties.component';
+import { AdminGuard } from './admin.auth.guard';
 
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "/home",
+    redirectTo: "/employeeProfile",
+    pathMatch: "full"
+  },
+  {
+    path: "admin",
+    redirectTo: "profile",
     pathMatch: "full"
   },
   {
@@ -54,113 +60,113 @@ const routes: Routes = [
   {
     path: "profile",
     component: ProfileComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "employees",
     component: EmployeesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "add_employee",
     component: AddEmployeesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "employee_details/:id",
     component: EmployeeDetailComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "employee_delete/:id",
     component: EmployeeDetailComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "edit_employee/:id",
     component: EmployeeDetailComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "projects",
     component: ProjectsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "add_project",
     component: AddProjectComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "edit_project",
     component: EditProjectComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "project_details/:id",
     component: ProjectDetailComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "project_delete/:id",
     component: ProjectDetailComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
 
   },
   {
     path: "tasks",
     component: TasksComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "tasks_details/:id",
     component: TaskDetailsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "create_tasks",
     component: AddTasksComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "projectTasksDetails/:id",
     component: ProjectTaskDetailsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "queries",
     component: ViewQueriesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "attendance",
     component: AttendanceComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "view_attendance/:date",
     component: ViewAttendanceComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "all_attendance/:date",
     component: ViewAllAttendanceComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "export_to_pdf/:date",
     component: ExportToPdfComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "createProjectTask/:id",
     component: AddProjectTaskComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "absenties",
     component: AddAbsentiesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "employeeLogin",

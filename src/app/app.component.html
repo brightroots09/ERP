@@ -1,25 +1,14 @@
 <nb-layout>
-	<nb-layout-header fixed>
+	<nb-layout-header fixed *ngIf="_authService.loggedIn() || _authService.employeeLoggedIn()">
 		<a href="#" class="text-primary" (click)="toggle()">
 			<i class="fas fa-bars"></i>
 		</a>
 		<div class="container">
 			<div>
-				<a class="nav-link" routerLink="/" routerLinkActive="active">Home
-					<span class="sr-only">(current)</span>
-				</a>
-			</div>
-			<div>
 				<a class="nav-link" *ngIf="_authService.loggedIn()" routerLink="/profile" routerLinkActive="active">Profile</a>
 				<a class="nav-link" *ngIf="_authService.employeeLoggedIn()" routerLink="/employeeProfile" routerLinkActive="active">Profile</a>
 			</div>
 			<div class="ml-auto">
-				<a class="nav-link" *ngIf="!_authService.loggedIn() && !_authService.employeeLoggedIn()" routerLink="/login" routerLinkActive="active">Admin Login</a>
-			</div>
-			<div>
-				<a class="nav-link" *ngIf="!_authService.employeeLoggedIn() && !_authService.loggedIn()" routerLink="/employeeLogin" routerLinkActive="active">Employee Login</a>
-			</div>
-			<div>
 				<a class="nav-link text-danger" *ngIf="_authService.loggedIn()" style="cursor: pointer;" (click)="_authService.logoutUser()">Logout</a>
 				<a class="nav-link text-danger" *ngIf="_authService.employeeLoggedIn()" style="cursor: pointer;" (click)="_authService.employeeLogout()">Logout</a>
 			</div>
