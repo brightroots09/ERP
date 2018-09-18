@@ -11,6 +11,7 @@ export class TasksComponent implements OnInit {
 
   tasksModel;
   param;
+  filtersLoaded: Promise<boolean>
 
   constructor(private router: Router, private user: UserService) { 
     
@@ -32,6 +33,7 @@ export class TasksComponent implements OnInit {
       .subscribe(res => {
         console.log(res)
         this.tasksModel = res
+        this.filtersLoaded = Promise.resolve(true)
       }, (error) => {
         console.error(error)
       })

@@ -17,8 +17,9 @@ export class ProfileComponent implements OnInit {
   filtersLoaded: Promise<boolean>;
   employeesLoaded: Promise<boolean>;
   projectsLoaded: Promise<boolean>;
-  tasksLoaded: Promise<Boolean>;
-  queriesLoaded: Promise<Boolean>;
+  tasksLoaded: Promise<boolean>;
+  queriesLoaded: Promise<boolean>;
+  chartLoaded: Promise<boolean>;
 
   userModel;
   employeeModel;
@@ -62,24 +63,24 @@ export class ProfileComponent implements OnInit {
       this.summaryChart.push(
         {
           "name": "Employee",
-          "value": 5
+          "value": 6
         },
         {
           "name": "Projects",
-          "value": 15
+          "value": 2
         },
         {
           "name": "Tasks",
-          "value": 5
+          "value": 1
         },
         {
           "name": "Queries / Requests",
-          "value": 14
+          "value": 4
         }
       )
 
       Object.assign(this.summaryChart)
-
+    
     } catch (error) {
       return error
     }
@@ -91,7 +92,6 @@ export class ProfileComponent implements OnInit {
     this.user.profile()
       .subscribe(res => {
         this.userModel = res
-        console.log("==================>", res)
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         if (error instanceof HttpErrorResponse) {
@@ -105,6 +105,7 @@ export class ProfileComponent implements OnInit {
   getEmployee() {
     this.user.employee()
       .subscribe(res => {
+        // this.summaryChart.push({"name": "Employee", "value": Object.keys(res).length})
         this.employeeModel = res
         this.employeesLoaded = Promise.resolve(true)
       }, error => {
@@ -115,6 +116,7 @@ export class ProfileComponent implements OnInit {
   getProjects() {
     this.user.projects()
       .subscribe(res => {
+        // this.summaryChart.push({"name": "Projects", "value": Object.keys(res).length})
         this.projectModel = res
         this.projectsLoaded = Promise.resolve(true)
       }, error => {
@@ -125,16 +127,22 @@ export class ProfileComponent implements OnInit {
   getTasks() {
     this.user.tasks()
       .subscribe(res => {
+        // this.summaryChart.push({"name": "Tasks", "value": Object.keys(res).length})
         this.taskModel = res;
         this.tasksLoaded = Promise.resolve(true)
+      }, error => {
+        console.error(error)
       })
   }
 
   getQueries() {
     this.user.getAllQueries()
       .subscribe(res => {
+        // this.summaryChart.push({"name": "Queries", "value": Object.keys(res).length})
         this.queryModel = res;
         this.queriesLoaded = Promise.resolve(true);
+      }, error => {
+        console.error(error)
       })
   }
 

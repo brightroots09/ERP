@@ -10,28 +10,25 @@
 				</ng-template>
 			</nb-card-header>
 			<nb-card-body style="flex: inherit !important;">
-				<h5 class="card-title">
-					Name: {{userModel.profile.first_name}} {{ userModel.profile.last_name }}
+				<h5>
+					Name: {{userModel.profile.first_name}} {{ userModel.profile.last_name }} ({{ userModel.salary | currency:'INR' }})
 				</h5>
-				<h5 class="card-text">
+				<p>
 					Email: {{ userModel.email }}
-				</h5>
-				<h5 class="card-text">
+				</p>
+				<p>
 					Dsignation: {{ userModel.designation }}
-				</h5>
-				<h5 class="card-text">
-					Salary: {{ userModel.salary | currency:'INR' }}
-				</h5>
+				</p>
 				<div>
-					<h5 class="card-text" *ngIf="userModel.is_active; else else_block">
+					<p *ngIf="userModel.is_active; else else_block">
 						Status:
-						<span class="badge badge-info p-2">Active</span>
-					</h5>
+						<span class="text-success">Active</span>
+					</p>
 					<ng-template #else_block>
-						<h5 class="card-text">
+						<p>
 							Status:
-							<span class="badge badge-info p-2">Inactive</span>
-						</h5>
+							<span class="text-danger">Inactive</span>
+						</p>
 					</ng-template>
 				</div>
 			</nb-card-body>

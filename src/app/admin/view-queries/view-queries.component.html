@@ -11,7 +11,6 @@
             <thead>
               <tr>
                 <th>Employee Name</th>
-                <th>Designation</th>
                 <th>Message</th>
                 <th>Status</th>
                 <th>Reply</th>
@@ -22,8 +21,10 @@
             <tbody>
               <ng-container *ngIf="queryModel.length > 0; else queryModel_else">
                 <tr *ngFor="let query of queryModel">
-                  <td>{{ query.management_id.profile.first_name }} {{ query.management_id.profile.last_name }}</td>
-                  <td>{{ query.management_id.designation}}</td>
+                  <td>
+                      <nb-user [name]="query.management_id.profile.first_name + ' ' + query.management_id.profile.last_name" [title]="query.management_id.designation">
+                        </nb-user>
+                  </td>
                   <td>{{ query.message }}</td>
                   <td>{{ query.status }}</td>
                   <td *ngIf="query.reply != ''; else reply_else">

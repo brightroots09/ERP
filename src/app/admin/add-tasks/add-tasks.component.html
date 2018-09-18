@@ -65,7 +65,8 @@
                           aria-expanded="false">IOS Developer</button>
                         <div class="dropdown-menu">
                           <ng-container *ngFor="let employee of userModel">
-                            <button type="button" *ngIf="employee.designation == 'Developer (IOS)'" class="dropdown-item m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+                            <button type="button" *ngIf="employee.designation == 'Developer (IOS)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)"><nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+                              </nb-user></button>
                           </ng-container>
                         </div>
                       </div>
@@ -74,7 +75,8 @@
                           aria-expanded="false">Android Developer</button>
                         <div class="dropdown-menu">
                           <ng-container *ngFor="let employee of userModel">
-                            <button type="button" *ngIf="employee.designation == 'Developer (Android)'" class="dropdown-item m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+                            <button type="button" *ngIf="employee.designation == 'Developer (Android)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)"><nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+                              </nb-user></button>
                           </ng-container>
                         </div>
                       </div>
@@ -83,7 +85,8 @@
                           aria-expanded="false">Backend Developer</button>
                         <div class="dropdown-menu">
                           <ng-container *ngFor="let employee of userModel">
-                            <button type="button" *ngIf="employee.designation == 'Backend Developer'" class="dropdown-item form-control m-2" (click)="add_employee(employee)">{{ employee.profile.first_name }} {{ employee.profile.last_name }}</button>
+                            <button type="button" *ngIf="employee.designation == 'Backend Developer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)"><nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+                              </nb-user></button>
                           </ng-container>
                         </div>
                       </div>
