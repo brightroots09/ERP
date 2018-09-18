@@ -1,121 +1,138 @@
 <div class="row" *ngIf="filtersLoaded | async">
-	<div class="col-md-6 offset-md-3">
-		<div class="row">
-			<div class="col-md-6 text-left">
-				<button type="button" class="btn btn-link text-primary" (click)="goBack()">
-					&laquo; Go back
-				</button>
-			</div>
-			<div class="col-md-6 text-right">
-				<button type="button" class="btn btn-link" name="morning_session" [disabled]="toggleUpdate" data-toggle="modal" data-target="#updateModel">Update Daily Tasks</button>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="row" *ngIf="filtersLoaded | async">
-	<div class="col-md-4 ml-auto mr-auto card mt-4" *ngFor="let task of tasksModel">
-		<div class="card-body" *ngIf="tasksModel.length > 0; else taskModel_else">
-			<div class="row">
-				<div class="col-md-12">
-					<p *ngIf="task.morning_session != ''; else morning_session">
-						<b>Morning Update: </b>{{ task.morning_session }}
-					</p>
-					<ng-template #morning_session>
-						<p>
-							<b>Morning Update: </b>Morning Update Pending
-						</p>
-					</ng-template>
-					<p *ngIf="task.evening_session != ''; else evening_session">
-						<b>Evening Update: </b>{{ task.evening_session }}
-					</p>
-					<ng-template #evening_session>
-						<p>
-							<b>Evening Update: </b>
-							<button type="button" class="btn btn-link p-0" data-toggle="modal" data-target="#eveningupdateModel">Add</button>
-						</p>
 
-						<div class="modal fade" id="eveningupdateModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title" id="exampleModalLabel">Update Daily Task</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-									</div>
-									<div class="modal-body">
-										<form #tasksForm="ngForm" (ngSubmit)="onEveningUpdateFormSubmit(task._id, total_hours)">
-											<div class="form-group">
-												<div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="total_hours">
-													You have completed: {{ total_hours | number:'1.0-1' }} hours
-													<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	<div class="col-md-12">
+		<nb-card accent="warning">
+			<nb-card-header>
+				<div class="row">
+					<div class="col-md-6">
+						Daily Diary
+					</div>
+					<div class="col-md-6 text-right">
+						<button type="button" class="btn btn-link text-primary p-0" name="morning_session" [disabled]="toggleUpdate" data-toggle="modal"
+						 data-target="#updateModel">Update Daily Tasks</button>
+					</div>
+				</div>
+			</nb-card-header>
+			<nb-card-body>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Morning Update</th>
+								<th>Evening Update</th>
+								<th>In-Time</th>
+								<th>Out-Time</th>
+								<th>Total Hours</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody *ngIf="tasksModel.length > 0; else taskModel_else">
+							<tr *ngFor="let task of tasksModel">
+								<td *ngIf="task.morning_session != ''; else morning_session">
+									{{ task.morning_session }}
+								</td>
+								<ng-template #morning_session>
+									<td>
+										<b>Morning Update: </b>Morning Update Pending
+									</td>
+								</ng-template>
+								<td *ngIf="task.evening_session != ''; else evening_session">
+									{{ task.evening_session }}
+								</td>
+								<ng-template #evening_session>
+									<td>
+										<button type="button" class="btn btn-link text-danger p-0" data-toggle="modal" data-target="#eveningupdateModel">Add</button>
+									</td>
+
+									<div class="modal fade" id="eveningupdateModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">Update Daily Task</h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 														<span aria-hidden="true">&times;</span>
 													</button>
 												</div>
-												<label>Task description</label>
-												<textarea name="message" class="form-control" #message="ngModel" [(ngModel)]="updateModel.message" [class.is-invalid]="message.invalid && message.touched"
-												 [class.is-valid]="message.valid && message.touched" required></textarea>
-												<small class="text-danger" [class.d-none]="message.valid || message.untouched">Message is required</small>
-											</div>
-											<div class="form-group">
-												<select class="form-control" [(ngModel)]="updateModel.time" (ngModelChange)="onChange($event)" name="session" required>
-													<option selected="">Select Session</option>
-													<option value="Morning" disabled>Morning</option>
-													<option value="Evening">Evening</option>
-												</select>
-											</div>
-											<div class="form-group">
-												<div class="col-md-12">
-													<div class="row">
-														<div class="col-md-6" *ngIf="sessionTime == 'Morning'">
-															<label>In Time</label>
-															<input type="text" class="form-control" name="in_time" [(ngModel)]="updateModel.date_created" class="form-control" [value]="nowTime"
-															 disabled>
+												<div class="modal-body">
+													<form #tasksForm="ngForm" (ngSubmit)="onEveningUpdateFormSubmit(task._id, total_hours)">
+														<div class="form-group">
+															<div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="total_hours">
+																You have completed: {{ total_hours | number:'1.0-1' }} hours
+																<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
+																</button>
+															</div>
+															<label>Task description</label>
+															<textarea name="message" class="form-control" #message="ngModel" [(ngModel)]="updateModel.message" [class.is-invalid]="message.invalid && message.touched"
+															 [class.is-valid]="message.valid && message.touched" required></textarea>
+															<small class="text-danger" [class.d-none]="message.valid || message.untouched">Message is required</small>
 														</div>
-														<div class="col-md-6" *ngIf="sessionTime == 'Evening'">
-															<label>Out Time</label>
-															<input type="text" class="form-control" name="out_time" [(ngModel)]="updateModel.out_time" class="form-control" [value]="nowTime"
-															 disabled>
+														<div class="form-group">
+															<select class="form-control" [(ngModel)]="updateModel.time" (ngModelChange)="onChange($event)" name="session" required>
+																<option selected="">Select Session</option>
+																<option value="Morning" disabled>Morning</option>
+																<option value="Evening">Evening</option>
+															</select>
 														</div>
-													</div>
+														<div class="form-group">
+															<div class="col-md-12">
+																<div class="row">
+																	<div class="col-md-6" *ngIf="sessionTime == 'Morning'">
+																		<label>In Time</label>
+																		<input type="text" class="form-control" name="in_time" [(ngModel)]="updateModel.date_created" class="form-control" [value]="nowTime"
+																		 disabled>
+																	</div>
+																	<div class="col-md-6" *ngIf="sessionTime == 'Evening'">
+																		<label>Out Time</label>
+																		<input type="text" class="form-control" name="out_time" [(ngModel)]="updateModel.out_time" class="form-control" [value]="nowTime"
+																		 disabled>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="modal-footer">
+															<button type="submit" name="evening_session" [disabled]="toggleSave || tasksForm.form.invalid" class="btn btn-primary">Save</button>
+															<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+														</div>
+													</form>
 												</div>
 											</div>
-											<div class="modal-footer">
-												<button type="submit" name="evening_session" [disabled]="toggleSave || tasksForm.form.invalid" class="btn btn-primary">Save</button>
-												<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-											</div>
-										</form>
+										</div>
 									</div>
-								</div>
-							</div>
-						</div>
 
-					</ng-template>
-					<p>
-						<span *ngIf="task.in_time != ''">
-							In-time:
-							<span class="badge badge-info p-1">{{ task.in_time }}</span>
-						</span>
-						<br>
-						<span *ngIf="task.out_time != ''">
-							Out-time:
-							<span class="badge badge-danger p-1">{{ task.out_time }} </span>
-						</span>
-						<br>
-						<span *ngIf="task.total_hours != ''">
-							Total Hours Worked: {{ task.total_hours | number:'1.0-1' }} hours
-						</span>
-					</p>
-
+								</ng-template>
+								<td *ngIf="task.in_time != ''; else in_time">
+									<span class="text-info">{{ task.in_time }}</span>
+								</td>
+								<ng-template #in_time>
+									<td>-</td>
+								</ng-template>
+								<td *ngIf="task.out_time != ''; else out_time">
+									<span class="text-danger">{{ task.out_time }}</span>
+								</td>
+								<ng-template #out_time>
+									<td>-</td>
+								</ng-template>
+								<td *ngIf="task.total_hours != ''; else total_hours">
+									{{ task.total_hours | number:'1.0-1' }} hours
+								</td>
+								<ng-template #total_hours>
+									<td>Yet to update</td>
+								</ng-template>
+								<td>{{ task.date_created | date : 'mediumDate' }}</td>
+							</tr>
+						</tbody>
+						<ng-template #taskModel_else>
+							<tbody>
+								<td colspan="6">
+									No daily Update
+								</td>
+							</tbody>
+						</ng-template>
+					</table>
 				</div>
-			</div>
-		</div>
-		<div class="card-footer p-2" *ngIf="tasksModel.length > 0">
-			<small class="text-muted float-right">{{ task.date_created | date : 'medium' }}</small>
-		</div>
-		<ng-template #taskModel_else>
-			No daily Update
-		</ng-template>
+			</nb-card-body>
+		</nb-card>
 	</div>
 </div>
 

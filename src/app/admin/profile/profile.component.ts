@@ -87,25 +87,6 @@ export class ProfileComponent implements OnInit {
 
   summaryChart = []
 
-  // summaryChart = [
-  // {
-  //   "name": "Employee",
-  //   "value": ''
-  // },
-  // {
-  //   "name": "Projects",
-  //   "value": 15
-  // },
-  // {
-  //   "name": "Tasks",
-  //   "value": 5
-  // },
-  // {
-  //   "name": "Queries / Requests",
-  //   "value": 14
-  // }
-  // ];
-
   getProfile() {
     this.user.profile()
       .subscribe(res => {
@@ -125,7 +106,6 @@ export class ProfileComponent implements OnInit {
     this.user.employee()
       .subscribe(res => {
         this.employeeModel = res
-
         this.employeesLoaded = Promise.resolve(true)
       }, error => {
         console.error(error)

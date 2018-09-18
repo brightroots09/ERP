@@ -1,30 +1,49 @@
 <div class="row" *ngIf="filtersLoaded | async">
-	<div class="col-md-12" *ngIf="tasksModel.length > 0; else else_block">
-		<div class="row">
-			<div class="col-md-4 card mt-4 text-center" *ngFor="let tasks of tasksModel">
-				<div class="card-body">
-					<h5 class="card-title">
-						Name: {{tasks.tasks_details.name}}
-					</h5>
-					<h5 class="card-text">
-						Description: {{ tasks.tasks_details.description }}
-					</h5>
-					<h6>
-						Status: {{ tasks.status }}
-					</h6>
+	<div class="col-md-12">
+		<nb-card accent="danger">
+			<nb-card-header>
+				<div class="row">
+					<div class="col-md-6">Project's Tasks</div>
+					<div class="col-md-6 text-right">
+						<button type="button" class="btn btn-link text-primary p-0" (click)="goBack()">
+							&laquo; Go back
+						</button>
+					</div>
 				</div>
-				<button type="button" [disabled]="tasks.status == 'completed'" class="btn btn0link text-primary mt-4 mb-4" (click)="toggleStatus(tasks._id)">Mark as Complete</button>
-			</div>
-		</div>
-		<button type="button" class="btn btn-link text-primary mt-4 mb-4" (click)="goBack()">
-			&laquo; Go back
-		</button>
+			</nb-card-header>
+			<nb-card-body>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Description</th>
+								<th>Status</th>
+								<th>Action</th>
+								<th>Date Created</th>
+							</tr>
+						</thead>
+						<tbody *ngIf="tasksModel.length > 0; else else_block">
+							<tr *ngFor="let tasks of tasksModel">
+								<td>{{tasks.tasks_details.name}}</td>
+								<td>{{ tasks.tasks_details.description }}</td>
+								<td [class]="tasks.status == 'completed' ? 'text-success' : 'text-warning'">{{tasks.status}}</td>
+								<td>
+									<button type="button" [disabled]="tasks.status == 'completed'" class="btn btn-link text-danger p-0" (click)="toggleStatus(tasks._id)">Mark as Complete</button>
+								</td>
+								<td> {{ tasks.date_created | date:'mediumDate' }} </td>
+							</tr>
+						</tbody>
+						<ng-template #else_block>
+							<tbody>
+								<td colspan="5">
+									No Tasks
+								</td>
+							</tbody>
+						</ng-template>
+					</table>
+				</div>
+			</nb-card-body>
+		</nb-card>
 	</div>
-	<ng-template #else_block>
-		<div class="col-md-6 offset-md-3 text-center">
-			<h2>
-				No Tasks
-			</h2>
-		</div>
-	</ng-template>
 </div>
