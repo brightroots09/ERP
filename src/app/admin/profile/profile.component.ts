@@ -48,17 +48,11 @@ export class ProfileComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const profile = await this.getProfile();
-      const employee = await this.getEmployee();
-      const project = await this.getProjects();
-      const task = await this.getTasks();
-      const query = await this.getQueries();
-
-      this.userModel = profile;
-      this.employeeModel = employee;
-      this.projectModel = project;
-      this.taskModel = task;
-      this.queryModel = query;
+      await this.getProfile();
+      await this.getEmployee();
+      await this.getProjects();
+      await this.getTasks();
+      await this.getQueries();
 
       this.summaryChart.push(
         {
