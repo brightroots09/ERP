@@ -6,8 +6,15 @@
 					<div class="col-md-6 text-left">
 						List of Employees
 					</div>
-					<div class="col-md-6 text-right">
+					<div class="col-md-3 text-right">
 						<button class="btn btn-link text-primary p-0" routerLink="/add_employee">Add Employee</button>
+					</div>
+					<div class="col-md-3 text-right">
+						<button class="btn btn-link text-danger p-0" (click)="select()" *ngIf="!multiSelect; else multi_else">Delete Employees</button>
+						<ng-template #multi_else>
+							<button class="btn btn-link text-danger pr-2" (click)="deleteSelectedItem()" *ngIf="multiSelect">Delete Selected</button>
+							<button class="btn btn-link text-warning p-0" (click)="cancel()" *ngIf="multiSelect">Cancel</button>
+						</ng-template>
 					</div>
 				</div>
 			</nb-card-header>
@@ -16,6 +23,9 @@
 					<table class="table">
 						<thead>
 							<tr>
+								<th *ngIf="multiSelect">
+									Select
+								</th>
 								<th>First Name</th>
 								<th>Last Name</th>
 								<th>Email</th>
@@ -26,6 +36,9 @@
 						</thead>
 						<tbody *ngIf="userModel.length > 0; else else_block">
 							<tr *ngFor="let user of userModel">
+								<td *ngIf="multiSelect">
+									<input type="checkbox" [(ngModel)]="user.selected">
+								</td>
 								<td> {{ user.profile.first_name }} </td>
 								<td> {{ user.profile.last_name }} </td>
 								<td> {{ user.email }} </td>

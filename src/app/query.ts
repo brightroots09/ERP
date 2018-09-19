@@ -4,4 +4,5 @@ export class Query {
     management_id: String;
     message: String;
     reply: String;
+    selected: string;
 }

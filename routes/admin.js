@@ -182,20 +182,6 @@ router.post("/add_employee", verifyToken, function (req, res, callback) {
 });
 
 /**
- * ---------------------
- * DELETE EMPLOYEE ROUTE
- * ---------------------
- */
-router.post("/delete_employee/:id", verifyToken, function (req, res, callback) {
-	employeeModel.findByIdAndRemove({ _id: req.params.id }, function (error, response) {
-		if (error) callback(error)
-		else {
-			res.redirect("/admin/employees")
-		}
-	})
-})
-
-/**
  * -------------------
  * EDIT EMPLOYEE ROUTE
  * -------------------
@@ -265,6 +251,28 @@ router.post("/delete_employee/:id", verifyToken, function (req, res, callback) {
 	})
 });
 
+/**
+ * -----------------------------
+ * DELETE MULTIPLE EMPLOYEE ROUTE
+ * -----------------------------
+ */
+
+router.post("/delete_employees", verifyToken, function (req, res, callback) {
+	let arr = [];
+	for (let i = 0; i < req.body.length; i++) {
+		arr.push(req.body[i]._id)
+	}
+	if (arr.length > 0) {
+		employeeModel
+			.remove({ _id: { $in: arr } })
+			.exec(function (error, result) {
+				if (error) callback(error)
+				else {
+					res.redirect("/admin/employees")
+				}
+			})
+	}
+})
 
 /*
 * --------------------
@@ -388,6 +396,29 @@ router.post("/project_delete/:id", verifyToken, function (req, res, callback) {
 			res.redirect("/admin/projects")
 		}
 	})
+})
+
+/**
+ * -----------------------------
+ * DELETE MULTIPLE PROJECT ROUTE
+ * -----------------------------
+ */
+
+router.post("/projects_delete", verifyToken, function (req, res, callback) {
+	let arr = [];
+	for (let i = 0; i < req.body.length; i++) {
+		arr.push(req.body[i]._id)
+	}
+	if (arr.length > 0) {
+		projectModel
+			.remove({ _id: { $in: arr } })
+			.exec(function (error, result) {
+				if (error) callback(error)
+				else {
+					res.redirect("/admin/projects")
+				}
+			})
+	}
 })
 
 /**
@@ -564,6 +595,28 @@ router.post("/delete_task/:id", verifyToken, function (req, res, callback) {
 	})
 })
 
+/**
+ * ------------
+ * DELETE TASKS
+ * ------------
+ */
+
+router.post("/delete_tasks", verifyToken, function (req, res, callback) {
+	let arr = [];
+	for (let i = 0; i < req.body.length; i++) {
+		arr.push(req.body[i]._id)
+	}
+	if (arr.length > 0) {
+		tasksModel
+			.remove({ _id: { $in: arr } })
+			.exec(function (error, result) {
+				if (error) callback(error)
+				else {
+					res.redirect("/admin/tasks")
+				}
+			})
+	}
+})
 
 /**
  * ---------------------

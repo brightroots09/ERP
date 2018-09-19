@@ -8,4 +8,5 @@ export class User {
     designation: String;
     Salary: Number;
     is_active: Boolean;
+    selected: string;
 }

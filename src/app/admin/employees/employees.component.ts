@@ -14,6 +14,13 @@ export class EmployeesComponent implements OnInit {
   userModel;
   filtersLoaded: Promise<boolean>;
 
+  deleteTasksArr = [];
+  checkboxValue: boolean;
+
+  removeArr = [];
+
+  private multiSelect: boolean = false;
+
   constructor(private router: Router, private user: UserService) { }
 
   async ngOnInit() {
@@ -42,6 +49,23 @@ export class EmployeesComponent implements OnInit {
 
   goBack(){
     this.router.navigate(["/profile"])
+  }
+
+  select() {
+    this.multiSelect = true
+  }
+  cancel(){
+    this.multiSelect = false
+  }
+
+  deleteSelectedItem() {
+    this.deleteTasksArr = this.userModel.filter(_ => _.selected);
+    this.user.deleteEmployees(this.deleteTasksArr)
+      .subscribe(res => {
+        window.location.reload()
+      }, (error) => {
+        console.error(error)
+      })
   }
 
 }

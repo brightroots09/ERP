@@ -6,4 +6,5 @@ export class Project {
     responsible_person: String;
     project_manger: String;
     status: String;
+    selected: string;
 }

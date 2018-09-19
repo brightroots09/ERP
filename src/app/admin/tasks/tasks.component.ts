@@ -12,6 +12,12 @@ export class TasksComponent implements OnInit {
   tasksModel;
   param;
   filtersLoaded: Promise<boolean>
+  deleteTasksArr = [];
+  checkboxValue: boolean;
+
+  removeArr = [];
+
+  private multiSelect: boolean = false;
 
   constructor(private router: Router, private user: UserService) { 
     
@@ -43,5 +49,21 @@ export class TasksComponent implements OnInit {
     this.router.navigate(["/profile"])
   }
 
+  select() {
+    this.multiSelect = true
+  }
+  cancel(){
+    this.multiSelect = false
+  }
+
+  deleteSelectedItem() {
+    this.deleteTasksArr = this.tasksModel.filter(_ => _.selected);
+    this.user.deleteTasks(this.deleteTasksArr)
+      .subscribe(res => {
+        window.location.reload()
+      }, (error) => {
+        console.error(error)
+      })
+  }
 
 }

@@ -23,12 +23,14 @@ export class UserService {
   private _employeeDetailUrl = "/admin/employee";
   private _addEmployeeUrl = "/admin/add_employee";
   private _deleteEmployeeUrl = "/admin/delete_employee";
+  private _deleteEmployees = "/admin/delete_employees";
   private _editEmployeeUrl = "/admin/edit_employee";
   private _projectsUrl = "/admin/projects";
   private _projectDetails = "/admin/project_details";
   private _editProject = "/admin/edit_project";
   private _adddProject = "/admin/create_project";
   private _projectDelete = "/admin/project_delete";
+  private _projectsDelete = "/admin/projects_delete";
   private _tasks = "/admin/tasks";
   private tasksDetailsUrl = "/admin/tasks_details";
   private _createTasks = "/admin/create_tasks";
@@ -36,6 +38,7 @@ export class UserService {
   private _editTaskUrl = "/admin/edit_task";
   private _editProjectTaskUrl = "/admin/edit_project_task";
   private _deleteTask = "/admin/delete_task";
+  private _deleteTasks = "/admin/delete_tasks";
   private _updateProjectTask = "/admin/update_project_task";
   private _getAllQueries = "/admin/queries";
   private _viewAttendanceUrl = "/admin/attendance";
@@ -98,6 +101,10 @@ export class UserService {
     return this.http.post<any>(url, id)
   }
 
+  deleteEmployees(data): Observable<any>{
+    return this.http.post<any>(this._deleteEmployees, data)
+  }
+
   editEmployee(id, data): Observable<any> {
     let url = this._editEmployeeUrl + "/" + id
     return this.http.post<any>(url, data)
@@ -132,6 +139,10 @@ export class UserService {
   deleteProject(id): Observable<any> {
     let url = this._projectDelete + "/" + id
     return this.http.post<any>(url, id)
+  }
+
+  deleteprojects(data): Observable<any>{
+    return this.http.post<any>(this._projectsDelete, data)
   }
 
   tasks(): Observable<any> {
@@ -170,6 +181,10 @@ export class UserService {
   deleteTask(id): Observable<any> {
     let url = this._deleteTask + "/" + id
     return this.http.post(url, id)
+  }
+
+  deleteTasks(data): Observable<any>{
+    return this.http.post<any>(this._deleteTasks, data)
   }
 
   updateProjectTasks(id, data): Observable<any> {
