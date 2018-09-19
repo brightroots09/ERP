@@ -73,14 +73,27 @@
 						</nb-user>
 					</nb-list-item>
 				</nb-list>
-				<ng-template #project_else>
-					<div class="col-md-12">
-						<p class="mt-auto mb-auto">
-							Currently there are no projects associated with this task.
-						</p>
-					</div>
-				</ng-template>
 			</nb-card-body>
 		</nb-card>
+		<ng-template #project_else>
+			<nb-list>
+				<nb-list-item>
+					No Project Added
+				</nb-list-item>
+			</nb-list>
+		</ng-template>
+			<nb-card accent="success" *ngIf="tasksModel.others.length > 0">
+				<nb-card-header>
+					Employees
+				</nb-card-header>
+				<nb-card-body>
+					<nb-list>
+						<nb-list-item *ngFor="let employee of tasksModel.employees" class="text-left">
+							<nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name " [title]="employee.designation">
+							</nb-user>
+						</nb-list-item>
+					</nb-list>
+				</nb-card-body>
+			</nb-card>
 	</div>
 </div>

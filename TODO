@@ -1,3 +1,5 @@
-Admin panel = Attendance according to date
-
-employee panel = view Attendance
+1. Bidder designation not added in ‘Add employee’ section. ##
+2. By default ‘inProgress’ should be selected at the time Project created. ##
+3. Title bar icon should be changed. ##
+4. Multiple deletion option should be there on listing of each page . 
+5. Designer option not there in ‘add project’ section. ##

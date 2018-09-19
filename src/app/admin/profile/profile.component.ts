@@ -46,34 +46,36 @@ export class ProfileComponent implements OnInit {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 
-  async ngOnInit() {
+  ngOnInit() {
     try {
-      await this.getProfile();
-      await this.getEmployee();
-      await this.getProjects();
-      await this.getTasks();
-      await this.getQueries();
+      this.getProfile();
+      this.getEmployee();
+      this.getProjects();
+      this.getTasks();
+      this.getQueries();
 
       this.summaryChart.push(
         {
           "name": "Employee",
-          "value": 6
+          "value": 0
         },
         {
           "name": "Projects",
-          "value": 2
+          "value": 0
         },
         {
           "name": "Tasks",
-          "value": 1
+          "value": 0
         },
         {
           "name": "Queries / Requests",
-          "value": 4
+          "value": 0
         }
       )
 
-      Object.assign(this.summaryChart)
+      if((this.summaryChart[0].value > 0) && (this.summaryChart[1].value > 0) && (this.summaryChart[2].value > 0) && (this.summaryChart[3].value > 0) ){
+        Object.assign(this.summaryChart)
+      }
     
     } catch (error) {
       return error
@@ -99,7 +101,7 @@ export class ProfileComponent implements OnInit {
   getEmployee() {
     this.user.employee()
       .subscribe(res => {
-        // this.summaryChart.push({"name": "Employee", "value": Object.keys(res).length})
+        this.summaryChart[0].value = Object.keys(res).length
         this.employeeModel = res
         this.employeesLoaded = Promise.resolve(true)
       }, error => {
@@ -110,6 +112,7 @@ export class ProfileComponent implements OnInit {
   getProjects() {
     this.user.projects()
       .subscribe(res => {
+        this.summaryChart[1].value = Object.keys(res).length
         // this.summaryChart.push({"name": "Projects", "value": Object.keys(res).length})
         this.projectModel = res
         this.projectsLoaded = Promise.resolve(true)
@@ -121,6 +124,7 @@ export class ProfileComponent implements OnInit {
   getTasks() {
     this.user.tasks()
       .subscribe(res => {
+        this.summaryChart[2].value = Object.keys(res).length
         // this.summaryChart.push({"name": "Tasks", "value": Object.keys(res).length})
         this.taskModel = res;
         this.tasksLoaded = Promise.resolve(true)
@@ -132,6 +136,7 @@ export class ProfileComponent implements OnInit {
   getQueries() {
     this.user.getAllQueries()
       .subscribe(res => {
+        this.summaryChart[3].value = Object.keys(res).length
         // this.summaryChart.push({"name": "Queries", "value": Object.keys(res).length})
         this.queryModel = res;
         this.queriesLoaded = Promise.resolve(true);

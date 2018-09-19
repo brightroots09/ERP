@@ -61,7 +61,6 @@ export class AddTasksComponent implements OnInit {
         this.employees.splice(index, 1);
       }
     });
-    this.projects = []
   }
 
   removeEmployee(employee) {
@@ -91,7 +90,6 @@ export class AddTasksComponent implements OnInit {
         this.projects.splice(index, 1);
       }
     });
-    this.employees = [];
   }
 
   remove(project) {

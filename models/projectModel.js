@@ -28,7 +28,8 @@ var projectModel = new Schema({
     }
   },
   status: {
-    type: String
+    type: String,
+    default: "In Progress"
   },
   date_created: {
     type: Date

@@ -286,7 +286,7 @@ router.post("/create_project", verifyToken, function (req, res, callback) {
 
 	project.project_details.name = req.body.project.project_name;
 	project.project_details.description = req.body.project.project_description;
-	project.status = req.body.project.status;
+	// project.status = req.body.project.status;
 	project.employee_id = arr;
 	project.project_manager = req.body.project.project_manager;
 	project.responsible_person = req.body.project.responsible_person;
@@ -413,7 +413,7 @@ router.get("/tasks", verifyToken, function (req, res, callback) {
  */
 
 router.get("/tasks_details/:id", verifyToken, function (req, res, callback) {
-	tasksModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'projectModel', localField: 'project_id.id', foreignField: '_id', as: 'projects' } }], function (error, response) {
+	tasksModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'projectModel', localField: 'project_id.id', foreignField: '_id', as: 'projects' } }, { $lookup: { from: 'employeeModel', localField: 'others.id', foreignField: '_id', as: 'employees' } }], function (error, response) {
 		if (error) callback(error)
 		else {
 			console.log(response)
@@ -459,55 +459,39 @@ router.get("/project_tasks_details/:id", verifyToken, function (req, res, callba
 router.post("/create_tasks", verifyToken, function (req, res, callback) {
 	let tasks = new tasksModel()
 	let date = new Date()
+	let arr = []
+	let projects = req.body.projects
+	let arrEmployee = []
+	let employee = req.body.employees
 
 	if (req.body.projects.length > 0) {
-		let arr = []
-		let projects = req.body.projects
-
 		for (let i in projects) {
 			arr.push({
 				id: mongoose.Types.ObjectId(projects[i]._id)
 			})
 		}
-
-		tasks.tasks_details.name = req.body.tasks.tasks_name;
-		tasks.tasks_details.description = req.body.tasks.tasks_description;
-		tasks.project_id = arr;
-		tasks.date_created = date;
-
-		tasks.save(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.redirect("/admin/tasks")
-			}
-		})
-
 	}
-	else if (req.body.employees.length > 0) {
-		let arrEmployee = []
-		let employee = req.body.employees
+	if (req.body.employees.length > 0) {
 
 		for (let i in employee) {
 			arrEmployee.push({
 				id: mongoose.Types.ObjectId(employee[i]._id)
 			})
 		}
-
-		tasks.tasks_details.name = req.body.tasks.tasks_name;
-		tasks.tasks_details.description = req.body.tasks.tasks_description;
-		tasks.others = arrEmployee;
-		tasks.date_created = date;
-
-		tasks.save(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.redirect("/admin/tasks")
-			}
-		})
-
 	}
 
+	tasks.tasks_details.name = req.body.tasks.tasks_name;
+	tasks.tasks_details.description = req.body.tasks.tasks_description;
+	tasks.project_id = arr;
+	tasks.others = arrEmployee;
+	tasks.date_created = date;
 
+	tasks.save(function (error, result) {
+		if (error) callback(error)
+		else {
+			res.redirect("/admin/tasks")
+		}
+	})
 
 })
 
