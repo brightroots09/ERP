@@ -30,7 +30,7 @@
 								<th>Description</th>
 								<th>Status</th>
 								<th>Date Created</th>
-								<th *ngIf="multiSelect">Action</th>
+								<th *ngIf="!multiSelect">Action</th>
 							</tr>
 						</thead>
 						<tbody *ngIf="projects.length > 0; else else_block">
@@ -44,7 +44,7 @@
 									<span class="badge badge-info p-2">{{ project.status }}</span>
 								</td>
 								<td>{{ project.date_created | date : 'mediumDate'}}</td>
-								<td *ngIf="multiSelect">
+								<td *ngIf="!multiSelect">
 									<a class="btn btn-link text-success p-0 m-0" routerLink="/project_details/{{project._id}}">
 										View
 									</a>

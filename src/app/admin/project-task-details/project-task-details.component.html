@@ -1,38 +1,48 @@
 <div class="row" *ngIf="filtersLoaded | async">
 	<div class="col-md-12">
-		<div class="row">
-			<div class="col-md-6 text-left">
-				<button type="button" class="btn btn-link text-primary mt-2 mb-2" (click)="goBack()">
-					&laquo; Go back
-				</button>
-			</div>
-			<div class="col-md-6 text-right">
-				<button class="btn btn-link mt-2 mb-2" routerLink="/createProjectTask/{{param.id}}">Create Task</button>
-			</div>
-		</div>
-	</div>
-	<div class="card mt-4 mb-4 ml-auto mr-auto" style="width: 18rem;" *ngFor="let tasks of tasksModel">
-		<div *ngIf="tasksModel; else else_block">
-			<div class="card-body">
-				<h5 class="card-title">{{ tasks.tasks_details.name }}</h5>
-				<p class="card-text">{{ tasks.tasks_details.description }}</p>
-				<p class="card-text">
-					<small class="text-muted">{{ tasks.date_created | date : 'medium'}}</small>
-				</p>
-			</div>
-			<div class="card-footer text-center">
-				<a class="btn btn-link text-success" routerLink="/tasks_details/{{tasks._id}}">
-					View
-				</a>
-			</div>
-		</div>
 
-		<ng-template #else_block>
-			<div class="col-md-6 offset-md-3 text-center">
-				<h3>
-					No Tasks
-				</h3>
-			</div>
-		</ng-template>
+		<nb-card accent="info">
+			<nb-card-header>
+				<div class="row">
+					<div class="col-md-6">
+						List of Project's Tasks
+					</div>
+					<div class="col-md-6 text-right">
+						<button class="btn btn-link text-success p-0" routerLink="/createProjectTask/{{param.id}}">Create Task</button>
+					</div>
+				</div>
+			</nb-card-header>
+			<nb-card-body>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<th>Title</th>
+							<th>Description</th>
+							<th>Date Created</th>
+							<th>Action</th>
+						</thead>
+						<tbody *ngIf="tasksModel; else else_block">
+							<tr *ngFor="let tasks of tasksModel">
+								<td>{{ tasks.tasks_details.name }}</td>
+								<td>{{ tasks.tasks_details.description }}</td>
+								<td>{{ tasks.date_created | date : 'mediumDate'}}</td>
+								<td>
+									<a class="btn btn-link text-success p-0" routerLink="/tasks_details/{{tasks._id}}">
+										View
+									</a>
+								</td>
+							</tr>
+						</tbody>
+						<ng-template #else_block>
+							<tbody>
+								<td colspan="4">
+									No Tasks
+								</td>
+							</tbody>
+						</ng-template>
+					</table>
+				</div>
+			</nb-card-body>
+		</nb-card>
 	</div>
 </div>

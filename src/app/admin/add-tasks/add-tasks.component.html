@@ -18,7 +18,7 @@
               required></textarea>
             <small class="text-danger" [class.d-none]="tasks_description.valid || tasks_description.untouched">Tasks Description is required</small>
           </div>
-    
+
           <div class="row" *ngIf="!edit">
             <div class="col-md-12">
               <div class="form-group">
@@ -33,15 +33,15 @@
                   <p>No Projects Selected</p>
                 </ng-template>
               </div>
-    
-    
+
+
               <div class="form-group">
                 <button type="button" class="btn btn-outline-info m-2" (click)="add_project(project)" *ngFor="let project of projectsModel">{{ project.project_details.name }}</button>
                 <button type="button" class="btn btn-outline-danger m-2 p-2" (click)="otherType()">Select Employees</button>
               </div>
             </div>
           </div>
-    
+
           <div class="row" *ngIf="edit">
             <div class="col-md-12">
               <div class="form-group mt-3">
@@ -60,38 +60,57 @@
                 <div class="row">
                   <div class="col-md-12 mt-3">
                     <div class="row">
+                      <!-- IOS DEVELOPER -->
                       <div class="col-md-3 dropdown mb-2">
                         <button class="dropdown-toggle p-2" type="button" id="dropdownMenuButtonIOS" data-toggle="dropdown" aria-haspopup="true"
                           aria-expanded="false">IOS Developer</button>
                         <div class="dropdown-menu">
                           <ng-container *ngFor="let employee of userModel">
-                            <button type="button" *ngIf="employee.designation == 'Developer (IOS)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)"><nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
-                              </nb-user></button>
+                            <button type="button" *ngIf="employee.designation == 'Developer (IOS)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+                              <nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+                              </nb-user>
+                            </button>
                           </ng-container>
                         </div>
                       </div>
+                      <!-- ANDROID DEVELOPER -->
                       <div class="col-md-3 dropdown mb-2">
                         <button class="dropdown-toggle p-2" type="button" id="dropdownMenuButtonANDROID" data-toggle="dropdown" aria-haspopup="true"
                           aria-expanded="false">Android Developer</button>
                         <div class="dropdown-menu">
                           <ng-container *ngFor="let employee of userModel">
-                            <button type="button" *ngIf="employee.designation == 'Developer (Android)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)"><nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
-                              </nb-user></button>
+                            <button type="button" *ngIf="employee.designation == 'Developer (Android)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+                              <nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+                              </nb-user>
+                            </button>
                           </ng-container>
                         </div>
                       </div>
+                      <!-- BACKEND DEVELOPER -->
                       <div class="col-md-3 dropdown mb-2">
                         <button class="dropdown-toggle p-2" type="button" id="dropdownMenuButtonBACKEND" data-toggle="dropdown" aria-haspopup="true"
                           aria-expanded="false">Backend Developer</button>
                         <div class="dropdown-menu">
                           <ng-container *ngFor="let employee of userModel">
-                            <button type="button" *ngIf="employee.designation == 'Backend Developer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)"><nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
-                              </nb-user></button>
+                            <button type="button" *ngIf="employee.designation == 'Backend Developer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+                              <nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+                              </nb-user>
+                            </button>
                           </ng-container>
                         </div>
                       </div>
-                      <div class="col-md-3">
-                        <button class="btn btn-outline-danger p-2" type="button" (click)="otherType()">Select projects</button>
+                      <!-- DESIGNER -->
+                      <div class="col-md-3 dropdown mb-2">
+                        <button class="dropdown-toggle p-2" type="button" id="dropdownMenuButtonDESIGNER" data-toggle="dropdown" aria-haspopup="true"
+                          aria-expanded="false">Designer</button>
+                        <div class="dropdown-menu">
+                          <ng-container *ngFor="let employee of userModel">
+                            <button type="button" *ngIf="employee.designation == 'Designer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+                              <nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+                              </nb-user>
+                            </button>
+                          </ng-container>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -99,7 +118,7 @@
               </div>
             </div>
           </div>
-    
+
           <button type="submit" [disabled]="tasksForm.form.invalid" class="btn btn-outline-primary mr-1">Submit</button>
           <button type="button" class="btn btn-outline-secondary ml-1" (click)="cancelAdd()">Cancel</button>
         </form>

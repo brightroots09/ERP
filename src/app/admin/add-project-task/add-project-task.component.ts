@@ -52,10 +52,10 @@ export class AddProjectTaskComponent implements OnInit {
   // }
 
   getEmployee() {
-    this.user.projectDetails(this.param.id)
+    this.user.employee()
       .subscribe(res => {
         console.log(res)
-        this.userModel = res[0]
+        this.userModel = res
         this.filtersLoaded = Promise.resolve(true);
       },
         (error) => {
