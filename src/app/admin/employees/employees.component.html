@@ -12,7 +12,8 @@
 					<div class="col-md-3 text-right">
 						<button class="btn btn-link text-danger p-0" (click)="select()" *ngIf="!multiSelect; else multi_else">Delete Employees</button>
 						<ng-template #multi_else>
-							<button class="btn btn-link text-danger pr-2" (click)="deleteSelectedItem()" *ngIf="multiSelect">Delete Selected</button>
+							<button class="btn btn-link text-danger pb-0 pt-0 pl-0  pr-2" (click)="deleteSelectedItem()" *ngIf="multiSelect">Delete 
+Selected</button>
 							<button class="btn btn-link text-warning p-0" (click)="cancel()" *ngIf="multiSelect">Cancel</button>
 						</ng-template>
 					</div>
