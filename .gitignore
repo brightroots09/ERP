@@ -23,7 +23,8 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-TODO
+TODO.txt
+db
 
 # misc
 /.sass-cache

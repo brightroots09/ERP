@@ -69,6 +69,7 @@ export class UserService {
   private _dailyUpdateUrl = "/employee/daily_tasks";
   private _toggleQueryStatusUrl = "/employee/toggleQueryStatus";
   private _toggleTaskStatusUrl = "/employee/toggleTaskSatus";
+  private _createTask = "/employee/create_tasks";
   private _invidualTaskUrl = "/employee/others";
   private _myAttendanceUrl = "/employee/my_attendance";
 
@@ -309,6 +310,15 @@ export class UserService {
 
   toggleTaskStatus(data): Observable<any>{
     return this.http.post(this._toggleTaskStatusUrl, data)
+  }
+
+  createTask(tasks, projects, employees): Observable<any> {
+    let obj = {
+      tasks,
+      projects,
+      employees
+    }
+    return this.http.post<any>(this._createTask, obj)
   }
 
   invidualTaskUrl(): Observable<any>{

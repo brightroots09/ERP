@@ -165,6 +165,45 @@ router.get("/my_tasks", verifyToken, function (req, res, callback) {
 })
 
 /**
+ * ------------
+ * CREATE TASKS
+ * ------------
+ */
+
+router.post("/create_tasks", verifyToken, function (req, res, callback) {
+	let tasks = new taskModel()
+	let date = new Date()
+	let arr = []
+	let projects = req.body.projects
+	let arrEmployee = []
+	arrEmployee.push({
+		id: mongoose.Types.ObjectId(req.body.employees)
+	})
+
+	if (req.body.projects.length > 0) {
+		for (let i in projects) {
+			arr.push({
+				id: mongoose.Types.ObjectId(projects[i]._id)
+			})
+		}
+	}
+
+	tasks.tasks_details.name = req.body.tasks.tasks_name;
+	tasks.tasks_details.description = req.body.tasks.tasks_description;
+	tasks.project_id = arr;
+	tasks.others = arrEmployee;
+	tasks.date_created = date;
+
+	tasks.save(function (error, result) {
+		if (error) callback(error)
+		else {
+			res.redirect("/employee/others")
+		}
+	})
+
+})
+
+/**
  * -----------------
  * OTHER TASKS ROUTE
  * -----------------

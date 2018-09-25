@@ -37,6 +37,7 @@ import { ViewAllAttendanceComponent } from './admin/view-all-attendance/view-all
 import { ExportToPdfComponent } from './admin/export-to-pdf/export-to-pdf.component';
 import { AddAbsentiesComponent } from './admin/add-absenties/add-absenties.component';
 import { AdminGuard } from './admin.auth.guard';
+import { GenerateTaskComponent } from './employee/generate-task/generate-task.component';
 
 const routes: Routes = [
   {
@@ -220,6 +221,11 @@ const routes: Routes = [
   {
     path: "dailyDiary",
     component: DailyDiaryComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "createTask",
+    component: GenerateTaskComponent,
     canActivate: [AuthGuard]
   },
   {

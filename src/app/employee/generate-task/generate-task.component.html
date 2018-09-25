@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card accent="success">
+      <nb-card-header>
+        Create Task
+      </nb-card-header>
+      <nb-card-body>
+        <form #tasksForm="ngForm" class="form" (ngSubmit)="onFormSubmit()">
+          <div class="form-group">
+            <input type="text" class="form-control" name="tasks_name" placeholder="Tasks Name" #tasks_name="ngModel" [(ngModel)]="tasksModel.tasks_name"
+              [class.is-invalid]="tasks_name.invalid && tasks_name.touched" [class.is-valid]="tasks_name.valid && tasks_name.touched"
+              required>
+            <small class="text-danger" [class.d-none]="tasks_name.valid || tasks_name.untouched">Tasks Name is required</small>
+          </div>
+          <div class="form-group">
+            <textarea name="tasks_description" class="form-control" #tasks_description="ngModel" placeholder="Tasks Description" [(ngModel)]="tasksModel.tasks_description"
+              [class.is-invalid]="tasks_description.invalid && tasks_description.touched" [class.is-valid]="tasks_description.valid && tasks_description.touched"
+              required></textarea>
+            <small class="text-danger" [class.d-none]="tasks_description.valid || tasks_description.untouched">Tasks Description is required</small>
+          </div>
+
+          <div class="row" *ngIf="!edit">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">Selected Project</label>
+                <div *ngIf="projects.length > 0; else none_block">
+                  <div class="btn-group badge badge-info m-2 p-2" role="group" *ngFor="let project of projects">
+                    <span class="p-3">{{project.project_details.name}}</span>
+                    <button type="button" class="btn btn-link text-white" (click)="remove(project)">&times;</button>
+                  </div>
+                </div>
+                <ng-template #none_block>
+                  <p>No Projects Selected</p>
+                </ng-template>
+              </div>
+
+
+              <div class="form-group">
+                <button type="button" class="btn btn-outline-info m-2" (click)="add_project(project)" *ngFor="let project of projectsModel">{{ project.project_details.name }}</button>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" [disabled]="tasksForm.form.invalid" class="btn btn-outline-primary mr-1">Submit</button>
+          <button type="button" class="btn btn-outline-secondary ml-1" (click)="cancelAdd()">Cancel</button>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

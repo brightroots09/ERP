@@ -3,7 +3,12 @@
 
 		<nb-card accent="info">
 			<nb-card-header>
-				Individual Tasks
+				<div class="row">
+					<div class="col-md-6">Individual Tasks</div>
+					<div class="col-md-6 text-right">
+						<button class="btn btn-link text-primary p-0" routerLink="/createTask">Create Task</button>
+					</div>
+				</div>
 			</nb-card-header>
 			<nb-card-body>
 				<div class="table-responsive">
@@ -21,7 +26,7 @@
 							<tr *ngFor="let tasks of tasksModel">
 								<td>{{tasks.tasks_details.name}}</td>
 								<td>{{ tasks.tasks_details.description }}</td>
-								<td [class]="tasks.status == 'completed' ? 'text-success' : 'text-info' " >{{ tasks.status }}</td>
+								<td [class]="tasks.status == 'completed' ? 'text-success' : 'text-info' ">{{ tasks.status }}</td>
 								<td>
 									<button type="button" [disabled]="tasks.status == 'completed'" class="btn btn-link text-danger p-0" (click)="toggleStatus(tasks._id)">Mark as Complete</button>
 								</td>

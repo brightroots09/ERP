@@ -61,6 +61,7 @@ import { MyProjectTaskComponent } from './employee/my-project-task/my-project-ta
 import { DailyUpdateComponent } from './employee/daily-update/daily-update.component';
 import { IndividualTaskComponent } from './employee/individual-task/individual-task.component';
 import { MyAttendanceComponent } from './employee/my-attendance/my-attendance.component';
+import { GenerateTaskComponent } from './employee/generate-task/generate-task.component';
 import { GroupByPipe } from './group-by.service';
 
 
@@ -102,7 +103,8 @@ import { GroupByPipe } from './group-by.service';
     ViewAllAttendanceComponent,
     GroupByPipe,
     ExportToPdfComponent,
-    AddAbsentiesComponent
+    AddAbsentiesComponent,
+    GenerateTaskComponent
   ],
   imports: [
     BrowserModule,
