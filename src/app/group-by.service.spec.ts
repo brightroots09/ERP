@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { GroupByService } from './group-by.service';
+import { GroupByPipe } from './group-by.service';
 
 describe('GroupByService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GroupByService]
+      providers: [GroupByPipe]
     });
   });
 
-  it('should be created', inject([GroupByService], (service: GroupByService) => {
+  it('should be created', inject([GroupByPipe], (service: GroupByPipe) => {
     expect(service).toBeTruthy();
   }));
 });
