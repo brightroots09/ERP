@@ -4,19 +4,19 @@
 
 		<nb-card [accent]="tasksModel.status == 'completed' ? 'success' : 'danger'" *ngIf="tasksModel != null; else else_block">
 			<nb-card-header>
-				{{ tasksModel.tasks_details.name }}
+				{{ tasksModel.task_name }}
 			</nb-card-header>
 			<nb-card-body>
 
 				<nb-list>
 					<nb-list-item class="text-left">
-						Description: {{ tasksModel.tasks_details.description }}
+						Description: {{ tasksModel.task_description }}
 					</nb-list-item>
 					<nb-list-item>
 						Status: {{ tasksModel.status }}
 					</nb-list-item>
 					<nb-list-item>
-							<button type="button" [disabled]="tasksModel.status == 'completed'" (click)="toggleStatus(tasksModel._id)"
+							<button type="button" [disabled]="tasksModel.status == 'completed'" (click)="toggleStatus(tasksModel.id)"
 							[class]="tasksModel.status == 'completed' ? 'text-success btn btn-link p-0' : 'text-danger btn btn-link p-0'">Mark as Complete</button>
 					</nb-list-item>
 				</nb-list>

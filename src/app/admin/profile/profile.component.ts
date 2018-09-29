@@ -87,7 +87,7 @@ export class ProfileComponent implements OnInit {
   getProfile() {
     this.user.profile()
       .subscribe(res => {
-        this.userModel = res
+        this.userModel = res[0]
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         if (error instanceof HttpErrorResponse) {

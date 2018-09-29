@@ -17,7 +17,6 @@ export class ExportToPdfComponent implements OnInit {
   employeeModel;
   filtersLoaded: Promise<boolean>;
   param;
-  array;
   halfDayLeave;
   fullDayLeave;
 
@@ -40,8 +39,7 @@ export class ExportToPdfComponent implements OnInit {
   getAttendance() {
     this.user.getAllAttendance(this.param.date)
       .subscribe(res => {
-        this.attendanceModel = res.result
-        this.array = res.array
+        this.attendanceModel = res
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         console.error(error)

@@ -2,17 +2,17 @@
 	<div class="col-lg-6 ml-auto mr-auto text-center">
 		<nb-card accent="info">
 			<nb-card-header>
-				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
-				 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
+				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile_pic != ''; else else_image"
+				 src="/images/{{userModel.profile_pic}}" alt="{{ userModel.first_name }}">
 
 				<ng-template #else_image>
-					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
+					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.first_name }}">
 				</ng-template>
 			</nb-card-header>
 			<nb-card-body>
 				<nb-list>
 					<nb-list-item>
-						Name: {{ userModel.profile.first_name + ' ' + userModel.profile.last_name }} 
+						Name: {{ userModel.first_name + ' ' + userModel.last_name }} 
 					</nb-list-item>
 					<nb-list-item>
 						Designation: {{ userModel.designation }}

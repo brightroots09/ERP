@@ -21,12 +21,8 @@ export class AddTasksComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const projects = await this.getProjects()
-      const employee = await this.getEmployee()
-      if(projects != undefined || projects != null){
-        this.projectsModel = projects
-        this.userModel = employee
-      }
+      await this.getProjects()
+      await this.getEmployee()
     } catch (error) {
       
     }

@@ -39,15 +39,15 @@
 	<div class="col-lg-4 ml-auto mr-auto text-center">
 		<nb-card>
 			<nb-card-header>
-				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
-				 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
+				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile_pic != ''; else else_image"
+				 src="/images/{{userModel.profile_pic}}" alt="{{ userModel.name }}">
 
 				<ng-template #else_image>
-					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
+					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.name }}">
 				</ng-template>
 			</nb-card-header>
 			<nb-card-body>
-				<h5 class="card-title">{{userModel.profile.name}}</h5>
+				<h5 class="card-title">{{userModel.name}}</h5>
 				<p class="card-text">{{userModel.email}}</p>
 			</nb-card-body>
 		</nb-card>
@@ -67,14 +67,14 @@
 		</div>
 		<div class="col-md-5" *ngIf="filtersLoaded | async">
 			<div class="card">
-				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile.image != ''; else else_image"
-				 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
+				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.image != ''; else else_image"
+				 src="/images/{{userModel.image}}" alt="{{ userModel.name }}">
 
 				<ng-template #else_image>
-					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
+					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.name }}">
 				</ng-template>
 				<div class="card-body">
-					<h5 class="card-title">{{userModel.profile.name}}</h5>
+					<h5 class="card-title">{{userModel.name}}</h5>
 					<p class="card-text">{{userModel.email}}</p>
 				</div>
 			</div>

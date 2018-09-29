@@ -13,6 +13,8 @@ const dailyUpdatesModel = require("../models/dailyUpdatesModel");
 
 const session = require("express-session");
 const moment = require("moment");
+const async = require("async");
+const _ = require("underscore");
 
 const commonFunction = require("../services/common_functions");
 const mongoose = require("mongoose");
@@ -45,27 +47,35 @@ function verifyToken(req, res, callback) {
 * -----------
 * */
 router.get("/", function (req, res, callback) {
-	let admin = new adminModel();
+	// let admin = new adminModel();
+	let adminObj = {
+		email: "admin@admin.com",
+		password: "admin@admin",
+		name: "Admin"
+	}
 
-	admin.email = "admin@admin.com";
-	admin.password = "admin@admin";
-	admin.profile.name = "Admin";
-
-	adminModel.findOne({ email: "admin@admin.com" }, function (error, exists) {
-		if (error) callback(error);
-		if (exists) {
-			res.json("Connected");
-		}
-		else {
-			admin.save(function (error, result) {
-				if (error) callback(error);
-				else {
-					// res.sendFile(path.join(__dirname, "dist/ERP/index.html"))
-					res.json("Connected")
-				}
-			})
+	commonFunction.registerAdmin(adminObj, function(error, result){
+		if(error) callback(error)
+		else{
+			res.json(result)
 		}
 	})
+
+	// adminModel.findOne({ email: "admin@admin.com" }, function (error, exists) {
+	// 	if (error) callback(error);
+	// 	if (exists) {
+	// 		res.json("Connected");
+	// 	}
+	// 	else {
+	// 		admin.save(function (error, result) {
+	// 			if (error) callback(error);
+	// 			else {
+	// 				// res.sendFile(path.join(__dirname, "dist/ERP/index.html"))
+	// 				res.json("Connected")
+	// 			}
+	// 		})
+	// 	}
+	// })
 
 });
 
@@ -80,7 +90,7 @@ router.post("/login", function (req, res, callback) {
 		email: req.body.email,
 		password: req.body.password
 	}
-	commonFunction.loginUser(adminModel, condition, function (error, result) {
+	commonFunction.loginUser("admin", condition, function (error, result) {
 		if (error) callback(error)
 		else {
 			res.json(result)
@@ -122,8 +132,7 @@ router.get("/profile", verifyToken, function (req, res, callback) {
 	let condition = {
 		id: payload.subject
 	};
-
-	commonFunction.getProfile(adminModel, condition, function (error, response) {
+	commonFunction.getProfile("admin", condition, function (error, response) {
 		if (error) callback(error)
 		else {
 			res.json(response)
@@ -139,10 +148,12 @@ router.get("/profile", verifyToken, function (req, res, callback) {
 * -----------------------
 * */
 router.get("/employees", verifyToken, function (req, res, callback) {
-	employeeModel.find({}, function (error, employees) {
-		if (error) callback(error);
-		else {
-			res.json(employees);
+
+	let fields = "employee_id, first_name as employee_first_name, last_name as employee_last_name, email as employee_email, profile_pic as employee_profile_pic, designation as employee_designation, is_active as employee_is_active, salary as employee_salary, date_created as employee_date_created"
+	commonFunction.findAll("employees", fields, null, null, function(error, employees){
+		if(error) callback(error)
+		else{
+			res.json(employees)
 		}
 	})
 });
@@ -154,31 +165,54 @@ router.get("/employees", verifyToken, function (req, res, callback) {
 * -------------------
 * */
 router.post("/add_employee", verifyToken, function (req, res, callback) {
-	let employee = new employeeModel();
-	let date = new Date();
-	employee.email = req.body.email;
-	employee.password = req.body.password;
+	var date = new Date();
 
-	employee.profile.first_name = req.body.first_name;
-	employee.profile.last_name = req.body.last_name;
+	var obj = [
+		req.body.first_name,
+		req.body.last_name,
+		req.body.email,
+		req.body.password,
+		req.body.designation,
+		req.body.salary,
+		date
+	]
 
-	employee.designation = req.body.designation;
-	employee.salary = req.body.salary;
-	employee.date_created = date;
+	var asyncTasks = [];
 
-	employeeModel.findOne({ email: req.body.email }, function (error, exists) {
-		if (error) callback(error);
-		if (exists) res.redirect("/admin/employees");
-		else {
-			employee.save(function (error, result) {
-				if (error) callback(error);
-				else {
-					console.log(result);
-					res.redirect("/admin/employees");
+	asyncTasks.push(findByEmail.bind(null, req.body.email));
+	asyncTasks.push(addEmployee.bind(null, obj));
+
+	async.waterfall(asyncTasks, function(error, result){
+		if(error) callback(error)
+		else{
+			res.json(result)
+		}
+	})
+
+	function findByEmail(email, cb){
+		let fields = "e.employee_id, e.first_name, e.last_name, e.email, e.profile_pic, e.designation, e.is_active, e.salary, e.date_created"
+		commonFunction.findAll("employees", fields, null, email, function(error, result){
+			if(error) cb(error)
+			else{
+				cb(null, result)
+			}
+		})
+	}
+
+	function addEmployee(obj, result, cb){
+		if(result.length > 0){
+			cb(null, 'Email Already Exists')
+		}
+		else{
+			commonFunction.addEmployees("employees", obj, function(error, result){
+				if(error) callback(error)
+				else{
+					cb(null, result)
 				}
 			})
 		}
-	})
+	}
+
 });
 
 /**
@@ -191,32 +225,52 @@ router.post("/edit_employee/:id", verifyToken, function (req, res, callback) {
 
 	if (req.body.is_active) {
 		obj = {
-			"profile.first_name": req.body.profile.first_name,
-			"profile.last_name": req.body.profile.last_name,
-			"email": req.body.email,
-			"designation": req.body.designation,
-			"salary": req.body.salary,
-			"is_active": req.body.is_active
+			"fields": `first_name = ?, last_name = ?, email = ?, designation = ?, salary = ?, is_active = ?`,
+			"data": [req.body.first_name, req.body.last_name, req.body.email, req.body.designation, req.body.salary, req.body.is_active],
+			"condition": req.params.id
 		}
 	}
 	else {
 		obj = {
-			"profile.first_name": req.body.profile.first_name,
-			"profile.last_name": req.body.profile.last_name,
-			"email": req.body.email,
-			"designation": req.body.designation,
-			"salary": req.body.salary
+			"fields": `first_name = ?, last_name = ?, email = ?, designation = ?, salary = ?`,
+			"data": [req.body.first_name, req.body.last_name, req.body.email, req.body.designation, req.body.salary],
+			"condition": req.params.id
 		}
 	}
 
+	let asyncTasks = [];
 
-	employeeModel.findByIdAndUpdate({ _id: req.params.id }, { $set: obj }, function (error, result) {
-		if (error) callback(error)
-		else {
-			res.redirect(`/admin/employee/${req.params.id}`)
+	asyncTasks.push(findByEmail.bind(null, req.params.id))
+	asyncTasks.push(updateEmployee.bind(null, obj))
+
+	async.waterfall(asyncTasks, function(error, result){
+		if(error) callback(error)
+		else{
+			res.json(result)
 		}
 	})
 
+	function findByEmail(email, cb){
+		let fields = "COUNT(*) as employee"
+		commonFunction.findAll("employees", fields,  null, email, function(error, result){
+			if(error) cb(error)
+			else{
+				cb(null, result)
+			}
+		})
+	}
+
+	function updateEmployee(data, result, cb){
+		if(result[0].employee > 0){
+			commonFunction.updateEmployee("employees", data, function(error, result){
+				if(error) cb(error)
+				else cb(null, result)
+			})
+		}
+		else{
+			cb(null, "Employee not Found!")
+		}
+	}
 })
 
 
@@ -226,14 +280,15 @@ router.post("/edit_employee/:id", verifyToken, function (req, res, callback) {
 * -----------------------------
 * */
 router.get("/employee/:id", verifyToken, function (req, res, callback) {
-	employeeModel
-		.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'projectModel', localField: '_id', foreignField: 'employee_id.id', as: 'projects' } }], function (error, result) {
-			if (error) callback(error);
-			else {
-				res.json(result);
-			}
-		})
 
+	let fields = `e.employee_id, e.first_name, e.last_name, e.email, e.designation, e.salary, e.is_active, e.profile_pic, e.date_created, p.project_id, p.project_name, p.project_description, p.status, p.employee_id as assigned_employess, p.responsible_person, p.project_manager, p.date_created`
+
+	commonFunction.findAll("employees", fields, true, req.params.id, function(error, result){
+		if(error) callback(error)
+		else{
+			res.json(result)
+		}
+	})
 });
 
 
@@ -243,12 +298,36 @@ router.get("/employee/:id", verifyToken, function (req, res, callback) {
 * --------------------------------
 * */
 router.post("/delete_employee/:id", verifyToken, function (req, res, callback) {
-	employeeModel.findByIdAndRemove({ _id: req.params.id }, function (error, result) {
-		if (error) callback(error);
-		else {
-			res.redirect("/admin/employees");
+	let asyncTasks = []
+
+	asyncTasks.push(findById.bind(null, req.params.id))
+	asyncTasks.push(deleteById.bind(null, req.params.id))
+
+	async.waterfall(asyncTasks, function(error, result){
+		if(error) callback(error)
+		else{
+			res.json(result)
 		}
 	})
+
+	function findById(id, cb){
+		let fields = `COUNT(*) as employee`
+		commonFunction.findAll("employees", fields, null, id, function(error, result){
+			if(error) cb(error)
+			else cb(null, result)
+		})
+	}
+
+	function deleteById(id, result, cb){
+		if(result[0].employee > 0){
+			commonFunction.deleteEmployee("employees", [id], function(error, result){
+				if(error) cb(error)
+				else cb(null, result)
+			})
+		}
+		else cb(null, 'Employee not found.')
+	}
+
 });
 
 /**
@@ -260,17 +339,15 @@ router.post("/delete_employee/:id", verifyToken, function (req, res, callback) {
 router.post("/delete_employees", verifyToken, function (req, res, callback) {
 	let arr = [];
 	for (let i = 0; i < req.body.length; i++) {
-		arr.push(req.body[i]._id)
+		arr.push(req.body[i].id)
 	}
 	if (arr.length > 0) {
-		employeeModel
-			.remove({ _id: { $in: arr } })
-			.exec(function (error, result) {
-				if (error) callback(error)
-				else {
-					res.redirect("/admin/employees")
-				}
-			})
+		commonFunction.deleteEmployee("employees", arr, function(error, result){
+			if(error) callback(error)
+			else {
+				res.json(result)
+			}
+		})
 	}
 })
 
@@ -280,31 +357,23 @@ router.post("/delete_employees", verifyToken, function (req, res, callback) {
 * --------------------
 * */
 router.post("/create_project", verifyToken, function (req, res, callback) {
-	let project = new projectModel();
 	let date = new Date();
 
-	let arr = []
+	console.log(req.body)
+
+	let employeeArr = []
+
 	let employee = req.body.employee
 
 	for (let i in employee) {
-		arr.push({
-			id: mongoose.Types.ObjectId(employee[i]._id)
-		})
+		employeeArr.push(employee[i].employee_id)
 	}
 
-	project.project_details.name = req.body.project.project_name;
-	project.project_details.description = req.body.project.project_description;
-	// project.status = req.body.project.status;
-	project.employee_id = arr;
-	project.project_manager = req.body.project.project_manager;
-	project.responsible_person = req.body.project.responsible_person;
-	project.date_created = date;
+	let projectArr = [employeeArr.join(",").toString(), req.body.project.responsible_person, req.body.project.project_manager, req.body.project.project_name, req.body.project.project_description, date]
 
-	project.save(function (error, result) {
-		if (error) callback(error);
-		else {
-			res.redirect("/admin/projects");
-		}
+	commonFunction.addProject("projects", projectArr, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
 	})
 });
 
@@ -315,10 +384,12 @@ router.post("/create_project", verifyToken, function (req, res, callback) {
 * --------------------------
 * */
 router.get("/projects", verifyToken, function (req, res, callback) {
-	projectModel.aggregate([{ $lookup: { from: 'employeeModel', localField: 'employee_id.id', foreignField: '_id', as: 'employees' } }], function (error, result) {
-		if (error) callback(error);
+	let fields = `p.project_id, p.project_name, p.project_description, p.status, p.employee_id, p.responsible_person, p.project_manager, p.date_created`
+
+	commonFunction.findAllProjects('projects', fields, null, 1, function(error, result){
+		if(error) callback(error)
 		else {
-			res.json(result);
+			res.json(result)
 		}
 	})
 });
@@ -330,11 +401,15 @@ router.get("/projects", verifyToken, function (req, res, callback) {
 * ------------------------------------
 * */
 router.get("/project_details/:id", verifyToken, function (req, res, callback) {
-	projectModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'employeeModel', localField: 'employee_id.id', foreignField: '_id', as: 'employees' } }, { $lookup: { from: 'employeeModel', localField: 'responsible_person', foreignField: '_id', as: 'responsible_person' } }, { $lookup: { from: 'employeeModel', localField: 'project_manager', foreignField: '_id', as: 'project_manager' } }, { $lookup: { from: 'taskUpdateModel', localField: '_id', foreignField: 'project_id', as: 'dailyTasksUpdate' } }], function (error, project) {
-		if (error) callback(error);
+	let fields = `p.project_id, p.project_name, p.project_description, p.status, p.employee_id, p.responsible_person, p.project_manager, p.date_created, e.employee_id as employee, e.first_name as employee_first_name, e.last_name as employee_last_name, e.designation as employee_designation, r.employee_id as responsible_person_id, r.first_name as responsible_person_first_name, r.last_name as responsible_person_last_name, r.designation as responsible_person_designation, pr.employee_id as project_manager_id, pr.first_name as project_manager_first_name, pr.last_name as project_manager_last_name, pr.designation as project_manager_designation`
+	
+	let condition = `p.project_id = ${req.params.id}`
+
+	commonFunction.findAllProjects('projects', fields, true, condition, function(error, result){
+		if(error) callback(error)
 		else {
-			console.log(project)
-			res.json(project);
+			// let result12 = _.groupBy(result, 'project_id');
+			res.json(result)
 		}
 	})
 });
@@ -346,42 +421,7 @@ router.get("/project_details/:id", verifyToken, function (req, res, callback) {
  */
 
 router.post("/edit_project/:id", verifyToken, function (req, res, callback) {
-	let obj;
-
-	let arr = []
-	let employee = req.body.employees
-
-	for (let i in employee) {
-		arr.push({
-			id: mongoose.Types.ObjectId(employee[i]._id)
-		})
-	}
-
-	if (req.body.status) {
-		obj = {
-			"project_details.name": req.body.data.project_details.name,
-			"project_details.description": req.body.data.project_details.description,
-			"status": req.body.data.status,
-			"employee_id": arr,
-			"project_manager": req.body.data.project_manager,
-			"responsible_person": req.body.data.responsible_person
-		}
-	}
-	else {
-		obj = {
-			"project_details.name": req.body.data.project_details.name,
-			"project_details.description": req.body.data.project_details.description,
-			"employee_id": arr,
-			"project_manager": req.body.data.project_manager,
-			"responsible_person": req.body.data.responsible_person
-		}
-	}
-	projectModel.findByIdAndUpdate({ _id: req.params.id }, { $set: obj }, function (error, response) {
-		if (error) callback(error)
-		else {
-			res.redirect(`/admin/project_details/${req.params.id}`)
-		}
-	})
+	console.log(req.body)
 })
 
 /**
@@ -428,12 +468,12 @@ router.post("/projects_delete", verifyToken, function (req, res, callback) {
  */
 
 router.get("/tasks", verifyToken, function (req, res, callback) {
-	tasksModel.find({}, function (error, tasks) {
-		if (error) callback(error)
-		else {
-			console.log(tasks)
-			res.json(tasks)
-		}
+	
+	let fields = "t.id as task_id, t.task_name, t.task_description, t.date_created as task_date_create"
+
+	commonFunction.findTasks('tasks', fields, false, 1, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
 	})
 })
 
@@ -444,13 +484,18 @@ router.get("/tasks", verifyToken, function (req, res, callback) {
  */
 
 router.get("/tasks_details/:id", verifyToken, function (req, res, callback) {
-	tasksModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'projectModel', localField: 'project_id.id', foreignField: '_id', as: 'projects' } }, { $lookup: { from: 'employeeModel', localField: 'others.id', foreignField: '_id', as: 'employees' } }], function (error, response) {
-		if (error) callback(error)
+	let fields = "t.id as task_id, t.task_name, t.task_description, t.status, t.project_id, t.others, t.date_created as task_date_created, p.project_name, p.project_description, e.first_name as employee_first_name, e.last_name as employee_last_name, e.designation as employee_designation"
+	
+	let condition = `t.id = ${req.params.id}`
+
+	commonFunction.findTasks('tasks', fields, true, condition, function(error, result){
+		if(error) callback(error)
 		else {
-			console.log(response)
-			res.json(response)
+			// let result12 = _.groupBy(result, 'project_id');
+			res.json(result)
 		}
 	})
+
 })
 
 /**
@@ -460,25 +505,11 @@ router.get("/tasks_details/:id", verifyToken, function (req, res, callback) {
  */
 
 router.get("/project_tasks_details/:id", verifyToken, function (req, res, callback) {
-	// tasksModel.aggregate([{ $match: { 'project_id.id': mongoose.Types.ObjectId(req.params.id) } }, { $lookup: { from: 'projectModel', localField: 'project_id.id', foreignField: '_id', as: 'projects' } }], function (error, response) {
-	// 	if (error) callback(error)
-	// 	else {
-	// 		console.log(response)
-	// 		res.json(response)
-	// 	}
-	// })
-
-	tasksModel
-		.find({ "project_id.id": req.params.id })
-		.populate({ path: "project_id.id", model: projectModel })
-		.exec(function (error, result) {
-			if (error) callback(error)
-			else {
-				console.log(result)
-				res.json(result)
-			}
-		})
-
+	let fields = `id as task_id, task_name, task_description, date_created`
+	commonFunction.viewDetails('tasks', fields, req.params.id, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
 })
 
 /**
@@ -488,41 +519,47 @@ router.get("/project_tasks_details/:id", verifyToken, function (req, res, callba
  */
 
 router.post("/create_tasks", verifyToken, function (req, res, callback) {
-	let tasks = new tasksModel()
+	// let tasks = new tasksModel()
 	let date = new Date()
-	let arr = []
-	let projects = req.body.projects
-	let arrEmployee = []
-	let employee = req.body.employees
 
+	let projectArr = []
+	let employeeArr = []
+
+	let employee = req.body.employees
+	let projects = req.body.projects
+	
 	if (req.body.projects.length > 0) {
 		for (let i in projects) {
-			arr.push({
-				id: mongoose.Types.ObjectId(projects[i]._id)
-			})
+			projectArr.push(projects[i].project_id)
 		}
 	}
 	if (req.body.employees.length > 0) {
-
 		for (let i in employee) {
-			arrEmployee.push({
-				id: mongoose.Types.ObjectId(employee[i]._id)
-			})
+			employeeArr.push(employee[i].employee_id)
 		}
 	}
+	
+	let tasksArr = [req.body.tasks.tasks_name, req.body.tasks.tasks_description, projectArr.join(",").toString(), employeeArr.join(",").toString(), date]
 
-	tasks.tasks_details.name = req.body.tasks.tasks_name;
-	tasks.tasks_details.description = req.body.tasks.tasks_description;
-	tasks.project_id = arr;
-	tasks.others = arrEmployee;
-	tasks.date_created = date;
-
-	tasks.save(function (error, result) {
-		if (error) callback(error)
-		else {
-			res.redirect("/admin/tasks")
+	commonFunction.addProjectTasks('tasks', tasksArr, function(error, result){
+		if(error) callback(error)
+		else{
+			res.json(result)
 		}
 	})
+
+	// tasks.tasks_details.name = req.body.tasks.tasks_name;
+	// tasks.tasks_details.description = req.body.tasks.tasks_description;
+	// tasks.project_id = arr;
+	// tasks.others = arrEmployee;
+	// tasks.date_created = date;
+
+	// tasks.save(function (error, result) {
+	// 	if (error) callback(error)
+	// 	else {
+	// 		res.redirect("/admin/tasks")
+	// 	}
+	// })
 
 })
 
@@ -534,25 +571,11 @@ router.post("/create_tasks", verifyToken, function (req, res, callback) {
  */
 
 router.post("/edit_task/:id", verifyToken, function (req, res, callback) {
-	let obj
-	if (req.body.status) {
-		obj = {
-			"tasks_details.name": req.body.tasks_details.name,
-			"tasks_details.description": req.body.tasks_details.description,
-			"status": req.body.status
-		}
-	}
-	else {
-		obj = {
-			"tasks_details.name": req.body.tasks_details.name,
-			"tasks_details.description": req.body.tasks_details.description
-		}
-	}
-	tasksModel.findByIdAndUpdate({ _id: req.params.id }, { $set: obj }, function (error, response) {
-		if (error) callback(error)
-		else {
-			res.redirect(`/tadmin/asks_details/${req.params.id}`)
-		}
+	let fields = "task_name=?, task_description=? where id=?"
+	let arr = [req.body[0].task_name, req.body[0].task_description, req.params.id]
+	commonFunction.editTask('tasks', fields, arr, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
 	})
 })
 
@@ -587,11 +610,9 @@ router.post("/edit_project_task/:id", verifyToken, function (req, res, callback)
  * -----------
  */
 router.post("/delete_task/:id", verifyToken, function (req, res, callback) {
-	tasksModel.findByIdAndRemove({ _id: req.params.id }, function (error, response) {
-		if (error) callback(error)
-		else {
-			res.redirect("/admin/tasks")
-		}
+	commonFunction.deleteTask('tasks', req.params.id, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
 	})
 })
 
@@ -625,33 +646,27 @@ router.post("/delete_tasks", verifyToken, function (req, res, callback) {
  */
 
 router.post("/update_project_task", verifyToken, function (req, res, callback) {
-	let updateModel = new taskUpdateModel()
 	let date = new Date()
 
-	updateModel.project_id = req.body.id;
-	updateModel.description = req.body.data.description
-	updateModel.date_created = date;
+	let obj = {
+		id: req.body.id,
+		description: req.body.data.description,
+		date: date
+	}
 
-	updateModel.save(function (error, response) {
-		if (error) callback(error)
-		else {
-			res.json(response)
-		}
+	commonFunction.addProjectDailyUpdates("taskUpdate", obj, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
 	})
 
 })
 
 router.get("/view_daily_updates/:id", verifyToken, function (req, res, callback) {
-	taskUpdateModel
-		.find({ project_id: req.params.id })
-		.exec(function (error, response) {
-			if (error) {
-				callback(error)
-			}
-			else {
-				res.json(response)
-			}
-		})
+
+	commonFunction.viewDetails('taskUpdate', 'description', req.params.id, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
 })
 
 
@@ -662,15 +677,13 @@ router.get("/view_daily_updates/:id", verifyToken, function (req, res, callback)
  */
 
 router.get("/queries", verifyToken, function (req, res, callback) {
-	queryModel
-		.find({})
-		.populate([{ path: 'employee_id', model: employeeModel }, { path: 'management_id', model: employeeModel }])
-		.exec(function (error, response) {
-			if (error) callback(error)
-			else {
-				res.json(response)
-			}
-		})
+
+	let fields = `q.id, q.employee_id, q.management_id, q.message, q.reply, q.status, q.date_created, e.first_name as employee_first_name, e.last_name as employee_last_name, e.designation as employee_designation, m.first_name as management_first_name, m.last_name as management_last_name, m.designation as management_designation`
+
+	commonFunction.viewQueries("queries", fields, null, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
 })
 
 
@@ -681,19 +694,21 @@ router.get("/queries", verifyToken, function (req, res, callback) {
  */
 
 router.get("/attendance/:date", verifyToken, function (req, res, callback) {
-	let date = new Date(`${req.params.date}`)
-	let nextDate = new Date(moment(date).add('24', 'hours'))
 
-	dailyUpdatesModel
-		.find({ "date_created": { "$gte": date, "$lte": nextDate } })
-		.sort({ "date_created": -1 })
-		.populate({ path: 'employee_id', model: employeeModel })
-		.exec(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.json(result)
-			}
-		})
+	let date = new Date(`${req.params.date}`)
+	let date2 = new Date(moment(date).add('24', 'hours'))
+
+	let fields = `a.id, a.employee_id, a.morning_session, a.evening_session, a.in_time, a.out_time, a.total_hours, a.status, a.date_created, e.first_name as employee_first_name, e.last_name as employee_last_name, e.designation as employee_designation`
+
+	let condition = {
+		prevDate: date,
+		nextDate: date2
+	}
+
+	commonFunction.veiwAttendance('dailyUpdate', fields, condition, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
 })
 
 router.get("/allAttendance/:date", verifyToken, function (req, res, callback) {
@@ -705,18 +720,17 @@ router.get("/allAttendance/:date", verifyToken, function (req, res, callback) {
 	let prevDate = new Date(year, month, 1)
 	let nextDate = new Date(year, month + 1, 1)
 
-	console.log(prevDate, " ============ ", nextDate)
+	let fields = `a.id, a.employee_id, a.morning_session, a.evening_session, a.in_time, a.out_time, a.total_hours, a.status, a.date_created, e.first_name as employee_first_name, e.last_name as employee_last_name, e.designation as employee_designation, e.salary as employee_salary`
 
-	dailyUpdatesModel
-		.find({ "date_created": { "$gt": prevDate, "$lte": nextDate } })
-		.populate({ path: 'employee_id', model: employeeModel })
-		.sort({ date_created: -1 })
-		.exec(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.json({ result })
-			}
-		})
+	let condition = {
+		prevDate: prevDate,
+		nextDate: nextDate
+	}
+
+	commonFunction.veiwAttendance('dailyUpdate', fields, condition, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
 })
 
 
@@ -727,14 +741,28 @@ router.get("/allAttendance/:date", verifyToken, function (req, res, callback) {
  */
 
 router.post("/toggle_attendance/:id", verifyToken, function (req, res, callback) {
-	dailyUpdatesModel
-		.findByIdAndUpdate({ _id: req.params.id }, { $set: req.body })
-		.exec(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.json(result)
-			}
-		})
+
+	let fields = `status=?`
+
+	commonFunction.toggleStatus('dailyUpdate', fields, req.body.status, req.params.id, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
+})
+
+
+/**
+ * ------------------------
+ * TOGGLE QUERY SATUS ROUTE
+ * ------------------------
+ */
+
+router.post("/toggleQueryStatus/:id", verifyToken, function (req, res, callback) {
+	let fields = `status=?`
+	commonFunction.toggleStatus('queries', fields, 'closed', req.params.id, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
 })
 
 /**
@@ -743,14 +771,12 @@ router.post("/toggle_attendance/:id", verifyToken, function (req, res, callback)
  * --------------------
  */
 router.post("/reply_to_query/:id", verifyToken, function (req, res, callback) {
-	queryModel
-		.findByIdAndUpdate({ _id: req.params.id }, { $set: req.body })
-		.exec(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.json(result)
-			}
-		})
+
+	let fields = `reply=?`
+	commonFunction.toggleQuery('queries', fields, req.body.reply, req.params.id, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
 })
 
 
@@ -759,33 +785,25 @@ router.post("/reply_to_query/:id", verifyToken, function (req, res, callback) {
  * CREATE PROJECT TASK ROUTE
  * -------------------------
  */
+
+
 router.post("/create_project_task", verifyToken, function (req, res, callback) {
-	let tasks = new tasksModel()
 	let date = new Date()
 
-	let arr = []
+	let employeeArr = []
 
-	arr.push({ id: mongoose.Types.ObjectId(req.body.id) })
-
-	let arrEmployee = []
 	let employee = req.body.employees
 
 	for (let i in employee) {
-		arrEmployee.push({
-			id: mongoose.Types.ObjectId(employee[i]._id)
-		})
+		employeeArr.push(employee[i].employee_id)
 	}
 
-	tasks.tasks_details.name = req.body.data.tasks_name;
-	tasks.tasks_details.description = req.body.data.tasks_description;
-	tasks.project_id = arr;
-	tasks.others = arrEmployee;
-	tasks.date_created = date;
+	let taskArr = [req.body.data.tasks_name, req.body.data.tasks_description, req.body.id, employeeArr.join(",").toString(), date]
 
-	tasks.save(function (error, result) {
-		if (error) callback(error)
-		else {
-			res.redirect("/admin/tasks")
+	commonFunction.addProjectTasks('tasks', taskArr, function(error, result){
+		if(error) callback(error)
+		else{
+			res.json(result)
 		}
 	})
 })
@@ -798,23 +816,24 @@ router.post("/create_project_task", verifyToken, function (req, res, callback) {
  */
 
 router.post("/add_absenties", verifyToken, function (req, res, callback) {
+
 	let date = new Date(req.body.date)
-	let dailyUpdate = new dailyUpdatesModel()
+	// let dailyUpdate = new dailyUpdatesModel()
 
-	dailyUpdate.employee_id = req.body.id;
-	dailyUpdate.morning_session = "Absent";
-	dailyUpdate.evening_session = "Absent";
-	dailyUpdate.in_time = "-";
-	dailyUpdate.out_time = "-";
-	dailyUpdate.total_hours = "0";
-	dailyUpdate.date_created = date
+	let fields = `employee_id, morning_session, evening_session, in_time, out_time, total_hours, date_created`;
+	let data = [req.body.id, 'Absent', 'Absent', '-', '-', '0', date]
 
-	dailyUpdate.save(function (error, response) {
-		if (error) callback(error)
-		else {
-			res.json(response)
-		}
+	commonFunction.dailyUpdate('dailyUpdate', fields, data, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
 	})
+
+	// dailyUpdate.save(function (error, response) {
+	// 	if (error) callback(error)
+	// 	else {
+	// 		res.json(response)
+	// 	}
+	// })
 
 })
 

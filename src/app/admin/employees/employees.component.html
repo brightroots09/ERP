@@ -40,13 +40,13 @@ Selected</button>
 								<td *ngIf="multiSelect">
 									<input type="checkbox" [(ngModel)]="user.selected">
 								</td>
-								<td> {{ user.profile.first_name }} </td>
-								<td> {{ user.profile.last_name }} </td>
-								<td> {{ user.email }} </td>
-								<td> {{ user.designation }} </td>
-								<td> {{ user.date_created | date:'mediumDate' }} </td>
+								<td> {{ user.employee_first_name }} </td>
+								<td> {{ user.employee_last_name }} </td>
+								<td> {{ user.employee_email }} </td>
+								<td> {{ user.employee_designation }} </td>
+								<td> {{ user.employee_date_created | date:'mediumDate' }} </td>
 								<td>
-									<a class="btn btn-link text-primary p-0 m-0" routerLink="/employee_details/{{ user._id }}">View</a>
+									<a class="btn btn-link text-primary p-0 m-0" routerLink="/employee_details/{{ user.employee_id }}">View</a>
 								</td>
 							</tr>
 						</tbody>

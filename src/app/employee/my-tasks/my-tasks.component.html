@@ -1,37 +1,39 @@
-<div class="row">
-	<div class="col-md-4" *ngFor="let tasks of tasksModel">
-		<ng-container *ngIf="tasks.my_tasks.length > 0; else no_tasks">
-			<nb-card>
-				<nb-card-header>
-					{{ tasks.project_details.name }}
-				</nb-card-header>
-				<nb-card-body>
-					<nb-list>
-						<nb-list-item *ngFor="let myTasks of tasks.my_tasks" class="text-left">
-
-							<nb-card [accent]="myTasks.status == 'completed' ? 'success' : 'danger'">
-								<nb-card-header>
-									<nb-user [name]="myTasks.tasks_details.name" [title]="myTasks.tasks_details.description">
-									</nb-user>
-								</nb-card-header>
-								<nb-card-body>
-									<nb-list>
-										<nb-list-item>
-											Status: {{ myTasks.status }}
-										</nb-list-item>
-										<nb-list-item>
-											<a class="btn btn-link" [class]="myTasks.status == 'completed' ? 'text-success' : 'text-danger'" routerLink="/myTaskDetails/{{myTasks._id}}">
-												View
-											</a>
-										</nb-list-item>
-									</nb-list>
-								</nb-card-body>
-							</nb-card>
-
-						</nb-list-item>
-					</nb-list>
-				</nb-card-body>
-			</nb-card>
+<div class="row" *ngIf="filtersLoaded | async">
+	<div class="col-md-12">
+		<ng-container *ngIf="tasksModel.length > 0; else no_tasks">
+			<div class="row">
+				<div class="col-md-3" *ngFor="let myTasks of tasksModel">
+					<nb-card class="text-left">
+						<nb-card-header>
+							<span>{{ myTasks.project_description }}</span>
+						</nb-card-header>
+						<nb-card-body>
+							<nb-list>
+								<nb-list-item>
+									<nb-card [accent]="myTasks.status == 'completed' ? 'success' : 'danger'">
+										<nb-card-header>
+											<nb-user [name]="myTasks.task_name" [title]="myTasks.task_description">
+											</nb-user>
+										</nb-card-header>
+										<nb-card-body>
+											<nb-list>
+												<nb-list-item>
+													Status: {{ myTasks.status }}
+												</nb-list-item>
+												<nb-list-item>
+													<a class="btn btn-link" [class]="myTasks.status == 'completed' ? 'text-success' : 'text-danger'" routerLink="/myTaskDetails/{{myTasks.id}}">
+														View
+													</a>
+												</nb-list-item>
+											</nb-list>
+										</nb-card-body>
+									</nb-card>
+								</nb-list-item>
+							</nb-list>
+						</nb-card-body>
+					</nb-card>
+				</div>
+			</div>
 		</ng-container>
 	</div>
 	<ng-template #no_tasks>

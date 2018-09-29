@@ -14,6 +14,8 @@ export class ProjectDetailComponent implements OnInit {
   param;
   filtersLoaded: Promise<boolean>;
   updateModel = new Updates;
+  tasksLoaded: Promise<boolean>;
+  dailyUpdateModel;
   userModel;
   employees = []
 
@@ -29,12 +31,9 @@ export class ProjectDetailComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const details = await this.getProjectDetails()
-      const users = await this.getEmployee()
-      if (details != undefined || details != null) {
-        this.projectModel = details
-        this.userModel = users
-      }
+      await this.getProjectDetails()
+      await this.getEmployee()
+      await this.getProjectDailyTasks()
     } catch (error) {
       return error
     }
@@ -44,8 +43,8 @@ export class ProjectDetailComponent implements OnInit {
     this.user.projectDetails(this.param.id)
       .subscribe(res => {
         console.log("===========>", res[0])
-        this.projectModel = res[0]
-        this.employees = res[0].employees
+        this.projectModel = res
+        this.employees = res
         this.filtersLoaded = Promise.resolve(true);
       },
         (error) => {
@@ -63,6 +62,17 @@ export class ProjectDetailComponent implements OnInit {
           console.log(error)
         }
       )
+  }
+
+  getProjectDailyTasks(){
+    this.user.viewDailyProjectUpdates(this.param.id)
+      .subscribe(res => {
+        console.log(res)
+        this.dailyUpdateModel = res
+        this.tasksLoaded = Promise.resolve(true)
+      }, error => {
+        console.error(error)
+      })
   }
 
   toggleEdit() {

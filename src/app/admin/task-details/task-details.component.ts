@@ -10,6 +10,7 @@ import { UserService } from '../../user.service';
 export class TaskDetailsComponent implements OnInit {
 
   tasksModel;
+  projectModel = [];
   param;
   filtersLoaded: Promise<boolean>;
 
@@ -27,6 +28,7 @@ export class TaskDetailsComponent implements OnInit {
       if(details != undefined || details != null){
         this.tasksModel = details
       }
+      
     } catch (error) {
       return error
     }
@@ -36,7 +38,7 @@ export class TaskDetailsComponent implements OnInit {
   getTasksDetails(){
     this.user.tasksDetails(this.param.id)
       .subscribe(res => {
-        this.tasksModel = res[0]
+        this.tasksModel = res
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         console.error(error)

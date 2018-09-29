@@ -24,11 +24,11 @@
 						</thead>
 						<tbody *ngIf="tasksModel.length > 0; else block_task">
 							<tr *ngFor="let tasks of tasksModel">
-								<td>{{tasks.tasks_details.name}}</td>
-								<td>{{ tasks.tasks_details.description }}</td>
+								<td>{{tasks.task_name}}</td>
+								<td>{{ tasks.task_description }}</td>
 								<td [class]="tasks.status == 'completed' ? 'text-success' : 'text-info' ">{{ tasks.status }}</td>
 								<td>
-									<button type="button" [disabled]="tasks.status == 'completed'" class="btn btn-link text-danger p-0" (click)="toggleStatus(tasks._id)">Mark as Complete</button>
+									<button type="button" [disabled]="tasks.status == 'completed'" class="btn btn-link text-danger p-0" (click)="toggleStatus(tasks.id)">Mark as Complete</button>
 								</td>
 								<td> {{ tasks.date_created | date:'mediumDate' }} </td>
 							</tr>

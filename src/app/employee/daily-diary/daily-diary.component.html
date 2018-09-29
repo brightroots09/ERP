@@ -1,13 +1,17 @@
 <div class="row" *ngIf="filtersLoaded | async">
 
+
 	<div class="col-md-12">
 		<nb-card accent="warning">
 			<nb-card-header>
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-4">
 						Daily Diary
 					</div>
-					<div class="col-md-6 text-right">
+					<div class="col-md-4 text-center">
+						<small class="text-danger" *ngIf="tasksModel[0].evening_session == ''" >Completed {{ total_hours | number:'1.0-1' }} hours</small>
+					</div>
+					<div class="col-md-4 text-right">
 						<button type="button" class="btn btn-link text-primary p-0" name="morning_session" [disabled]="toggleUpdate" data-toggle="modal"
 						 data-target="#updateModel">Update Daily Tasks</button>
 					</div>
@@ -41,7 +45,7 @@
 								</td>
 								<ng-template #evening_session>
 									<td>
-										<button type="button" class="btn btn-link text-danger p-0" data-toggle="modal" data-target="#eveningupdateModel">Add</button>
+										<button type="button" class="btn btn-link text-danger p-0" data-toggle="modal" data-target="#eveningupdateModel">Add </button>
 									</td>
 
 									<div class="modal fade" id="eveningupdateModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -54,17 +58,11 @@
 													</button>
 												</div>
 												<div class="modal-body">
-													<form #tasksForm="ngForm" (ngSubmit)="onEveningUpdateFormSubmit(task._id, total_hours)">
+													<form #tasksForm="ngForm" (ngSubmit)="onEveningUpdateFormSubmit(task.id)">
 														<div class="form-group">
-															<div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="total_hours">
-																You have completed: {{ total_hours | number:'1.0-1' }} hours
-																<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-																	<span aria-hidden="true">&times;</span>
-																</button>
-															</div>
 															<label>Task description</label>
 															<textarea name="message" class="form-control" #message="ngModel" [(ngModel)]="updateModel.message" [class.is-invalid]="message.invalid && message.touched"
-															 [class.is-valid]="message.valid && message.touched" required></textarea>
+															[class.is-valid]="message.valid && message.touched" required></textarea>
 															<small class="text-danger" [class.d-none]="message.valid || message.untouched">Message is required</small>
 														</div>
 														<div class="form-group">
@@ -80,12 +78,12 @@
 																	<div class="col-md-6" *ngIf="sessionTime == 'Morning'">
 																		<label>In Time</label>
 																		<input type="text" class="form-control" name="in_time" [(ngModel)]="updateModel.date_created" class="form-control" [value]="nowTime"
-																		 disabled>
+																		disabled>
 																	</div>
 																	<div class="col-md-6" *ngIf="sessionTime == 'Evening'">
 																		<label>Out Time</label>
 																		<input type="text" class="form-control" name="out_time" [(ngModel)]="updateModel.out_time" class="form-control" [value]="nowTime"
-																		 disabled>
+																		disabled>
 																	</div>
 																</div>
 															</div>
@@ -99,7 +97,7 @@
 											</div>
 										</div>
 									</div>
-
+									
 								</ng-template>
 								<td *ngIf="task.in_time != ''; else in_time">
 									<span class="text-info">{{ task.in_time }}</span>
@@ -113,7 +111,7 @@
 								<ng-template #out_time>
 									<td>-</td>
 								</ng-template>
-								<td *ngIf="task.total_hours != ''; else total_hours">
+								<td *ngIf="task.total_hours != null; else total_hours">
 									{{ task.total_hours | number:'1.0-1' }} hours
 								</td>
 								<ng-template #total_hours>

@@ -12,6 +12,7 @@ import { User } from '../../user';
 export class EmployeeDetailComponent implements OnInit {
 
   userModel;
+  projectModel;
   param;
   filtersLoaded: Promise<boolean>;
 
@@ -39,8 +40,9 @@ export class EmployeeDetailComponent implements OnInit {
   getEmployeeDetails(){
     this.user.employeeDetails(this.param.id)
       .subscribe(res => {
-        console.log("===========>", res)
+        console.log("===========>", res[0])
         this.userModel = res[0]
+        this.projectModel = res
         this.filtersLoaded = Promise.resolve(true);
       }, 
       (error) => {

@@ -25,7 +25,7 @@
                 <label for="">Selected Project</label>
                 <div *ngIf="projects.length > 0; else none_block">
                   <div class="btn-group badge badge-info m-2 p-2" role="group" *ngFor="let project of projects">
-                    <span class="p-3">{{project.project_details.name}}</span>
+                    <span class="p-3">{{project.project_name}}</span>
                     <button type="button" class="btn btn-link text-white" (click)="remove(project)">&times;</button>
                   </div>
                 </div>
@@ -36,7 +36,7 @@
 
 
               <div class="form-group">
-                <button type="button" class="btn btn-outline-info m-2" (click)="add_project(project)" *ngFor="let project of projectsModel">{{ project.project_details.name }}</button>
+                <button type="button" class="btn btn-outline-info m-2" (click)="add_project(project)" *ngFor="let project of projectsModel">{{ project.project_name }}</button>
                 <button type="button" class="btn btn-outline-danger m-2 p-2" (click)="otherType()">Select Employees</button>
               </div>
             </div>
@@ -48,7 +48,7 @@
                 <label for="">Selected Members</label>
                 <div *ngIf="employees.length > 0; else none_block">
                   <div class="btn-group badge badge-info m-2" role="group" *ngFor="let employee of employees">
-                    <span class="p-3">{{employee.profile.first_name}} {{employee.profile.last_name}}</span>
+                    <span class="p-3">{{employee.employee_first_name}} {{employee.employee_last_name}}</span>
                     <button type="button" class="btn btn-link text-white" (click)="removeEmployee(employee)">&times;</button>
                   </div>
                 </div>
@@ -66,8 +66,8 @@
                           aria-expanded="false">IOS Developer</button>
                         <div class="dropdown-menu">
                           <ng-container *ngFor="let employee of userModel">
-                            <button type="button" *ngIf="employee.designation == 'Developer (IOS)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-                              <nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+                            <button type="button" *ngIf="employee.employee_designation == 'Developer (IOS)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+                              <nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
                               </nb-user>
                             </button>
                           </ng-container>
@@ -79,8 +79,8 @@
                           aria-expanded="false">Android Developer</button>
                         <div class="dropdown-menu">
                           <ng-container *ngFor="let employee of userModel">
-                            <button type="button" *ngIf="employee.designation == 'Developer (Android)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-                              <nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+                            <button type="button" *ngIf="employee.employee_designation == 'Developer (Android)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+                              <nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
                               </nb-user>
                             </button>
                           </ng-container>
@@ -92,8 +92,8 @@
                           aria-expanded="false">Backend Developer</button>
                         <div class="dropdown-menu">
                           <ng-container *ngFor="let employee of userModel">
-                            <button type="button" *ngIf="employee.designation == 'Backend Developer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-                              <nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+                            <button type="button" *ngIf="employee.employee_designation == 'Backend Developer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+                              <nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
                               </nb-user>
                             </button>
                           </ng-container>
@@ -105,14 +105,15 @@
                           aria-expanded="false">Designer</button>
                         <div class="dropdown-menu">
                           <ng-container *ngFor="let employee of userModel">
-                            <button type="button" *ngIf="employee.designation == 'Designer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-                              <nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+                            <button type="button" *ngIf="employee.employee_designation == 'Designer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+                              <nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
                               </nb-user>
                             </button>
                           </ng-container>
                         </div>
                       </div>
                     </div>
+                    <button type="button" class="btn btn-outline-danger m-2 p-2" (click)="otherType()">Select Projects</button>
                   </div>
                 </div>
               </div>

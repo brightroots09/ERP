@@ -24,15 +24,15 @@
             </thead>
             <tbody>
               <tr *ngFor="let employee of userModel">
-                <td>{{ employee.profile.first_name }} {{ employee.profile.last_name }}</td>
+                <td>{{ employee.employee_first_name }} {{ employee.employee_last_name }}</td>
                 <td>
-                  {{ employee.designation }}
+                  {{ employee.employee_designation }}
                 </td>
                 <td>
-                  <input type="date" class="form-control" #date="ngModel" id="date{{employee._id}}" name="date" [(ngModel)]="dateModel">
+                  <input type="date" class="form-control" #date="ngModel" id="date{{employee.employee_id}}" name="date" [(ngModel)]="dateModel">
                 </td>
                 <td>
-                  <a class="btn btn-link text-primary p-0 text-danger" (click)='absent(employee._id)'>Mark as absent</a>
+                  <a class="btn btn-link text-primary p-0 text-danger" (click)='absent(employee.employee_id)'>Mark as absent</a>
                 </td>
               </tr>
             </tbody>

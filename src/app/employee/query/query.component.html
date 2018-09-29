@@ -28,8 +28,8 @@
 						</thead>
 						<tbody *ngIf="queryModel.length > 0; else queryModel_else">
 							<tr *ngFor="let query of queryModel">
-								<td>{{ query.management_id.profile.first_name }} {{ query.management_id.profile.last_name }}</td>
-								<td>{{ query.management_id.designation }}</td>
+								<td>{{ query.management_first_name }} {{ query.management_last_name }}</td>
+								<td>{{ query.management_designation }}</td>
 								<td>{{ query.message }}</td>
 								<td>{{ query.status }}</td>
 								<td *ngIf="query.reply; else query_else">{{ query.reply }}</td>
@@ -38,7 +38,7 @@
 								</ng-template>
 								<td>
 									<button type="button" [class]="query.status == 'closed' ? 'text-success btn btn-link p-0' : 'text-danger btn btn-link p-0'"
-									 [disabled]="query.status == 'closed'" (click)="closeTicket(query._id)">
+									 [disabled]="query.status == 'closed'" (click)="closeTicket(query.id)">
 										Mark as closed
 									</button>
 								</td>
@@ -79,8 +79,8 @@
 						<label>Select</label>
 						<select class="form-control" #management_id="ngModel" [(ngModel)]="updateModel.management_id" name="management_id" id="exampleFormControlSelect1">
 							<ng-container *ngFor="let employee of employeeModel">
-								<option *ngIf="userModel._id != employee._id" value="{{ employee._id }}">
-									{{ employee.profile.first_name }} {{ employee.profile.last_name }} ({{ employee.designation }})
+								<option *ngIf="userModel.employee_id != employee.employee_id" value="{{ employee.employee_id }}">
+									{{ employee.employee_first_name }} {{ employee.employee_last_name }} ({{ employee.employee_designation }})
 								</option>
 							</ng-container>
 

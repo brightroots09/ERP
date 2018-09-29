@@ -78,7 +78,7 @@ export class EmployeeProfileComponent implements OnInit {
   getProfile() {
     this.user.employeeProfile()
       .subscribe(res => {
-        this.userModel = res
+        this.userModel = res[0]
         console.log("==================>", res)
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {

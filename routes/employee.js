@@ -61,7 +61,7 @@ router.post("/employee_login", function (req, res, callback) {
 		email: req.body.email,
 		password: req.body.password
 	}
-	commonFunction.loginUser(employeeModel, condition, function (error, result) {
+	commonFunction.loginUser('employees', condition, function (error, result) {
 		if (error) callback(error)
 		else {
 			req.user = result.user
@@ -90,8 +90,7 @@ router.get("/employee_profile", verifyToken, function (req, res, callback) {
 	let condition = {
 		id: payload.subject
 	};
-
-	commonFunction.getProfile(employeeModel, condition, function (error, response) {
+	commonFunction.getProfile('employees', condition, function (error, response) {
 		if (error) callback(error)
 		else {
 			res.json(response)
@@ -112,14 +111,12 @@ router.get("/my_projects", verifyToken, function (req, res, callback) {
 		id: payload.subject
 	};
 
-	projectModel
-		.find({ 'employee_id.id': condition.id })
-		.exec(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.json(result)
-			}
-		})
+	let fields = `p.project_id, p.project_name, p.project_description, p.status, p.date_created`
+
+	commonFunction.findMyProjects(null, fields, condition, function (error, result) {
+		if (error) callback(error)
+		else res.json(result)
+	})
 
 });
 
@@ -130,15 +127,13 @@ router.get("/my_projects", verifyToken, function (req, res, callback) {
  * --------------------------------
  */
 router.get("/project_details/:id", verifyToken, function (req, res, callback) {
-	projectModel
-		.find({ _id: req.params.id })
-		.populate([{ path: 'employee_id.id', model: employeeModel }, { path: 'responsible_person', model: employeeModel }, { path: 'project_manager', model: employeeModel }])
-		.exec(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.json(result)
-			}
-		})
+
+	let fields = `p.project_id, p.project_name, p.project_description, p.employee_id, p.status, e.first_name as employee_first_name, e.last_name as employee_last_name, e.designation as employee_designation, pr.first_name as project_manager_first_name, pr.last_name as project_manager_last_name, pr.designation as project_manager_designation, r.first_name as responsible_person_first_name, r.last_name as responsible_person_last_name, r.designation as responsible_person_designation`
+
+	commonFunction.projectDetails('projects', fields, req.params.id, function (error, result) {
+		if (error) callback(error)
+		else res.json(result)
+	})
 })
 
 /**
@@ -149,19 +144,18 @@ router.get("/project_details/:id", verifyToken, function (req, res, callback) {
 router.get("/my_tasks", verifyToken, function (req, res, callback) {
 	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
 	let payload = jwt.verify(token, 'secretKey');
-	let condition = {
+
+	let fields = `t.id, t.task_name, t.task_description, t.status, t.date_created, p.project_name, p.project_description`
+
+	condition = {
+		field: `e.employee_id = ? AND t.project_id != ''`,
 		id: payload.subject
-	};
+	}
 
-	projectModel
-		.aggregate([{ $match: { 'employee_id.id': mongoose.Types.ObjectId(condition.id) } }, { $lookup: { from: 'taskModel', localField: '_id', foreignField: 'project_id.id', as: 'my_tasks' } }])
-		.exec(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.json(result)
-			}
-		})
-
+	commonFunction.projectTask('tasks', fields, condition, true, function (error, result) {
+		if (error) callback(error)
+		else res.json(result)
+	})
 })
 
 /**
@@ -171,33 +165,21 @@ router.get("/my_tasks", verifyToken, function (req, res, callback) {
  */
 
 router.post("/create_tasks", verifyToken, function (req, res, callback) {
-	let tasks = new taskModel()
 	let date = new Date()
-	let arr = []
-	let projects = req.body.projects
-	let arrEmployee = []
-	arrEmployee.push({
-		id: mongoose.Types.ObjectId(req.body.employees)
-	})
 
+	let projectArr = []
+	let projects = req.body.projects
 	if (req.body.projects.length > 0) {
 		for (let i in projects) {
-			arr.push({
-				id: mongoose.Types.ObjectId(projects[i]._id)
-			})
+			projectArr.push(projects[i].project_id)
 		}
 	}
-
-	tasks.tasks_details.name = req.body.tasks.tasks_name;
-	tasks.tasks_details.description = req.body.tasks.tasks_description;
-	tasks.project_id = arr;
-	tasks.others = arrEmployee;
-	tasks.date_created = date;
-
-	tasks.save(function (error, result) {
+	let tasksArr = [req.body.tasks.tasks_name, req.body.tasks.tasks_description, projectArr.join(",").toString(), req.body.employees, date]
+	
+	commonFunction.addProjectTasks('tasks', tasksArr, function (error, result) {
 		if (error) callback(error)
 		else {
-			res.redirect("/employee/others")
+			res.json(result)
 		}
 	})
 
@@ -212,28 +194,33 @@ router.post("/create_tasks", verifyToken, function (req, res, callback) {
 router.get("/others", verifyToken, function (req, res, callback) {
 	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
 	let payload = jwt.verify(token, 'secretKey');
-	let condition = {
-		id: payload.subject
-	};
 
-	taskModel.find({ "others.id": condition.id }, function (error, result) {
+	let fields = `t.id, t.task_name, t.task_description, t.status, t.date_created`
+
+	condition = {
+		field: `e.employee_id = ? AND t.project_id = ''`,
+		id: payload.subject
+	}
+
+	commonFunction.projectTask('tasks', fields, condition, true, function (error, result) {
 		if (error) callback(error)
-		else {
-			console.log(result)
-			res.json(result)
-		}
+		else res.json(result)
 	})
 })
 
 router.get("/my_project_task/:id", verifyToken, function (req, res, callback) {
-	taskModel
-		.find({ 'project_id.id': req.params.id })
-		.exec(function (error, response) {
-			if (error) callback(error)
-			else {
-				res.json(response)
-			}
-		})
+
+	let fields = `id, task_name, task_description, status, date_created`
+
+	condition = {
+		field: `project_id = ?`,
+		id: req.params.id
+	}
+
+	commonFunction.projectTask('tasks', fields, condition, null, function (error, result) {
+		if (error) callback(error)
+		else res.json(result)
+	})
 })
 
 /**
@@ -242,14 +229,18 @@ router.get("/my_project_task/:id", verifyToken, function (req, res, callback) {
  * ---------------------
  */
 router.get("/my_task_details/:id", verifyToken, function (req, res, callback) {
-	taskModel
-		.find({ _id: req.params.id })
-		.exec(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.json(result)
-			}
-		})
+
+	let fields = `id, task_name, task_description, status, date_created`
+
+	condition = {
+		field: `id = ?`,
+		id: req.params.id
+	}
+
+	commonFunction.projectTask('tasks', fields, condition, null, function (error, result) {
+		if (error) callback(error)
+		else res.json(result)
+	})
 })
 
 
@@ -259,14 +250,13 @@ router.get("/my_task_details/:id", verifyToken, function (req, res, callback) {
  * -----------------
  */
 router.get("/daily_tasks/:id", verifyToken, function (req, res, callback) {
-	taskUpdateModel
-		.find({ project_id: req.params.id })
-		.exec(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.json(result)
-			}
-		})
+
+	let fields = `description, date_created`
+
+	commonFunction.viewDetails('taskUpdate', fields, req.params.id, function (error, result) {
+		if (error) callback(error)
+		else res.json(result)
+	})
 })
 
 
@@ -276,18 +266,16 @@ router.get("/daily_tasks/:id", verifyToken, function (req, res, callback) {
  * ---------------------
  */
 router.post("/daily_tasks/:id", verifyToken, function (req, res, callback) {
-	var updateTask = new taskUpdateModel()
 	let date = new Date()
+	let data = {
+		id: req.params.id,
+		description: req.body.description,
+		date: date
+	}
 
-	updateTask.project_id = req.params.id;
-	updateTask.description = req.body.description
-	updateTask.date_created = date;
-
-	updateTask.save(function (error, response) {
+	commonFunction.addProjectDailyUpdates('taskUpdate', data, function (error, result) {
 		if (error) callback(error)
-		else {
-			res.json(response)
-		}
+		else res.json(result)
 	})
 
 })
@@ -305,18 +293,14 @@ router.post("/query", verifyToken, function (req, res, callback) {
 		id: payload.subject
 	};
 
-	var query = new queryModel()
 	var date = new Date()
-	query.employee_id = condition.id
-	query.management_id = req.body.management_id
-	query.message = req.body.message
-	query.date_created = date
 
-	query.save(function (error, response) {
+	fields = `employee_id, management_id, message, date_created`
+	data = [condition.id, req.body.management_id, req.body.message, date]
+
+	commonFunction.askQuery('queries', fields, data, function (error, result) {
 		if (error) callback(error)
-		else {
-			res.json(response)
-		}
+		else res.json(result)
 	})
 
 })
@@ -330,19 +314,21 @@ router.post("/query", verifyToken, function (req, res, callback) {
 router.get("/query", verifyToken, function (req, res, callback) {
 	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
 	let payload = jwt.verify(token, 'secretKey');
-	let condition = {
-		id: payload.subject
-	};
+	// let condition = {
+	// 	id: payload.subject
+	// };
 
-	queryModel
-		.find({ employee_id: condition.id })
-		.populate({ path: 'management_id', model: employeeModel })
-		.exec(function (error, response) {
-			if (error) callback(error)
-			else {
-				res.json(response)
-			}
-		})
+	let fields = `q.id, q.employee_id, q.management_id, q.message, q.reply, q.status, q.date_created, m.first_name as management_first_name, m.last_name as management_last_name, m.designation as management_designation`
+
+	let condition = {
+		field: 'q.employee_id= ?',
+		id: payload.subject
+	}
+
+	commonFunction.viewQueries('queries', fields, condition, function (error, result) {
+		if (error) callback(error)
+		else res.json(result)
+	})
 })
 
 
@@ -372,33 +358,31 @@ router.get("/daily_diary", verifyToken, function (req, res, callback) {
 	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
 	let payload = jwt.verify(token, 'secretKey');
 	let condition = {
+		field: 'employee_id = ?',
 		id: payload.subject
 	};
 
 	let date = new Date()
 
-	dailyUpdatedModel
-		.find({ employee_id: condition.id })
-		.populate({ path: 'to_id', model: employeeModel })
-		.sort({ _id: -1 })
-		.exec(function (error, response) {
-			if (error) callback(error)
-			else {
-				if (response.length > 0) {
-					if (response[0].out_time || response[0].out_time == "") {
-						let in_time = moment(response[0].date_created, 'YYYY-MM-DD HH:mm:ss')
-						let new_date = moment(date, 'YYYY-MM-DD HH:mm:ss')
-						let diff = moment.duration(new_date.diff(in_time))
-						let format_date = diff.asHours();
+	let fields = `id, morning_session, evening_session, in_time, out_time, total_hours, status, date_created`
+	commonFunction.dailyDiary('dailyUpdate', fields, condition, function (error, result) {
+		if (error) callback(error)
+		else {
+			if (result.length > 0) {
+				if (result[0].out_time || result[0].out_time == "") {
+					let in_time = moment(result[0].date_created, 'YYYY-MM-DD HH:mm:ss')
+					let new_date = moment(date, 'YYYY-MM-DD HH:mm:ss')
+					let diff = moment.duration(new_date.diff(in_time))
+					let format_date = diff.asHours();
 
-						res.json({ response, format_date })
-					}
-				}
-				else {
-					res.json({ response })
+					res.json({ result, format_date })
 				}
 			}
-		})
+			else {
+				res.json({ result })
+			}
+		}
+	})
 
 })
 
@@ -415,25 +399,13 @@ router.post("/daily_diary", verifyToken, function (req, res, callback) {
 		id: payload.subject
 	};
 
-	var dailyDiary = new dailyUpdatedModel()
-	var date = new Date();
+	let date = new Date();
+	let fields = `employee_id, morning_session, evening_session, in_time, out_time, date_created`
+	let data = [condition.id, req.body.message, "", req.body.in_time, "", date]
 
-	dailyDiary.employee_id = condition.id;
-	if (req.body.in_time != "") {
-		dailyDiary.morning_session = req.body.message
-	}
-	if (req.body.out_time != "") {
-		dailyDiary.evening_session = req.body.message
-	}
-	dailyDiary.in_time = req.body.in_time || "";
-	dailyDiary.out_time = req.body.out_time || "";
-	dailyDiary.date_created = date;
-
-	dailyDiary.save(function (error, response) {
+	commonFunction.addDailyUpdate('dailyUpdate', fields, data, function (error, result) {
 		if (error) callback(error)
-		else {
-			res.json(response)
-		}
+		else res.json(result)
 	})
 
 })
@@ -445,38 +417,17 @@ router.post("/daily_diary", verifyToken, function (req, res, callback) {
  */
 
 router.post("/addEveningUpdate/:id", function (req, res, callback) {
-	let date = new Date()
-	// dailyUpdatedModel
-	// 	.findOne({_id: req.params.id})
-	// 	.sort({_id: -1})
-	// 	.exec(function(error, response){
-	// 		if(error) callback(error)
-	// 		else{
-	// 			let in_time = moment(response.in_time, 'HH:mm A')
-	// 			let new_date = moment(date, 'HH:mm A')
-	// 			let diff = moment.duration(new_date.diff(in_time))
-	// 			let format_date = diff.asHours();
-	// 			if(format_date < 9){
-	// 				res.json("You havn't completed 9 hours of your shift")
-	// 			}
-	// 			else{
-	// let in_time = moment(req.body.in_time, 'YYYY-MM-DD HH:mm:ss')
-	// let new_date = moment(date, 'YYYY-MM-DD HH:mm:ss')
-	// let diff = moment.duration(new_date.diff(in_time))
-	// let format_date = diff.asHours();
-	console.log(req.body)
-	dailyUpdatedModel
-		.findByIdAndUpdate({ _id: req.params.id }, { $set: { 'evening_session': req.body.data.message, 'out_time': req.body.data.out_time, total_hours: req.body.in_time } }, function (error, response) {
-			if (error) callback(error)
-			else {
-				res.json(`You have worked ${req.body.in_time} hours`)
-			}
-		})
+	let fields = `evening_session = ?, out_time = ?, total_hours = ?`
 
-	// 		}
-	// 	}
-	// })
+	let data = [req.body.data.message, req.body.data.out_time, req.body.in_time, req.params.id]
+	console.log(req.body, data)
+
+	commonFunction.updateDailyDiary('dailyUpdate', fields, data, function (error, result) {
+		if (error) callback(error)
+		else res.json(result)
+	})
 })
+
 router.get("/daily_diary_details/:id", function (req, res, callback) {
 	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
 	let payload = jwt.verify(token, 'secretKey');
@@ -502,11 +453,11 @@ router.get("/daily_diary_details/:id", function (req, res, callback) {
  */
 
 router.post("/toggleQueryStatus/:id", verifyToken, function (req, res, callback) {
-	queryModel.findByIdAndUpdate({ _id: req.params.id }, { $set: { status: 'closed' } }, function (error, response) {
+
+	let fields = `status=?`
+	commonFunction.toggleStatus('queries', fields, 'closed', req.params.id, function (error, result) {
 		if (error) callback(error)
-		else {
-			res.redirect("/employee/query")
-		}
+		else res.json(result)
 	})
 })
 
@@ -517,12 +468,13 @@ router.post("/toggleQueryStatus/:id", verifyToken, function (req, res, callback)
  */
 
 router.post("/toggleTaskSatus", verifyToken, function (req, res, callback) {
-	taskModel.findByIdAndUpdate({ _id: req.body.task_id }, { $set: { status: 'completed' } }, function (error, response) {
+
+	let fields = `status=?`
+	commonFunction.toggleStatus('tasks', fields, 'completed', req.body.task_id, function (error, result) {
 		if (error) callback(error)
-		else {
-			res.json(response)
-		}
+		else res.json(result)
 	})
+
 });
 
 
@@ -536,18 +488,16 @@ router.get("/my_attendance", verifyToken, function (req, res, callback) {
 	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
 	let payload = jwt.verify(token, 'secretKey');
 	let condition = {
+		field: `employee_id = ?`,
 		id: payload.subject
 	};
 
-	dailyUpdatedModel
-		.find({ employee_id: condition.id })
-		.populate({ path: 'employee_id', model: employeeModel })
-		.exec(function (error, result) {
-			if (error) callback(error)
-			else {
-				res.json(result)
-			}
-		})
+	let fields = `morning_session, evening_session, total_hours, status, date_created`
+
+	commonFunction.dailyDiary('dailyUpdate', fields, condition, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
 
 })
 

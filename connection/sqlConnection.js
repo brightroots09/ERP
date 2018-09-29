@@ -13,6 +13,10 @@ global.con = mysql.createConnection({
 let connection = async function () {
     try {
         await con.connect();
+        await con.query(`create database if not exists erp`);
+        await con.query(`use erp`);
+
+        console.log("Database created");
         console.log("Connected to SQL");
 
     } catch (error) {

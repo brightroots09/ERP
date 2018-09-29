@@ -3,24 +3,24 @@
 		<nb-card accent="primary">
 			<nb-card-header>
 				<div class="row">
-					<div class="col-md-6">
-						<a class="nav-link mr-auto ml-auto" routerLink="/dailyUpdate/{{projectModel._id}}">Dialy Updates</a>
+					<div class="col-md-6 text-center">
+						<a nbButton outline status="primary" size="xsmall" routerLink="/dailyUpdate/{{projectModel[0].project_id}}">Dialy Updates</a>
 					</div>
-					<div class="col-md-6">
-						<a class="nav-link mr-auto ml-auto" routerLink="/myProjectTask/{{projectModel._id}}">My Tasks</a>
+					<div class="col-md-6 text-center">
+						<a nbButton outline status="danger" size="xsmall" routerLink="/myProjectTask/{{projectModel[0].project_id}}">My Tasks</a>
 					</div>
 				</div>
 			</nb-card-header>
 			<nb-card-body>
 				<p class="card-title">
-					Name: {{projectModel.project_details.name}}
+					Name: {{projectModel[0].project_name}}
 				</p>
 				<p class="card-text">
-					Description: {{ projectModel.project_details.description }}
+					Description: {{ projectModel[0].project_description }}
 				</p>
 				<p class="card-text">
 					Status:
-					<span class="badge badge-info p-2">{{ projectModel.status }}</span>
+					<span class="badge badge-info p-2">{{ projectModel[0].status }}</span>
 				</p>
 			</nb-card-body>
 		</nb-card>
@@ -32,26 +32,26 @@
 			</nb-card-header>
 			<nb-card-body>
 				<h6>Employees</h6>
-				<nb-list *ngIf="projectModel.employee_id.length > 1; else employee_else">
-					<nb-list-item *ngFor="let employee of projectModel.employee_id" class="text-left">
-						<nb-user [name]="employee.id.profile.first_name + ' ' + employee.id.profile.last_name" [title]="employee.id.designation">
+				<nb-list *ngIf="projectModel.length > 0; else employee_else">
+					<nb-list-item *ngFor="let employee of projectModel" class="text-left">
+						<nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name" [title]="employee.employee_designation">
 						</nb-user>
 					</nb-list-item>
 				</nb-list>
 				<ng-template #employee_else>
 					<div class="col-md-12">
 						<p class="mt-auto mb-auto">
-							Currently there are no employees working on this project.
+							Currently there are no other employees working on this project.
 						</p>
 					</div>
 				</ng-template>
 			</nb-card-body>
 			<nb-card-body>
 				<h6>Project Manager</h6>
-				<nb-list *ngIf="projectModel.project_manager; else manager_else">
+				<nb-list *ngIf="projectModel[0].project_manager_first_name != ''; else manager_else">
 					<nb-list-item class="text-left">
-						<nb-user [name]="projectModel.project_manager.profile.first_name + ' ' + projectModel.project_manager.profile.last_name"
-						 [title]="projectModel.project_manager.designation">
+						<nb-user [name]="projectModel[0].project_manager_first_name + ' ' + projectModel[0].project_manager_last_name"
+						 [title]="projectModel[0].project_manager_designation">
 						</nb-user>
 					</nb-list-item>
 				</nb-list>
@@ -65,10 +65,10 @@
 			</nb-card-body>
 			<nb-card-body>
 				<h6>Responsible Person</h6>
-				<nb-list *ngIf="projectModel.responsible_person; else responsible_else">
+				<nb-list *ngIf="projectModel[0].responsible_person_first_name != ''; else responsible_else">
 					<nb-list-item class="text-left">
-						<nb-user [name]="projectModel.responsible_person.profile.first_name + ' ' + projectModel.responsible_person.profile.last_name"
-						 [title]="projectModel.responsible_person.designation">
+						<nb-user [name]="projectModel[0].responsible_person_first_name + ' ' + projectModel[0].responsible_person_last_name"
+						 [title]="projectModel[0].responsible_person_designation">
 						</nb-user>
 					</nb-list-item>
 				</nb-list>

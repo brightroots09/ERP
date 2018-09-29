@@ -7,10 +7,10 @@
                 </nb-card-header>
                 <nb-card-body>
                     <div class="col-md-4 offset-md-4">
-                            <form #dateForm="ngForm" class="form form-inline ml-auto mr-auto" method="POST" (ngSubmit)="onFormSubmit()">
-                                    <input type="date" class="form-control" name="date" [(ngModel)]="dateModel">
-                                    <button nbButton outline status="danger" size="xsmall">View Attendance</button>
-                                </form>
+                        <form #dateForm="ngForm" class="form form-inline ml-auto mr-auto" method="POST" (ngSubmit)="onFormSubmit()">
+                            <input type="date" class="form-control" name="date" [(ngModel)]="dateModel">
+                            <button nbButton outline status="danger" size="xsmall">View Attendance</button>
+                        </form>
                     </div>
                 </nb-card-body>
                 <nb-card-body *ngIf="error">

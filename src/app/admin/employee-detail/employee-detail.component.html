@@ -2,16 +2,16 @@
 	<div class="col-md-4 mr-auto ml-auto">
 		<nb-card accent="primary" class="text-center">
 			<nb-card-header>
-				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 100px; height: 100px;" *ngIf="userModel.profile.image != ''; else else_image"
-				 src="/images/{{userModel.profile.image}}" alt="{{ userModel.profile.first_name }}">
+				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 100px; height: 100px;" *ngIf="userModel.profile_pic != ''; else else_image"
+				 src="/images/{{userModel.image}}" alt="{{ userModel.first_name }}">
 
 				<ng-template #else_image>
-					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 100px; height: 100px;" src="/images/no_user.png" alt="{{ userModel.profile.first_name }}">
+					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 100px; height: 100px;" src="/images/no_user.png" alt="{{ userModel.first_name }}">
 				</ng-template>
 			</nb-card-header>
 			<nb-card-body style="flex: inherit !important;">
 				<h5>
-					Name: {{userModel.profile.first_name}} {{ userModel.profile.last_name }} ({{ userModel.salary | currency:'INR' }})
+					Name: {{userModel.first_name}} {{ userModel.last_name }} ({{ userModel.salary | currency:'INR' }})
 				</h5>
 				<p>
 					Email: {{ userModel.email }}
@@ -56,14 +56,14 @@
 						<div class="row">
 							<div class="col-md-6">
 								<label for="first_name">First Name: </label>
-								<input type="text" id="first_name" #first_name="ngModel" class="form-control" name="first_name" [(ngModel)]="userModel.profile.first_name"
+								<input type="text" id="first_name" #first_name="ngModel" class="form-control" name="first_name" [(ngModel)]="userModel.first_name"
 								 [class.is-invalid]="first_name.invalid && first_name.touched" [class.is-valid]="first_name.valid && first_name.touched"
 								 required>
 								<small class="text-danger" [class.d-none]="first_name.valid || first_name.untouched">First Name is required</small>
 							</div>
 							<div class="col-md-6">
 								<label for="last_name">Last Name: </label>
-								<input type="text" id="last_name" #last_name="ngModel" class="form-control" name="last_name" [(ngModel)]="userModel.profile.last_name"
+								<input type="text" id="last_name" #last_name="ngModel" class="form-control" name="last_name" [(ngModel)]="userModel.last_name"
 								 [class.is-invalid]="last_name.invalid && last_name.touched" [class.is-valid]="last_name.valid && last_name.touched"
 								 required>
 								<small class="text-danger" [class.d-none]="last_name.valid || last_name.untouched">Last Name is required</small>
@@ -124,9 +124,9 @@
 				Assigned Projects
 			</nb-card-header>
 			<nb-card-body>
-				<nb-list *ngIf="userModel.projects.length > 0; else project_else">
-					<nb-list-item *ngFor="let project of userModel.projects">
-						<nb-user [name]="project.project_details.name" [title]="project.project_details.description">
+				<nb-list *ngIf="projectModel[0].project_name != null; else project_else">
+					<nb-list-item *ngFor="let project of projectModel">
+						<nb-user [name]="project.project_name" [title]="project.project_description">
 						</nb-user>
 					</nb-list-item>
 				</nb-list>

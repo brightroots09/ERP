@@ -11,6 +11,7 @@
             <thead>
               <tr>
                 <th>Employee Name</th>
+                <th>Management</th>
                 <th>Message</th>
                 <th>Status</th>
                 <th>Reply</th>
@@ -22,12 +23,16 @@
               <ng-container *ngIf="queryModel.length > 0; else queryModel_else">
                 <tr *ngFor="let query of queryModel">
                   <td>
-                      <nb-user [name]="query.management_id.profile.first_name + ' ' + query.management_id.profile.last_name" [title]="query.management_id.designation">
-                        </nb-user>
+                      <nb-user [name]="query.employee_first_name + ' ' + query.employee_last_name" [title]="query.employee_designation">
+                      </nb-user>
+                  </td>
+                  <td>
+                    <nb-user [name]="query.management_first_name + ' ' + query.management_last_name" [title]="query.management_designation">
+                    </nb-user>
                   </td>
                   <td>{{ query.message }}</td>
                   <td>{{ query.status }}</td>
-                  <td *ngIf="query.reply != ''; else reply_else">
+                  <td *ngIf="query.reply != null; else reply_else">
                     {{ query.reply }}
                   </td>
                   <ng-template #reply_else>
@@ -35,15 +40,15 @@
                   </ng-template>
                   <td>{{ query.date_created | date : 'mediumDate' }}</td>
                   <td>
-                    <button nbButton outline status="primary" size="xsmall" *ngIf="query.status != 'closed'" (click)="closeTicket(query._id)">
+                    <button nbButton outline status="primary" size="xsmall" *ngIf="query.status != 'closed'" (click)="closeTicket(query.id)">
                       Mark as closed
                     </button>
-                    <button nbButton outline status="danger" size="xsmall" [disabled]="query.reply != ''" data-toggle="modal" attr.data-target="#replyModal{{query._id}}" class="ml-2">
+                    <button nbButton outline status="danger" size="xsmall" [disabled]="query.reply != null" data-toggle="modal" attr.data-target="#replyModal{{query.id}}" class="ml-2">
                       Reply
                     </button>
                   </td>
 
-                  <div class="modal fade" id="replyModal{{query._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="replyModal{{query.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -52,7 +57,7 @@
                           </button>
                         </div>
                         <div class="modal-body">
-                          <form (ngSubmit)="onFormSubmit(query._id)" class="mb-3">
+                          <form (ngSubmit)="onFormSubmit(query.id)" class="mb-3">
                             <div class="form-group">
                               <label>Reply</label>
                               <textarea #reply="ngModel" class="form-control" name="reply" [(ngModel)]="updateModel.reply" [class.is-invalid]="reply.invalid && reply.touched"
@@ -68,7 +73,7 @@
 
                 </tr>
               </ng-container>
-              <ng-template #queryModel_else>
+              <ng-template #queryModel_else class="text-center">
                 No queries asked
               </ng-template>
             </tbody>

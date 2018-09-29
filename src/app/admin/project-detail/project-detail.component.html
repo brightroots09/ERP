@@ -3,20 +3,20 @@
 		<nb-card accent="primary" class="text-center">
 			<nb-card-body style="flex: inherit !important;">
 				<h5 class="card-title">
-					Name: {{projectModel.project_details.name}}
+					Name: {{projectModel[0].project_name}}
 				</h5>
 				<h5 class="card-text">
-					Description: {{ projectModel.project_details.description }}
+					Description: {{ projectModel[0].project_description }}
 				</h5>
 				<h5 class="card-text">
 					Status:
-					<span class="badge badge-info p-2">{{ projectModel.status }}</span>
+					<span class="badge badge-info p-2">{{ projectModel[0].status }}</span>
 				</h5>
 			</nb-card-body>
 			<nb-card-body>
 				<div class="row">
 					<div class="col-md-6">
-						<button nbButton outline status="primary" class="mr-2" size="xsmall" *ngIf="!edit" (click)="toggleEdit()">Edit</button>
+						<!-- <button nbButton outline status="primary" class="mr-2" size="xsmall" *ngIf="!edit" (click)="toggleEdit()">Edit</button> -->
 					</div>
 					<div class="col-md-6">
 						<button size="xsmall" *ngIf="!edit" class="mr-2" (click)="deleteProject()" nbButton outline status="danger">Delete</button>
@@ -32,14 +32,14 @@
 						<button type="button" class="btn btn-link text-danger p-0 btn-xs" data-toggle="modal" data-target="#viewModal">View Daily Updates</button>
 					</nb-list-item>
 					<nb-list-item>
-						<button type="button" class="btn btn-link text-danger p-0 btn-xs" routerLink="/projectTasksDetails/{{projectModel._id}}">View Tasks</button>
+						<button type="button" class="btn btn-link text-danger p-0 btn-xs" routerLink="/projectTasksDetails/{{projectModel[0].project_id}}">View Tasks</button>
 					</nb-list-item>
 				</nb-list>
 			</nb-card-body>
 		</nb-card>
 	</div>
 
-	<div class="col-md-4 mr-auto ml-auto" *ngIf="edit">
+	<!-- <div class="col-md-4 mr-auto ml-auto" *ngIf="edit">
 		<nb-card accent="info" class="text-center">
 			<nb-card-header>
 				Edit Project
@@ -48,7 +48,7 @@
 				<form (ngSubmit)="onFormSubmit()" class="mb-3">
 					<div class="form-group" *ngIf="edit">
 						<label for="name">Name: </label>
-						<input type="text" id="name" #name="ngModel" class="form-control" name="name" [(ngModel)]="projectModel.project_details.name"
+						<input type="text" id="name" #name="ngModel" class="form-control" name="name" [(ngModel)]="projectModel[0].project_name"
 						 [class.is-invalid]="name.invalid && name.touched" [class.is-valid]="name.valid && name.touched" required>
 						<small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
 
@@ -56,7 +56,7 @@
 
 					<div class="form-group" *ngIf="edit">
 						<label for="first_name">Description: </label>
-						<input type="text" id="description" #description="ngModel" class="form-control" name="description" [(ngModel)]="projectModel.project_details.description"
+						<input type="text" id="description" #description="ngModel" class="form-control" name="description" [(ngModel)]="projectModel[0].project_description"
 						 [class.is-invalid]="description.invalid && description.touched" [class.is-valid]="description.valid && description.touched"
 						 required>
 						<small class="text-danger" [class.d-none]="description.valid || description.untouched">Description is required</small>
@@ -64,17 +64,17 @@
 
 					<div class="form-group" *ngIf="edit">
 						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio1"
+							<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel[0].status" id="inlineRadio1"
 							 value="In Progress">
 							<label class="form-check-label" for="inlineRadio1">In Progress</label>
 						</div>
 						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio2"
+							<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel[0].status" id="inlineRadio2"
 							 value="On Hold">
 							<label class="form-check-label" for="inlineRadio2">On Hold</label>
 						</div>
 						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel.status" id="inlineRadio3"
+							<input class="form-check-input" type="radio" name="status" #status="ngModel" [(ngModel)]="projectModel[0].status" id="inlineRadio3"
 							 value="Completed">
 							<label class="form-check-label" for="inlineRadio3">Completed</label>
 						</div>
@@ -83,7 +83,7 @@
 						<label for="">Selected Members</label>
 						<div *ngIf="employees.length > 0; else none_block">
 							<div class="btn-group badge badge-info m-2" role="group" *ngFor="let employee of employees">
-								<span class="p-3">{{employee.profile.first_name}} {{employee.profile.last_name}}</span>
+								<span class="p-3">{{employee.employee_first_name}} {{employee.employee_last_name}}</span>
 								<button type="button" class="btn btn-link text-white" (click)="remove(employee)">&times;</button>
 							</div>
 						</div>
@@ -100,8 +100,8 @@
 										 aria-expanded="false">IOS Developer</button>
 										<div class="dropdown-menu">
 											<ng-container *ngFor="let employee of userModel">
-												<button type="button" *ngIf="employee.designation == 'Developer (IOS)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-													<nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+												<button type="button" *ngIf="employee.employee_designation == 'Developer (IOS)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+													<nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
 													</nb-user>
 												</button>
 											</ng-container>
@@ -112,8 +112,8 @@
 										 aria-expanded="false">Android Developer</button>
 										<div class="dropdown-menu">
 											<ng-container *ngFor="let employee of userModel">
-												<button type="button" *ngIf="employee.designation == 'Developer (Android)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-													<nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+												<button type="button" *ngIf="employee.employee_designation == 'Developer (Android)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+													<nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
 													</nb-user>
 												</button>
 											</ng-container>
@@ -124,8 +124,8 @@
 										 aria-expanded="false">Backend Developer</button>
 										<div class="dropdown-menu">
 											<ng-container *ngFor="let employee of userModel">
-												<button type="button" *ngIf="employee.designation == 'Backend Developer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-													<nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+												<button type="button" *ngIf="employee.employee_designation == 'Backend Developer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+													<nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
 													</nb-user>
 												</button>
 											</ng-container>
@@ -136,8 +136,8 @@
 										 aria-expanded="false">Designer</button>
 										<div class="dropdown-menu">
 											<ng-container *ngFor="let employee of userModel">
-												<button type="button" *ngIf="employee.designation == 'Designer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-													<nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name">
+												<button type="button" *ngIf="employee.employee_designation == 'Designer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
+													<nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
 													</nb-user>
 												</button>
 											</ng-container>
@@ -147,25 +147,25 @@
 							</div>
 							<div class="col-md-12 mt-3">
 								<label>Project Manager</label>
-								<select class="form-control" name="project_manager" #project_manager="ngModel" [(ngModel)]="projectModel.project_manager">
-									<option *ngFor="let manager of projectModel.project_manager" value="{{manager._id}}" selected="selected">
-										{{ manager.profile.first_name }} {{ manager.profile.last_name }}
+								<select class="form-control" name="project_manager" #project_manager="ngModel" [(ngModel)]="projectModel[0].project_manager_id">
+									<option value="{{projectModel[0].project_manager_id}}" selected="selected">
+										{{ projectModel[0].project_manager_first_name }} {{ projectModel[0].project_manager_last_name }} ({{ projectModel[0].project_manager_designation }})
 									</option>
 									<hr>
-									<option *ngFor="let employee of userModel" value="{{employee._id}}">
-										{{ employee.profile.first_name }} {{ employee.profile.last_name }}
+									<option *ngFor="let employee of userModel" value="{{employee.employee_id}}">
+										{{ employee.employee_first_name }} {{ employee.employee_last_name }}
 									</option>
 								</select>
 							</div>
 							<div class="col-md-12 mt-3">
 								<label>Responsible Person</label>
-								<select class="form-control" name="responsible_person" #responsible_person="ngModel" [(ngModel)]="projectModel.responsible_person">
-									<option *ngFor="let responsible of projectModel.responsible_person" value="{{responsible._id}}" selected="selected">
-										{{ responsible.profile.first_name }} {{ responsible.profile.last_name }} ({{ responsible.designation }})
+								<select class="form-control" name="responsible_person" #responsible_person="ngModel" [(ngModel)]="projectModel[0].responsible_person_id">
+									<option value="{{projectModel[0].responsible_person_id}}" selected="selected">
+										{{ projectModel[0].responsible_person_first_name }} {{ projectModel[0].responsible_person_last_name }} ({{ projectModel[0].responsible_person_designation }})
 									</option>
 									<hr>
-									<option *ngFor="let employee of userModel" value="{{employee._id}}">
-										{{ employee.profile.first_name }} {{ employee.profile.last_name }}
+									<option *ngFor="let employee of userModel" value="{{employee.employee_id}}">
+										{{ employee.employee_first_name }} {{ employee.employee_last_name }}
 									</option>
 								</select>
 							</div>
@@ -177,7 +177,7 @@
 				</form>
 			</nb-card-body>
 		</nb-card>
-	</div>
+	</div> -->
 
 	<div class="col-md-4 mr-auto ml-auto">
 		<nb-card accent="danger" class="text-center">
@@ -186,9 +186,9 @@
 			</nb-card-header>
 			<nb-card-body>
 				<h6>Employees</h6>
-				<nb-list *ngIf="projectModel.employees.length > 0; else employee_else">
-					<nb-list-item *ngFor="let employee of projectModel.employees" class="text-left">
-						<nb-user [name]="employee.profile.first_name + ' ' + employee.profile.last_name" [title]="employee.designation">
+				<nb-list *ngIf="projectModel[0].employee_id != ''; else employee_else">
+					<nb-list-item *ngFor="let employee of projectModel" class="text-left">
+						<nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name" [title]="employee.employee_designation">
 						</nb-user>
 					</nb-list-item>
 				</nb-list>
@@ -202,9 +202,9 @@
 			</nb-card-body>
 			<nb-card-body>
 				<h6>Project Manager</h6>
-				<nb-list *ngIf="projectModel.project_manager.length > 0; else manager_else">
-					<nb-list-item *ngFor="let manager of projectModel.project_manager" class="text-left">
-						<nb-user [name]="manager.profile.first_name + ' ' + manager.profile.last_name" [title]="manager.designation">
+				<nb-list *ngIf="projectModel[0].project_manager != ''; else manager_else">
+					<nb-list-item class="text-left">
+						<nb-user [name]="projectModel[0].project_manager_first_name + ' ' + projectModel[0].project_manager_last_name" [title]="projectModel[0].project_manager_designation">
 						</nb-user>
 					</nb-list-item>
 				</nb-list>
@@ -218,9 +218,9 @@
 			</nb-card-body>
 			<nb-card-body>
 				<h6>Responsible Person</h6>
-				<nb-list *ngIf="projectModel.responsible_person.length > 0; else responsible_else">
-					<nb-list-item *ngFor="let responsible of projectModel.responsible_person" class="text-left">
-						<nb-user [name]="responsible.profile.first_name + ' ' + responsible.profile.last_name" [title]="responsible.designation">
+				<nb-list *ngIf="projectModel[0].responsible_person != ''; else responsible_else">
+					<nb-list-item class="text-left">
+						<nb-user [name]="projectModel[0].responsible_person_first_name + ' ' + projectModel[0].responsible_person_last_name" [title]="projectModel[0].responsible_person_designation">
 						</nb-user>
 					</nb-list-item>
 				</nb-list>
@@ -264,7 +264,7 @@
 	</div>
 </div>
 
-<div class="modal fade" *ngIf="filtersLoaded | async" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" *ngIf="tasksLoaded | async" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
  aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -275,8 +275,8 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<nb-list *ngIf="projectModel.dailyTasksUpdate.length > 0; else dailyTasksUpdate_else">
-					<nb-list-item *ngFor="let tasksUpdates of projectModel.dailyTasksUpdate" class="text-left">
+				<nb-list *ngIf="dailyUpdateModel.length > 0; else dailyTasksUpdate_else">
+					<nb-list-item *ngFor="let tasksUpdates of dailyUpdateModel" class="text-left">
 						<nb-user [name]="tasksUpdates.description">
 						</nb-user>
 					</nb-list-item>

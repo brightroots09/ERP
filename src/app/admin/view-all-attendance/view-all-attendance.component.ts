@@ -39,7 +39,7 @@ export class ViewAllAttendanceComponent implements OnInit {
   getAttendance() {
     this.user.getAllAttendance(this.param.date)
       .subscribe(res => {
-        this.attendanceModel = res.result
+        this.attendanceModel = res
         this.array = res.array
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {

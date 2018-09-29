@@ -48,8 +48,7 @@ export class ViewQueriesComponent implements OnInit {
   }
 
   closeTicket(id){
-    console.log(id);
-    this.user.toggleQueryStatus(id)
+    this.user.toggleQueryStatusAdmin(id)
       .subscribe(res => {
         window.location.reload()
       }, (error) => {

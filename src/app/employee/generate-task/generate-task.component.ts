@@ -36,7 +36,7 @@ export class GenerateTaskComponent implements OnInit {
   getProfile(){
     this.user.employeeProfile()
       .subscribe(res => {
-        this.userModel = res
+        this.userModel = res[0]
       }, error => {
         console.error(error)
       })
@@ -53,16 +53,16 @@ export class GenerateTaskComponent implements OnInit {
   }
 
   onFormSubmit(){
-    this.user.createTask(this.tasksModel, this.projects, this.userModel._id)
+    this.user.createTask(this.tasksModel, this.projects, this.userModel.employee_id)
       .subscribe(res => {
-        this.router.navigate(["/individualTask"])
+        this.router.navigate(["/myTasks"])
       }, (error) => {
         console.error(error)
       })
   }
 
   cancelAdd() {
-    this.router.navigate(["/tasks"])
+    this.router.navigate(["/individualTask"])
   }
 
   add_project(project) {

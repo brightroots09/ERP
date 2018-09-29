@@ -26,7 +26,7 @@ export class ViewAttendanceComponent implements OnInit {
   async ngOnInit() {
     try {
       const details = await this.getAttendance()
-      const employee = await this.getEmployees
+      const employee = await this.getEmployees()
       this.attendanceModel = details
       this.employeeModel = employee
     } catch (error) {

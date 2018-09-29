@@ -13,13 +13,12 @@
         </div>
       </nb-card-header>
       <nb-card-body>
-
-          <nb-list *ngIf="tasksModel.length > 0; else taskModel_else">
-              <nb-list-item *ngFor="let task of tasksModel" class="text-left">
-                <nb-user [name]="task.description" [title]="task.date_created | date : 'medium'">
-                </nb-user>
-              </nb-list-item>
-            </nb-list>
+        <nb-list *ngIf="tasksModel.length > 0; else taskModel_else">
+          <nb-list-item *ngFor="let task of tasksModel" class="text-left">
+            <nb-user [name]="task.description" [title]="task.date_created | date : 'mediumDate'">
+            </nb-user>
+          </nb-list-item>
+        </nb-list>
         <ng-template #taskModel_else>
           No daily Update
         </ng-template>

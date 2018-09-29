@@ -28,12 +28,9 @@ export class QueryComponent implements OnInit {
   
   async ngOnInit() {
     try {
-      const details = await this.getTasks()
-      const employees = await this.getEmployees()
-      const profile = await this.getProfile()
-      this.queryModel = details
-      this.employeeModel = employees
-      this.userModel = profile
+      await this.getTasks()
+      await this.getEmployees()
+      await this.getProfile()
     } catch (error) {
       return error
     }

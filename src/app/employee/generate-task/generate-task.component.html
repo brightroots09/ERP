@@ -25,7 +25,7 @@
                 <label for="">Selected Project</label>
                 <div *ngIf="projects.length > 0; else none_block">
                   <div class="btn-group badge badge-info m-2 p-2" role="group" *ngFor="let project of projects">
-                    <span class="p-3">{{project.project_details.name}}</span>
+                    <span class="p-3">{{project.project_name}}</span>
                     <button type="button" class="btn btn-link text-white" (click)="remove(project)">&times;</button>
                   </div>
                 </div>
@@ -36,7 +36,7 @@
 
 
               <div class="form-group">
-                <button type="button" class="btn btn-outline-info m-2" (click)="add_project(project)" *ngFor="let project of projectsModel">{{ project.project_details.name }}</button>
+                <button type="button" class="btn btn-outline-info m-2" (click)="add_project(project)" *ngFor="let project of projectsModel">{{ project.project_name }}</button>
               </div>
             </div>
           </div>

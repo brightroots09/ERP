@@ -45,15 +45,15 @@ export class DailyDiaryComponent implements OnInit {
   getTasks() {
     this.user.dailyDiary()
       .subscribe(res => {
-        this.tasksModel = res.response
+        this.tasksModel = res.result
         if (res.format_date) {
           this.total_hours = res.format_date
         }
 
-        if (res.response.length > 0) {
+        if (res.result.length > 0) {
           let date = new Date().getDate()
-          let date_created = new Date(res.response[0].date_created).getDate()
-          if ((date == date_created) && res.response[0].morning_session != "") {
+          let date_created = new Date(res.result[0].date_created).getDate()
+          if ((date == date_created) && res.result[0].morning_session != "") {
             this.toggleUpdate = true
           }
         }
@@ -102,8 +102,8 @@ export class DailyDiaryComponent implements OnInit {
     this.edit = true
   }
 
-  onEveningUpdateFormSubmit(dailyDiaryId, total_hours) {
-    this.user.addEveningUpdate(dailyDiaryId, this.updateModel, total_hours)
+  onEveningUpdateFormSubmit(dailyDiaryId) {
+    this.user.addEveningUpdate(dailyDiaryId, this.updateModel, this.total_hours)
       .subscribe(res => {
         // if(res != ""){
         //   this.error = res

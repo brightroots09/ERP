@@ -39,14 +39,14 @@ Selected</button>
 								<td *ngIf="multiSelect">
 									<input type="checkbox" [(ngModel)]="project.selected">
 								</td>
-								<td>{{ project.project_details.name }}</td>
-								<td>{{ project.project_details.description }}</td>
+								<td>{{ project.project_name }}</td>
+								<td>{{ project.project_description }}</td>
 								<td>
 									<span class="badge badge-info p-2">{{ project.status }}</span>
 								</td>
 								<td>{{ project.date_created | date : 'mediumDate'}}</td>
 								<td *ngIf="!multiSelect">
-									<a class="btn btn-link text-success p-0 m-0" routerLink="/project_details/{{project._id}}">
+									<a class="btn btn-link text-success p-0 m-0" routerLink="/project_details/{{project.project_id}}">
 										View
 									</a>
 								</td>

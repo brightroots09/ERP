@@ -21,13 +21,13 @@
 							<th>Date Created</th>
 							<th>Action</th>
 						</thead>
-						<tbody *ngIf="tasksModel; else else_block">
+						<tbody *ngIf="tasksModel.length>0; else else_block">
 							<tr *ngFor="let tasks of tasksModel">
-								<td>{{ tasks.tasks_details.name }}</td>
-								<td>{{ tasks.tasks_details.description }}</td>
+								<td>{{ tasks.task_name }}</td>
+								<td>{{ tasks.task_description }}</td>
 								<td>{{ tasks.date_created | date : 'mediumDate'}}</td>
 								<td>
-									<a class="btn btn-link text-success p-0" routerLink="/tasks_details/{{tasks._id}}">
+									<a class="btn btn-link text-success p-0" routerLink="/tasks_details/{{tasks.task_id}}">
 										View
 									</a>
 								</td>
@@ -35,8 +35,8 @@
 						</tbody>
 						<ng-template #else_block>
 							<tbody>
-								<td colspan="4">
-									No Tasks
+								<td colspan="4" class="text-center">
+									<h5>No Tasks</h5>
 								</td>
 							</tbody>
 						</ng-template>
