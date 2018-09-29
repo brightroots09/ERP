@@ -11,7 +11,7 @@ import { UserService } from '../../user.service';
 export class AddEmployeesComponent implements OnInit {
 
   userModel = new User()
-
+  message;
   constructor(private router: Router, private user: UserService) { }
 
   ngOnInit() {
@@ -20,7 +20,12 @@ export class AddEmployeesComponent implements OnInit {
   onFormSubmit(){
     this.user.addEmployee(this.userModel)
       .subscribe(res => {
-        this.router.navigate(["/employees"])
+        if(res == 'Email Already Exists'){
+          this.message = res
+        }
+        else {
+          this.router.navigate(["/employees"])
+        }
       }, (error) => {
         console.error(error)
       })
@@ -28,6 +33,10 @@ export class AddEmployeesComponent implements OnInit {
 
   cancelAdd(){
     this.router.navigate(["/profile"])
+  }
+
+  toggle(){
+    this.message = null
   }
 
 }

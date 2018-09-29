@@ -338,11 +338,13 @@ router.post("/delete_employee/:id", verifyToken, function (req, res, callback) {
 
 router.post("/delete_employees", verifyToken, function (req, res, callback) {
 	let arr = [];
+	let marks = []
 	for (let i = 0; i < req.body.length; i++) {
-		arr.push(req.body[i].id)
+		arr.push(req.body[i].employee_id)
+		marks.push('?')
 	}
 	if (arr.length > 0) {
-		commonFunction.deleteEmployee("employees", arr, function(error, result){
+		commonFunction.deleteData("employees", arr, 'employee_id', marks, function(error, result){
 			if(error) callback(error)
 			else {
 				res.json(result)
@@ -446,18 +448,18 @@ router.post("/project_delete/:id", verifyToken, function (req, res, callback) {
 
 router.post("/projects_delete", verifyToken, function (req, res, callback) {
 	let arr = [];
+	let marks = []
 	for (let i = 0; i < req.body.length; i++) {
-		arr.push(req.body[i]._id)
+		arr.push(req.body[i].project_id)
+		marks.push('?')
 	}
 	if (arr.length > 0) {
-		projectModel
-			.remove({ _id: { $in: arr } })
-			.exec(function (error, result) {
-				if (error) callback(error)
-				else {
-					res.redirect("/admin/projects")
-				}
-			})
+		commonFunction.deleteData("projects", arr, 'project_id', marks, function(error, result){
+			if(error) callback(error)
+			else {
+				res.json(result)
+			}
+		})
 	}
 })
 
@@ -624,18 +626,18 @@ router.post("/delete_task/:id", verifyToken, function (req, res, callback) {
 
 router.post("/delete_tasks", verifyToken, function (req, res, callback) {
 	let arr = [];
+	let marks = []
 	for (let i = 0; i < req.body.length; i++) {
-		arr.push(req.body[i]._id)
+		arr.push(req.body[i].task_id)
+		marks.push('?')
 	}
 	if (arr.length > 0) {
-		tasksModel
-			.remove({ _id: { $in: arr } })
-			.exec(function (error, result) {
-				if (error) callback(error)
-				else {
-					res.redirect("/admin/tasks")
-				}
-			})
+		commonFunction.deleteData("tasks", arr, 'id', marks, function(error, result){
+			if(error) callback(error)
+			else {
+				res.json(result)
+			}
+		})
 	}
 })
 

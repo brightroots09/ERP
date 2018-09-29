@@ -8,7 +8,7 @@ exports.loginUser = loginUser;
 exports.findAll = findAll;
 exports.addEmployees = addEmployees;
 exports.updateEmployee = updateEmployee;
-exports.deleteEmployee = deleteEmployee;
+exports.deleteData = deleteData;
 
 
 exports.addProject = addProject;
@@ -152,10 +152,11 @@ function updateEmployee(db, obj, cb){
 
 }
 
-function deleteEmployee(db, condition, cb){
-  let sql = `delete from ${db} where employee_id in (?)`
+function deleteData(db, condition, field, marks, cb){
+  let sql = `delete from ${db} where ${field} in (${marks})`
 
-  con.query(sql, condition, function(error, result){
+  let deleteEMP = con.query(sql, condition, function(error, result){
+    console.log(deleteEMP.sql)
     if(error) cb(error)
     else cb(null, result)
   })

@@ -6,6 +6,7 @@
 				Add Employees
 			</nb-card-header>
 			<nb-card-body>
+				<nb-alert status="danger" class="text-center" closable (click)="toggle()" *ngIf="message">{{ message }}</nb-alert>
 				<form #employeeForm="ngForm" (ngSubmit)="onFormSubmit()" class="mt-3 mb-3">
 		
 					<div class="form-group">

@@ -9,7 +9,7 @@
 					<div class="col-md-3 text-right">
 						<button class="btn btn-link text-primary p-0" routerLink="/add_employee">Add Employee</button>
 					</div>
-					<div class="col-md-3 text-right">
+					<div class="col-md-3 text-right" *ngIf="userModel.length > 0">
 						<button class="btn btn-link text-danger p-0" (click)="select()" *ngIf="!multiSelect; else multi_else">Delete Employees</button>
 						<ng-template #multi_else>
 							<button class="btn btn-link text-danger pb-0 pt-0 pl-0  pr-2" (click)="deleteSelectedItem()" *ngIf="multiSelect">Delete 
@@ -51,7 +51,11 @@ Selected</button>
 							</tr>
 						</tbody>
 						<ng-template #else_block>
-							No Employee are there
+							<tr>
+								<td colspan="6" class="text-center">
+									No Employee are there
+								</td>
+							</tr>
 						</ng-template>
 					</table>
 				</div>

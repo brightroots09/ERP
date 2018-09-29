@@ -9,7 +9,7 @@
 					<div class="col-md-3 text-right">
 						<button class="btn btn-link text-primary p-0" routerLink="/add_project">Create Project</button>
 					</div>
-					<div class="col-md-3 text-right">
+					<div class="col-md-3 text-right" *ngIf="projects.length > 0;">
 						<button class="btn btn-link text-danger p-0" (click)="select()" *ngIf="!multiSelect; else multi_else">Delete Projects</button>
 						<ng-template #multi_else>
 								<button class="btn btn-link text-danger pb-0 pl-0 pt-0 pr-2" (click)="deleteSelectedItem()" *ngIf="multiSelect">Delete 
@@ -53,7 +53,11 @@ Selected</button>
 							</tr>
 						</tbody>
 						<ng-template #else_block>
-							No project is added
+							<tr>
+								<td colspan="5" class="text-center">
+									No project is added
+								</td>
+							</tr>
 						</ng-template>
 					</table>
 				</div>

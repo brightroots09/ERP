@@ -4,7 +4,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { FormsModule } from "@angular/forms";
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { NbThemeModule, NbSidebarModule, NbLayoutModule,  NbMenuModule, NbMenuService, NbSidebarService, NbCardModule, NbTabsetModule, NbAccordionModule, NbButtonModule, NbUserModule, NbListModule } from '@nebular/theme';
+import { NbThemeModule, NbSidebarModule, NbLayoutModule,  NbMenuModule, NbMenuService, NbSidebarService, NbCardModule, NbTabsetModule, NbAccordionModule, NbButtonModule, NbUserModule, NbListModule, NbAlertModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -123,7 +123,8 @@ import { GroupByPipe } from './group-by.service';
     NbAccordionModule,
     NbButtonModule,
     NbUserModule,
-    NbListModule
+    NbListModule,
+    NbAlertModule
   ],
   providers: [AuthGuard, {
     provide: HTTP_INTERCEPTORS,
