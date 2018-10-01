@@ -200,7 +200,7 @@
 						<button class="btn btn-link text-danger p-0" status="primary" size="xsmall" (click)="editProjectManager()">Edit</button>
 					</div>
 				</div>
-				<nb-list *ngIf="projectModel[0].project_manager != ''; else manager_else">
+				<nb-list *ngIf="projectModel[0].project_manager_first_name != null; else manager_else">
 					<nb-list-item class="text-left">
 						<nb-user [name]="projectModel[0].project_manager_first_name + ' ' + projectModel[0].project_manager_last_name" [title]="projectModel[0].project_manager_designation">
 						</nb-user>
@@ -238,7 +238,7 @@
 						<button class="btn btn-link text-danger p-0" status="primary" size="xsmall" (click)="editResponsiblePerson()">Edit</button>
 					</div>
 				</div>
-				<nb-list *ngIf="projectModel[0].responsible_person != ''; else responsible_else">
+				<nb-list *ngIf="projectModel[0].responsible_person_first_name != null; else responsible_else">
 					<nb-list-item class="text-left">
 						<nb-user [name]="projectModel[0].responsible_person_first_name + ' ' + projectModel[0].responsible_person_last_name" [title]="projectModel[0].responsible_person_designation">
 						</nb-user>

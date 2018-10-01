@@ -320,7 +320,7 @@ router.post("/delete_employee/:id", verifyToken, function (req, res, callback) {
 
 	function deleteById(id, result, cb){
 		if(result[0].employee > 0){
-			commonFunction.deleteEmployee("employees", [id], function(error, result){
+			commonFunction.deleteData("employees", id, 'employee_id', '?', function(error, result){
 				if(error) cb(error)
 				else cb(null, result)
 			})
