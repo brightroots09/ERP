@@ -166,7 +166,7 @@ export class ProjectDetailComponent implements OnInit {
   onEmployeeFormSubmit(){
     this.user.editProjectEmployees(this.param.id, this.employees)
       .subscribe(res => {
-        this.employeeEdit = false;
+        window.location.reload()
       }, error => {
         console.error(error)
       })

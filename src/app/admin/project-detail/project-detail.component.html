@@ -191,7 +191,7 @@
 					</div>
 				</ng-template>
 			</nb-card-body>
-			<nb-card-body>
+			<nb-card-body *ngIf="!employeeEdit">
 				<div class="row">
 					<div class="col-md-6 text-left">
 						<h6>Project Manager</h6>
@@ -229,7 +229,7 @@
 					</div>
 				</ng-template>
 			</nb-card-body>
-			<nb-card-body>
+			<nb-card-body *ngIf="!employeeEdit">
 				<div class="row">
 					<div class="col-md-6 text-left">
 						<h6>Responsible Person</h6>
