@@ -16,7 +16,7 @@
 			<nb-card-body>
 				<div class="row">
 					<div class="col-md-6">
-						<!-- <button nbButton outline status="primary" class="mr-2" size="xsmall" *ngIf="!edit" (click)="toggleEdit()">Edit</button> -->
+						<button nbButton outline status="primary" class="mr-2" size="xsmall" *ngIf="!edit" (click)="toggleEdit()">Edit</button>
 					</div>
 					<div class="col-md-6">
 						<button size="xsmall" *ngIf="!edit" class="mr-2" (click)="deleteProject()" nbButton outline status="danger">Delete</button>
@@ -39,7 +39,7 @@
 		</nb-card>
 	</div>
 
-	<!-- <div class="col-md-4 mr-auto ml-auto" *ngIf="edit">
+	<div class="col-md-4 mr-auto ml-auto" *ngIf="edit">
 		<nb-card accent="info" class="text-center">
 			<nb-card-header>
 				Edit Project
@@ -51,7 +51,6 @@
 						<input type="text" id="name" #name="ngModel" class="form-control" name="name" [(ngModel)]="projectModel[0].project_name"
 						 [class.is-invalid]="name.invalid && name.touched" [class.is-valid]="name.valid && name.touched" required>
 						<small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
-
 					</div>
 
 					<div class="form-group" *ngIf="edit">
@@ -79,105 +78,12 @@
 							<label class="form-check-label" for="inlineRadio3">Completed</label>
 						</div>
 					</div>
-					<div class="form-group" *ngIf="edit">
-						<label for="">Selected Members</label>
-						<div *ngIf="employees.length > 0; else none_block">
-							<div class="btn-group badge badge-info m-2" role="group" *ngFor="let employee of employees">
-								<span class="p-3">{{employee.employee_first_name}} {{employee.employee_last_name}}</span>
-								<button type="button" class="btn btn-link text-white" (click)="remove(employee)">&times;</button>
-							</div>
-						</div>
-						<ng-template #none_block>
-							<p>No Members Selected</p>
-						</ng-template>
-					</div>
-					<div class="form-group" *ngIf="edit">
-						<div class="row">
-							<div class="col-md-12 mt-3">
-								<div class="row">
-									<div class="col-md-12 dropdown mb-2">
-										<button class="dropdown-toggle p-2" type="button" id="dropdownMenuButtonIOS" data-toggle="dropdown" aria-haspopup="true"
-										 aria-expanded="false">IOS Developer</button>
-										<div class="dropdown-menu">
-											<ng-container *ngFor="let employee of userModel">
-												<button type="button" *ngIf="employee.employee_designation == 'Developer (IOS)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-													<nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
-													</nb-user>
-												</button>
-											</ng-container>
-										</div>
-									</div>
-									<div class="col-md-12 dropdown mb-2">
-										<button class="dropdown-toggle p-2" type="button" id="dropdownMenuButtonANDROID" data-toggle="dropdown" aria-haspopup="true"
-										 aria-expanded="false">Android Developer</button>
-										<div class="dropdown-menu">
-											<ng-container *ngFor="let employee of userModel">
-												<button type="button" *ngIf="employee.employee_designation == 'Developer (Android)'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-													<nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
-													</nb-user>
-												</button>
-											</ng-container>
-										</div>
-									</div>
-									<div class="col-md-12 dropdown mb-2">
-										<button class="dropdown-toggle p-2" type="button" id="dropdownMenuButtonBACKEND" data-toggle="dropdown" aria-haspopup="true"
-										 aria-expanded="false">Backend Developer</button>
-										<div class="dropdown-menu">
-											<ng-container *ngFor="let employee of userModel">
-												<button type="button" *ngIf="employee.employee_designation == 'Backend Developer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-													<nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
-													</nb-user>
-												</button>
-											</ng-container>
-										</div>
-									</div>
-									<div class="col-md-12 dropdown mb-2">
-										<button class="dropdown-toggle p-2" type="button" id="dropdownMenuButtonDESIGNER" data-toggle="dropdown" aria-haspopup="true"
-										 aria-expanded="false">Designer</button>
-										<div class="dropdown-menu">
-											<ng-container *ngFor="let employee of userModel">
-												<button type="button" *ngIf="employee.employee_designation == 'Designer'" class="dropdown-item m-2 text-dark" (click)="add_employee(employee)">
-													<nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name">
-													</nb-user>
-												</button>
-											</ng-container>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-12 mt-3">
-								<label>Project Manager</label>
-								<select class="form-control" name="project_manager" #project_manager="ngModel" [(ngModel)]="projectModel[0].project_manager_id">
-									<option value="{{projectModel[0].project_manager_id}}" selected="selected">
-										{{ projectModel[0].project_manager_first_name }} {{ projectModel[0].project_manager_last_name }} ({{ projectModel[0].project_manager_designation }})
-									</option>
-									<hr>
-									<option *ngFor="let employee of userModel" value="{{employee.employee_id}}">
-										{{ employee.employee_first_name }} {{ employee.employee_last_name }}
-									</option>
-								</select>
-							</div>
-							<div class="col-md-12 mt-3">
-								<label>Responsible Person</label>
-								<select class="form-control" name="responsible_person" #responsible_person="ngModel" [(ngModel)]="projectModel[0].responsible_person_id">
-									<option value="{{projectModel[0].responsible_person_id}}" selected="selected">
-										{{ projectModel[0].responsible_person_first_name }} {{ projectModel[0].responsible_person_last_name }} ({{ projectModel[0].responsible_person_designation }})
-									</option>
-									<hr>
-									<option *ngFor="let employee of userModel" value="{{employee.employee_id}}">
-										{{ employee.employee_first_name }} {{ employee.employee_last_name }}
-									</option>
-								</select>
-							</div>
-						</div>
-					</div>
-
 					<button nbButton outline status="primary" size="xsmall" *ngIf="edit" class="mr-2">Update</button>
 					<button nbButton outline status="danger" size="xsmall" *ngIf="edit" class="mr-2" (click)="cancelUpdate()">Cancel</button>
 				</form>
 			</nb-card-body>
 		</nb-card>
-	</div> -->
+	</div>
 
 	<div class="col-md-4 mr-auto ml-auto">
 		<nb-card accent="danger" class="text-center">

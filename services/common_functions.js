@@ -17,8 +17,9 @@ exports.addProjectDailyUpdates = addProjectDailyUpdates;
 exports.viewDetails = viewDetails;
 exports.addProjectTasks = addProjectTasks;
 
+exports.editDetails = editDetails;
+
 exports.findTasks = findTasks;
-exports.editTask = editTask;
 exports.deleteTask = deleteTask;
 
 exports.viewQueries = viewQueries;
@@ -235,7 +236,7 @@ function findTasks(db, fields, join, condition, cb){
 
 }
 
-function editTask(db, fields, data, cb){
+function editDetails(db, fields, data, cb){
   let sql =  `update ${db} set ${fields}`
   con.query(sql, data, function(error, result){
     if(error) cb(error)

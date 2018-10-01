@@ -423,7 +423,13 @@ router.get("/project_details/:id", verifyToken, function (req, res, callback) {
  */
 
 router.post("/edit_project/:id", verifyToken, function (req, res, callback) {
-	console.log(req.body)
+	let fields = "project_name=?, project_description=?, status=? where project_id=?"
+	let arr = [req.body.data[0].project_name, req.body.data[0].project_description, req.body.data[0].status, req.params.id]
+	commonFunction.editDetails('projects', fields, arr, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
+
 })
 
 /**
@@ -575,7 +581,7 @@ router.post("/create_tasks", verifyToken, function (req, res, callback) {
 router.post("/edit_task/:id", verifyToken, function (req, res, callback) {
 	let fields = "task_name=?, task_description=? where id=?"
 	let arr = [req.body[0].task_name, req.body[0].task_description, req.params.id]
-	commonFunction.editTask('tasks', fields, arr, function(error, result){
+	commonFunction.editDetails('tasks', fields, arr, function(error, result){
 		if(error) callback(error)
 		else res.json(result)
 	})

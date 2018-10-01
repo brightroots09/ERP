@@ -17,7 +17,8 @@ export class ProjectDetailComponent implements OnInit {
   tasksLoaded: Promise<boolean>;
   dailyUpdateModel;
   userModel;
-  employees = []
+  employees = [];
+  message;
 
   private edit: boolean = false;
 
@@ -83,7 +84,8 @@ export class ProjectDetailComponent implements OnInit {
     this.edit = false
     this.user.editProject(this.param.id, this.projectModel, this.employees)
       .subscribe(res => {
-        window.location.reload()
+        // window.location.reload()
+        this.edit = false
         // this.router.navigate([`/project_details/${this.param.id}`])
       },
         (error) => {
