@@ -432,6 +432,44 @@ router.post("/edit_project/:id", verifyToken, function (req, res, callback) {
 
 })
 
+router.post("/edit_project_employee/:id", verifyToken, function(req, res, callback){
+	let employee_id = []
+	for(let i = 0; i < req.body.length; i++){
+		employee_id.push(req.body[i].employee_id)
+	}
+	let string = employee_id.join(",").toString()
+	var uniqueList=string.split(',').filter(function(allItems,i,a){
+		return i==a.indexOf(allItems);
+	}).join(',');
+	
+	let fields = "employee_id=? where project_id = ?"
+	commonFunction.editDetails('projects', fields, [uniqueList, req.params.id], function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
+})
+
+router.post("/edit_project_manager/:id", verifyToken, function(req, res, callback){
+	let fields = `project_manager = ? where project_id = ?`
+	arr = [req.body.project_manger, req.params.id]
+
+	commonFunction.editDetails('projects', fields, arr, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
+})
+
+router.post("/editResponsiblePerson/:id", verifyToken, function(req, res, callback){
+	let fields = `responsible_person = ? where project_id = ?`
+	arr = [req.body.responsible_person, req.params.id]
+
+	commonFunction.editDetails('projects', fields, arr, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
+
+})
+
 /**
  * --------------------
  * DELETE PROJECT ROUTE

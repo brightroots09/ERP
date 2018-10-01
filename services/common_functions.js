@@ -177,7 +177,7 @@ function findAllProjects(db, fields, join, condition, cb){
   let sql;
 
   if(join){
-    sql = `select ${fields} from ${db} as p LEFT JOIN employees as e ON (CONCAT(',', p.employee_id, ',') LIKE CONCAT('%,', e.employee_id, ',%')) LEFT JOIN employees as r ON p.responsible_person = r.employee_id LEFT JOIN employees as pr ON p.responsible_person = pr.employee_id where ${condition}`
+    sql = `select ${fields} from ${db} as p LEFT JOIN employees as e ON (CONCAT(',', p.employee_id, ',') LIKE CONCAT('%,', e.employee_id, ',%')) LEFT JOIN employees as r ON p.responsible_person = r.employee_id LEFT JOIN employees as pr ON p.project_manager = pr.employee_id where ${condition}`
   }
   else {
     sql = `SELECT ${fields} FROM ${db} as p  where ${condition}`

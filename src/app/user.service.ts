@@ -28,6 +28,9 @@ export class UserService {
   private _projectsUrl = "/admin/projects";
   private _projectDetails = "/admin/project_details";
   private _editProject = "/admin/edit_project";
+  private _editProjectEmployee = "/admin/edit_project_employee";
+  private _editProjectManager = "/admin/edit_project_manager";
+  private _editResponsiblePerson = "/admin/editResponsiblePerson";
   private _adddProject = "/admin/create_project";
   private _projectDelete = "/admin/project_delete";
   private _projectsDelete = "/admin/projects_delete";
@@ -122,11 +125,10 @@ export class UserService {
     return this.http.get<any>(url)
   }
 
-  editProject(id, data, employees) {
+  editProject(id, data) {
     let url = this._editProject + "/" + id
     let obj = {
-      data,
-      employees
+      data
     }
     return this.http.post<any>(url, obj)
   }
@@ -138,7 +140,21 @@ export class UserService {
     }
     return this.http.post<any>(this._adddProject, obj)
   }
+  editProjectEmployees(id, data): Observable<any>{
+    let url = this._editProjectEmployee + "/" + id;
+    return this.http.post<any>(url, data)
+  }
 
+  editProjectManager(id, data): Observable<any>{
+    let url = this._editProjectManager + "/" + id;
+    return this.http.post<any>(url, data)
+  }
+
+  editResponsiblePerson(id, data): Observable<any>{
+    let url = this._editResponsiblePerson + "/" + id;
+    return this.http.post<any>(url, data)
+  }
+  
   deleteProject(id): Observable<any> {
     let url = this._projectDelete + "/" + id
     return this.http.post<any>(url, id)
@@ -175,6 +191,7 @@ export class UserService {
     let url = this._editTaskUrl + "/" + id;
     return this.http.post(url, data)
   }
+
 
   editProjectTask(id, data): Observable<any> {
     let url = this._editProjectTaskUrl + "/" + id;

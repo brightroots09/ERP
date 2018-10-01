@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
 import { UserService } from '../../user.service';
 import { Updates } from '../../updates';
+import { Project } from '../../project';
 
 @Component({
   selector: 'app-project-detail',
@@ -19,8 +20,13 @@ export class ProjectDetailComponent implements OnInit {
   userModel;
   employees = [];
   message;
+  warning;
+  projectManager = new Project();
 
   private edit: boolean = false;
+  private employeeEdit: boolean = false;
+  private projectManagerEdit: boolean = false;
+  private responsiblePersonEdit: boolean = false;
 
   constructor(private router: Router, private user: UserService, private route: ActivatedRoute) {
 
@@ -43,8 +49,8 @@ export class ProjectDetailComponent implements OnInit {
   getProjectDetails() {
     this.user.projectDetails(this.param.id)
       .subscribe(res => {
-        console.log("===========>", res[0])
         this.projectModel = res
+        console.log("===========>", this.projectModel)
         this.employees = res
         this.filtersLoaded = Promise.resolve(true);
       },
@@ -82,7 +88,7 @@ export class ProjectDetailComponent implements OnInit {
 
   onFormSubmit() {
     this.edit = false
-    this.user.editProject(this.param.id, this.projectModel, this.employees)
+    this.user.editProject(this.param.id, this.projectModel)
       .subscribe(res => {
         // window.location.reload()
         this.edit = false
@@ -131,9 +137,75 @@ export class ProjectDetailComponent implements OnInit {
 
   remove(employee) {
     var index = this.employees.indexOf(employee);
-    if (index > -1) {
-      this.employees.splice(index, 1);
+    if(this.employees.length == 1){
+      this.warning = 'You cannot remove all employees'
     }
+    else {
+      if (index > -1) {
+        this.employees.splice(index, 1);
+      }
+    }
+  }
+
+  editEmployees(){
+    this.employeeEdit = true
+  }
+
+  cancelEditEmployee(){
+    this.employeeEdit = false
+  }
+
+  closeEmployeeWarning(){
+    this.warning = null;
+  }
+
+  removeEmployee(employee){
+    console.log(employee)
+  }
+
+  onEmployeeFormSubmit(){
+    this.user.editProjectEmployees(this.param.id, this.employees)
+      .subscribe(res => {
+        this.employeeEdit = false;
+      }, error => {
+        console.error(error)
+      })
+  }
+
+
+  editProjectManager(){
+    this.projectManagerEdit = true
+  }
+
+  cancelProjectManager(){
+    this.projectManagerEdit = false
+  }
+
+  onProjectManagerFormSubmit(){
+    this.user.editProjectManager(this.param.id, this.projectManager)
+      .subscribe(res => {
+        window.location.reload()
+      }, error => {
+        console.error(error)
+      })
+  }
+
+
+  editResponsiblePerson(){
+    this.responsiblePersonEdit = true;
+  }
+
+  cancelResponsiblePerson(){
+    this.responsiblePersonEdit = false;
+  }
+
+  onResponsiblePersonFormSubmit(){
+    this.user.editResponsiblePerson(this.param.id, this.projectManager)
+      .subscribe(res => {
+        window.location.reload()
+      }, error =>{
+        console.error(error)
+      })
   }
 
 }
