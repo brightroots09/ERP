@@ -1,8 +1,8 @@
 <div class="row" *ngIf="filtersLoaded | async">
 
 	<div class="col-md-4 ml-auto mr-auto text-center">
-		<nb-card accent="info">
-			<nb-card-body *ngIf="tasksModel.length > 0; else else_block">
+		<nb-card accent="info" *ngIf="tasksModel.length > 0; else else_block">
+			<nb-card-body>
 				<p class="card-title">
 					<b>Name:</b> {{tasksModel[0].task_name}}
 				</p>
@@ -23,12 +23,14 @@
 					</div>
 				</div>
 			</nb-card-body>
-			<ng-template #else_block>
-				<h2>
-					No Tasks
-				</h2>
-			</ng-template>
 		</nb-card>
+		<ng-template #else_block>
+			<nb-card>
+				<nb-card-body>
+					Task does not exists.
+				</nb-card-body>
+			</nb-card>
+		</ng-template>
 	</div>
 
 	<div class="col-md-4 ml-auto mr-auto text-center" *ngIf="edit">
@@ -78,7 +80,7 @@
 		<ng-template #project_else>
 			<nb-list>
 				<nb-list-item>
-					No Project Added
+					There is no project associated with this task.
 				</nb-list-item>
 			</nb-list>
 		</ng-template>

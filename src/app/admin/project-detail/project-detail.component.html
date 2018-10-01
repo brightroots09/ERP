@@ -1,6 +1,6 @@
 <div class="row" *ngIf="filtersLoaded | async">
 	<div class="col-md-4 mr-auto ml-auto">
-		<nb-card accent="primary" class="text-center">
+		<nb-card accent="primary" class="text-center" *ngIf="projectModel.length > 0; else project_else">
 			<nb-card-body style="flex: inherit !important;">
 				<h5 class="card-title">
 					Name: {{projectModel[0].project_name}}
@@ -85,7 +85,7 @@
 		</nb-card>
 	</div>
 
-	<div class="col-md-4 mr-auto ml-auto">
+	<div class="col-md-4 mr-auto ml-auto" *ngIf="projectModel.length > 0">
 		<nb-card accent="danger" class="text-center">
 			<nb-card-header>
 				Project Members
@@ -272,6 +272,13 @@
 	</div>
 </div>
 
+<ng-template #project_else>
+	<nb-card>
+		<nb-card-body>
+			The project you are looking for does not exists.
+		</nb-card-body>
+	</nb-card>
+</ng-template>
 
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">

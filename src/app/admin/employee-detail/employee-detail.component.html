@@ -1,6 +1,6 @@
 <div class="row" *ngIf="filtersLoaded | async">
 	<div class="col-md-4 mr-auto ml-auto">
-		<nb-card accent="primary" class="text-center">
+		<nb-card accent="primary" class="text-center" *ngIf="userModel != undefined; else employee_else">
 			<nb-card-header>
 				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 100px; height: 100px;" *ngIf="userModel.profile_pic != ''; else else_image"
 				 src="/images/{{userModel.image}}" alt="{{ userModel.first_name }}">
@@ -118,7 +118,7 @@
 			</nb-card-body>
 		</nb-card>
 	</div>
-	<div class="col-md-4 mr-auto ml-auto">
+	<div class="col-md-4 mr-auto ml-auto" *ngIf="userModel != undefined">
 		<nb-card accent="danger">
 			<nb-card-header class="text-center">
 				Assigned Projects
@@ -140,4 +140,13 @@
 			</nb-card-body>
 		</nb-card>
 	</div>
+
+	<ng-template #employee_else>
+		<nb-card>
+			<nb-card-body>
+				Employee doest not exists
+			</nb-card-body>
+		</nb-card>
+	</ng-template>
+
 </div>
