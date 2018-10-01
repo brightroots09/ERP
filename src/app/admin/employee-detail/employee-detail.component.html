@@ -20,7 +20,7 @@
 					Dsignation: {{ userModel.designation }}
 				</p>
 				<div>
-					<p *ngIf="userModel.is_active; else else_block">
+					<p *ngIf="userModel.is_active == 'true'; else else_block">
 						Status:
 						<span class="text-success">Active</span>
 					</p>
