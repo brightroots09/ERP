@@ -35,7 +35,7 @@ Selected</button>
 							</tr>
 						</thead>
 						<tbody *ngIf="projects.length > 0; else else_block">
-							<tr *ngFor="let project of projects">
+							<tr *ngFor="let project of projects"  [@fade]="projects.length" id="projects">
 								<td *ngIf="multiSelect">
 									<input type="checkbox" [(ngModel)]="project.selected">
 								</td>

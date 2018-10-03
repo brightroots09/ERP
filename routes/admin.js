@@ -90,12 +90,47 @@ router.post("/login", function (req, res, callback) {
 		email: req.body.email,
 		password: req.body.password
 	}
-	commonFunction.loginUser("admin", condition, function (error, result) {
-		if (error) callback(error)
+	
+	let asyncTasks = []
+
+	asyncTasks.push(registerAdmin.bind(null))
+	asyncTasks.push(loginAdmin.bind(null))
+
+	async.waterfall(asyncTasks, function(error, result){
+		if(error) console.log("======>", error)
 		else {
 			res.json(result)
 		}
 	})
+
+	function registerAdmin(cb){
+		let adminObj = {
+			email: "admin@admin.com",
+			password: "admin@admin",
+			name: "Admin"
+		}
+	
+		commonFunction.registerAdmin(adminObj, function(error, response){
+			if(error) callback(error)
+			else{
+				cb(null, response)
+			}
+		})
+	}
+
+	function loginAdmin(response, cb){
+		if(response){
+			commonFunction.loginUser("admin", condition, function (error, result) {
+				if (error) callback(error)
+				else {
+					cb(null, result)
+				}
+			})
+		}
+		else {
+			console.log(error)
+		}
+	}
 });
 
 router.get("/login", function (req, res, callback) {
