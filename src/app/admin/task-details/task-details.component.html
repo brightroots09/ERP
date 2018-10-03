@@ -69,7 +69,7 @@
 				Projects
 			</nb-card-header>
 			<nb-card-body>
-				<nb-list *ngIf="tasksModel.length > 0; else project_else">
+				<nb-list *ngIf="tasksModel[0].project_name != null; else project_else">
 					<nb-list-item *ngFor="let projects of tasksModel" class="text-left">
 						<nb-user [name]="projects.project_name" [title]="projects.project_description">
 						</nb-user>
@@ -88,7 +88,7 @@
 				<nb-card-header>
 					Employees
 				</nb-card-header>
-				<nb-card-body *ngIf="tasksModel.employee_first_name != null; else employee_else">
+				<nb-card-body *ngIf="tasksModel[0].employee_first_name != null; else employee_else">
 					<nb-list>
 						<nb-list-item *ngFor="let employee of tasksModel" class="text-left">
 							<nb-user [name]="employee.employee_first_name + ' ' + employee.employee_last_name " [title]="employee.employee_designation">

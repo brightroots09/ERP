@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Oct 03, 2018 at 06:26 AM
+-- Generation Time: Oct 03, 2018 at 09:22 AM
 -- Server version: 5.7.21
 -- PHP Version: 7.2.7
 
@@ -54,13 +54,6 @@ CREATE TABLE `dailyUpdate` (
   `date_created` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `dailyUpdate`
---
-
-INSERT INTO `dailyUpdate` (`id`, `employee_id`, `morning_session`, `evening_session`, `in_time`, `out_time`, `total_hours`, `status`, `date_created`) VALUES
-(1, '6', 'Absent', 'Absent', '-', '-', '0', 'Not Verified', '2018-09-29 05:30:00');
-
 -- --------------------------------------------------------
 
 --
@@ -80,18 +73,6 @@ CREATE TABLE `employees` (
   `date_created` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `employees`
---
-
-INSERT INTO `employees` (`employee_id`, `first_name`, `last_name`, `email`, `password`, `profile_pic`, `designation`, `is_active`, `salary`, `date_created`) VALUES
-(6, 'EMP', '1', 'emp1@gmail.com', 'emp1', '', 'Project Manager', 'true', '10000', '2018-09-29 16:50:38'),
-(7, 'EMP', '2', 'emp2@gmail.com                                                                   ', 'emp2', '', 'Developer (IOS)', 'false', '55000', '2018-09-29 16:57:43'),
-(8, 'EMP', '3', 'emp3@gmail.com', 'emp3', '', 'Developer (Android)', 'true', '5000', '2018-09-29 16:58:06'),
-(9, 'EMP', '4', 'emp4@gmail.com', 'emp4', '', 'Backend Developer', 'true', '12000', '2018-09-29 16:59:16'),
-(11, 'EMP', '6', 'emp6@gmail.com', 'emp6', '', 'HR', 'true', '6000', '2018-09-29 17:00:24'),
-(12, 'EMP', '7', 'emp7@gmail.com', 'emp7', '', 'Bidder', 'true', '9000', '2018-09-29 17:00:49');
-
 -- --------------------------------------------------------
 
 --
@@ -108,14 +89,6 @@ CREATE TABLE `projects` (
   `status` varchar(255) NOT NULL DEFAULT 'In Progress',
   `date_created` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `projects`
---
-
-INSERT INTO `projects` (`project_id`, `employee_id`, `responsible_person`, `project_manager`, `project_name`, `project_description`, `status`, `date_created`) VALUES
-(3, '7', '7', '10', 'Project 1 Edited', 'Project Description Edited', 'In Progress', '2018-09-29 17:24:50'),
-(4, '8,9', '11', '8', 'Project 123', 'project Description', 'In Progress', '2018-10-01 16:26:29');
 
 -- --------------------------------------------------------
 
@@ -149,13 +122,6 @@ CREATE TABLE `tasks` (
   `date_created` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `tasks`
---
-
-INSERT INTO `tasks` (`id`, `task_name`, `task_description`, `status`, `project_id`, `others`, `date_created`) VALUES
-(5, 'Task 1', 'Task 2', 'in-progress', '3', '', '2018-09-29 18:04:01');
-
 -- --------------------------------------------------------
 
 --
@@ -168,13 +134,6 @@ CREATE TABLE `taskUpdate` (
   `description` varchar(255) DEFAULT NULL,
   `date_created` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `taskUpdate`
---
-
-INSERT INTO `taskUpdate` (`id`, `project_id`, `description`, `date_created`) VALUES
-(1, '3', 'First daily Update', '2018-09-29 18:03:41');
 
 --
 -- Indexes for dumped tables
@@ -236,19 +195,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `dailyUpdate`
 --
 ALTER TABLE `dailyUpdate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `queries`
@@ -260,10 +219,10 @@ ALTER TABLE `queries`
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `taskUpdate`
 --
 ALTER TABLE `taskUpdate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

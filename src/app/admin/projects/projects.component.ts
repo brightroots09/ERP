@@ -1,23 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../user.service';
-import { trigger, state, style, transition, animate, query, stagger, keyframes, sequence } from '@angular/animations';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.css'],
-  animations: [
-    trigger('fade', [
-      state('void', style({ opacity: 0 })),
-      transition('* => *', [
-        sequence([
-          animate(".35s ease", style({ height: '*', opacity: '.2', transform: 'translateX(0)', 'box-shadow': 'none'  })),
-          animate(".35s ease", style({ height: '*', opacity: 1, transform: 'translateX(0)' }))
-        ])
-      ])
-    ])
-  ]
+  styleUrls: ['./projects.component.css']
 })
 export class ProjectsComponent implements OnInit {
 
