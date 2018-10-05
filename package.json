@@ -28,6 +28,7 @@
     "@swimlane/ngx-charts": "^9.0.0",
     "@types/jquery": "^3.3.6",
     "@types/jspdf": "^1.1.31",
+    "angularx-flatpickr": "^6.1.0",
     "async": "^2.6.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",

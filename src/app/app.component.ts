@@ -78,6 +78,11 @@ export class AppComponent {
       title: "View Attendance",
       icon: "far fa-eye",
       link: '/myAttendance'
+    },
+    {
+      title: "Holidays",
+      icon: "fas fa-power-off",
+      link: "/holidays"
     }
    ]
 

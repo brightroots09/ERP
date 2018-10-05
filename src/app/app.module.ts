@@ -9,6 +9,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
 /**
  * -------------
  * ADMIN IMPORTS
@@ -63,6 +64,7 @@ import { IndividualTaskComponent } from './employee/individual-task/individual-t
 import { MyAttendanceComponent } from './employee/my-attendance/my-attendance.component';
 import { GenerateTaskComponent } from './employee/generate-task/generate-task.component';
 import { GroupByPipe } from './group-by.service';
+import { HolidaysComponent } from './employee/holidays/holidays.component';
 
 
 @NgModule({
@@ -104,7 +106,8 @@ import { GroupByPipe } from './group-by.service';
     GroupByPipe,
     ExportToPdfComponent,
     AddAbsentiesComponent,
-    GenerateTaskComponent
+    GenerateTaskComponent,
+    HolidaysComponent
   ],
   imports: [
     BrowserModule,

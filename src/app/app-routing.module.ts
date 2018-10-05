@@ -38,6 +38,7 @@ import { ExportToPdfComponent } from './admin/export-to-pdf/export-to-pdf.compon
 import { AddAbsentiesComponent } from './admin/add-absenties/add-absenties.component';
 import { AdminGuard } from './admin.auth.guard';
 import { GenerateTaskComponent } from './employee/generate-task/generate-task.component';
+import { HolidaysComponent } from './employee/holidays/holidays.component';
 
 const routes: Routes = [
   {
@@ -236,6 +237,11 @@ const routes: Routes = [
   {
     path: "myAttendance",
     component: MyAttendanceComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "holidays",
+    component: HolidaysComponent,
     canActivate: [AuthGuard]
   },
   {
