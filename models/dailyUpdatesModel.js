@@ -9,7 +9,7 @@ module.exports = {
             evening_session varchar(255),
             in_time varchar(20),
             out_time varchar(20),
-            total_hours varchar(20),
+            total_hours varchar(225),
             status varchar(20) NOT NULL DEFAULT 'Not Verified',
             date_created datetime
           );

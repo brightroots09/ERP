@@ -45,17 +45,20 @@ export class DailyDiaryComponent implements OnInit {
   getTasks() {
     this.user.dailyDiary()
       .subscribe(res => {
-        this.tasksModel = res.result
         if (res.format_date) {
           this.total_hours = res.format_date
         }
-
+        
         if (res.result.length > 0) {
+          this.tasksModel = res.result
           let date = new Date().getDate()
           let date_created = new Date(res.result[0].date_created).getDate()
           if ((date == date_created) && res.result[0].morning_session != "") {
             this.toggleUpdate = true
           }
+        }
+        else{
+          this.tasksModel = []
         }
 
         this.filtersLoaded = Promise.resolve(true);

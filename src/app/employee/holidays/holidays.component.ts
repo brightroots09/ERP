@@ -17,61 +17,61 @@ export class HolidaysComponent implements OnInit {
       Holiday: "Dushehra",
       Month: "October",
       Day: "Friday",
-      Date: "19"
+      Date: "Oct 19th, 2018"
     },
     {
       Holiday: "Diwali",
       Month: "November",
       Day: "Wednesday",
-      Date: "7"
+      Date: "Nov 7th, 2018"
     },
     {
       Holiday: "Diwali",
       Month: "November",
       Day: "Thursday",
-      Date: "8"
+      Date: "November 8th, 2018"
     },
     {
       Holiday: "Guru Nanak Jayanti",
       Month: "November",
       Day: "Friday",
-      Date: "23"
+      Date: "Nov 23rd, 2018"
     },
     {
       Holiday: "Christmas",
       Month: "December",
       Day: "Tuesday",
-      Date: "25"
+      Date: "December 25th, 2018"
     },
     {
       Holiday: "New Year",
       Month: "January",
       Day: "Sunday",
-      Date: "01"
+      Date: "Jan 1st, 2019"
     },
     {
       Holiday: "Republic Day",
       Month: "January",
       Day: "Thursday",
-      Date: "26"
+      Date: "Jan 26th, 2019"
     },
     {
       Holiday: "Holi",
       Month: "March",
       Day: "Friday",
-      Date: "2"
+      Date: "Mar 2nd, 2019"
     },
     {
       Holiday: "Independence Day",
       Month: "August",
       Day: "Wednesday",
-      Date: "15"
+      Date: "Aug 15th, 2019"
     },
     {
       Holiday: "Rakshabandan",
       Month: "August",
       Day: "Sunday",
-      Date: "26"
+      Date: "Aug 26th, 2019"
     }
   ]
 

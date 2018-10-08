@@ -8,7 +8,7 @@
 					<div class="col-md-4">
 						Daily Diary
 					</div>
-					<div class="col-md-4 text-center">
+					<div class="col-md-4 text-center" *ngIf="tasksModel.length > 0">
 						<small class="text-danger" *ngIf="tasksModel[0].evening_session == ''" >Completed {{ total_hours | number:'1.0-1' }} hours</small>
 					</div>
 					<div class="col-md-4 text-right">
