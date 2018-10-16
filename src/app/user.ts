@@ -6,7 +6,7 @@ export class User {
     last_name: String;
     image: String;
     designation: String;
-    Salary: Number;
+    salary: Number;
     is_active: Boolean;
     selected: string;
 }

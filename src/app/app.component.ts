@@ -86,7 +86,7 @@ export class AppComponent {
     }
    ]
 
-  constructor (private _authService: AuthService, private sidebarService: NbSidebarService ){ }
+  constructor (public _authService: AuthService, private sidebarService: NbSidebarService ){ }
 
   toggle() {
     this.sidebarService.toggle(true);
