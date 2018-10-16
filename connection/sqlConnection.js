@@ -17,8 +17,8 @@ global.con = mysql.createConnection({
 let connection = async function () {
     try {
         await con.connect();
-         await con.query(`create database if not exists brightde_erp`);
-         await con.query(`use brightde_erp`);
+        await con.query(`create database if not exists brightde_erp`);
+        await con.query(`use brightde_erp`);
 
         console.log("Database created");
         console.log("Connected to SQL");

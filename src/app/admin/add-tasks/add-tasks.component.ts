@@ -31,7 +31,6 @@ export class AddTasksComponent implements OnInit {
   getProjects(){
     this.user.projects()
       .subscribe(res => {
-        console.log("======>", res)
         this.projectsModel = res
       }, (error) => {
         console.error(error)
@@ -41,7 +40,6 @@ export class AddTasksComponent implements OnInit {
   getEmployee() {
     this.user.employee()
       .subscribe(res => {
-        console.log(res)
         this.userModel = res
       },
         (error) => {

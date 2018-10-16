@@ -40,7 +40,6 @@ export class QueryComponent implements OnInit {
     this.user.queries()
       .subscribe(res => {
         this.queryModel = res
-        console.log(res)
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         console.error(error)
@@ -50,7 +49,6 @@ export class QueryComponent implements OnInit {
   getEmployees(){
     this.user.employee()
       .subscribe(res => {
-        console.log("======>", res)
         this.employeeModel = res
         this.employeeLoaded = Promise.resolve(true)
       }, (error) => {
@@ -62,7 +60,6 @@ export class QueryComponent implements OnInit {
     this.user.employeeProfile()
         .subscribe(res => {
           this.userModel = res
-          console.log("==================>",res)
           this.profileLoaded = Promise.resolve(true);
         }, (error) => {
           console.error(error)
@@ -83,7 +80,6 @@ export class QueryComponent implements OnInit {
   }
 
   closeTicket(id){
-    console.log(id);
     this.user.toggleQueryStatus(id)
       .subscribe(res => {
         window.location.reload()

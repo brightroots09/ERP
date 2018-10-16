@@ -34,7 +34,6 @@ export class MyTaskDetailsComponent implements OnInit {
   getTasksDetails() {
     this.user.myTaskDetails(this.param.id)
       .subscribe(res => {
-        console.log(res[0])
         this.tasksModel = res[0]
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
@@ -53,7 +52,6 @@ export class MyTaskDetailsComponent implements OnInit {
     }
     this.user.toggleTaskStatus(obj)
       .subscribe(res => {
-        console.log(res)
         window.location.reload()
       }, (error) => {
         console.error(error)

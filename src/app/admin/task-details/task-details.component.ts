@@ -54,7 +54,6 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   onFormSubmit(){
-    console.log(this.tasksModel)
     this.edit = false
     this.user.editTask(this.param.id, this.tasksModel)
       .subscribe(res => {

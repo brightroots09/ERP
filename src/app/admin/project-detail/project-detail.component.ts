@@ -50,7 +50,6 @@ export class ProjectDetailComponent implements OnInit {
     this.user.projectDetails(this.param.id)
       .subscribe(res => {
         this.projectModel = res
-        console.log("===========>", this.projectModel)
         this.employees = res
         this.filtersLoaded = Promise.resolve(true);
       },
@@ -62,7 +61,6 @@ export class ProjectDetailComponent implements OnInit {
   getEmployee() {
     this.user.employee()
       .subscribe(res => {
-        console.log(res)
         this.userModel = res
       },
         (error) => {
@@ -74,7 +72,6 @@ export class ProjectDetailComponent implements OnInit {
   getProjectDailyTasks(){
     this.user.viewDailyProjectUpdates(this.param.id)
       .subscribe(res => {
-        console.log(res)
         this.dailyUpdateModel = res
         this.tasksLoaded = Promise.resolve(true)
       }, error => {
@@ -119,7 +116,6 @@ export class ProjectDetailComponent implements OnInit {
   onUpdateFormSubmit() {
     this.user.updateProjectTasks(this.param.id, this.updateModel)
       .subscribe(res => {
-        console.log(this.updateModel)
         window.location.reload()
       }, (error) => {
         console.error(error)

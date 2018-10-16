@@ -72,7 +72,6 @@ export class DailyDiaryComponent implements OnInit {
   }
 
   onUpdateFormSubmit() {
-    console.log(this.updateModel)
     this.user.addDailyDiary(this.updateModel)
       .subscribe(res => {
         this.toggleUpdate = true;

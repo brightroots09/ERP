@@ -82,8 +82,6 @@ function getProfile(db, condition, cb) {
 
 
 function loginUser(db, condition, cb) {
-  console.log(condition)
-
   let sql = `select * from ${db} where email=?`
 
   con.query(sql, [condition.email], function (error, user) {
@@ -103,7 +101,6 @@ function loginUser(db, condition, cb) {
         else {
           let payload = { subject: user[0].id ? user[0].id : user[0].employee_id }
           let token = jwt.sign(payload, "secretKey")
-          console.log(token)
           return cb(null, {
             user: user,
             token: token
@@ -168,7 +165,6 @@ function deleteData(db, condition, field, marks, cb) {
   let sql = `delete from ${db} where ${field} in (${marks})`
 
   let deleteEMP = con.query(sql, condition, function (error, result) {
-    console.log(deleteEMP.sql)
     if (error) cb(error)
     else cb(null, result)
   })
@@ -178,7 +174,6 @@ function deleteData(db, condition, field, marks, cb) {
 function addProject(db, data, cb) {
   let sql = `insert into ${db} (employee_id, responsible_person, project_manager, project_name, project_description, date_created) values (?, ?, ?, ?, ?, ?)`
   let addProject = con.query(sql, data, function (error, result) {
-    console.log(addProject.sql)
     if (error) cb(error)
     else cb(null, result)
   })
@@ -287,7 +282,6 @@ function viewQueries(db, fields, condition, cb) {
 function toggleStatus(db, fields, data, id, cb) {
   let sql = `update ${db} set ${fields} where id=?`
   let update = con.query(sql, [data, id], function (error, result) {
-    console.log(update.sql)
     if (error) cb(error)
     else cb(null, result)
   })
@@ -297,7 +291,6 @@ function veiwAttendance(db, fields, condition, cb) {
   let sql = `select ${fields} from ${db} as a LEFT JOIN employees as e on a.employee_id = e.employee_id where a.date_created BETWEEN ? AND ?`;
 
   let attendance = con.query(sql, [condition.prevDate, condition.nextDate], function (error, result) {
-    // console.log(attendance.sql)
     if (error) cb(error)
     else cb(null, result)
   })
@@ -315,7 +308,6 @@ function dailyUpdate(db, fields, data, cb) {
 function findMyProjects(db, fields, condition, cb) {
   let sql = `select ${fields} from projects p LEFT JOIN employees e on (CONCAT(',', p.employee_id, ',') LIKE CONCAT('%,', e.employee_id, ',%')) where e.employee_id=?`
   let projects = con.query(sql, [condition.id], function (error, result) {
-    console.log(projects.sql)
     if (error) cb(error)
     else cb(null, result)
   })

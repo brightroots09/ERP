@@ -84,7 +84,6 @@ export class EmployeeProfileComponent implements OnInit {
     this.user.employeeProfile()
       .subscribe(res => {
         this.userModel = res[0]
-        console.log("==================>", res)
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         if (error instanceof HttpErrorResponse) {

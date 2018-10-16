@@ -32,7 +32,6 @@ export class AddProjectComponent implements OnInit {
   getEmployee() {
     this.user.employee()
       .subscribe(res => {
-        console.log(res)
         this.userModel = res
       },
         (error) => {

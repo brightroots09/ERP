@@ -38,7 +38,6 @@ export class ProjectsComponent implements OnInit {
   getProjects() {
     this.user.projects()
       .subscribe(res => {
-        console.log("======>", res)
         this.projects = res
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {

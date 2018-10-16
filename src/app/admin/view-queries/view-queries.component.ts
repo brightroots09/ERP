@@ -36,7 +36,6 @@ export class ViewQueriesComponent implements OnInit {
     this.user.getAllQueries()
       .subscribe(res => {
         this.queryModel = res
-        console.log(res)
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         console.error(error)
