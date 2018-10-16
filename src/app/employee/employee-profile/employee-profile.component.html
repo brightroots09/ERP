@@ -1,37 +1,93 @@
 <div class="row" *ngIf="filtersLoaded | async">
-	<div class="col-lg-6 ml-auto mr-auto text-center">
-		<nb-card accent="info">
-			<nb-card-header>
-				<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile_pic != ''; else else_image"
-				 src="/images/{{userModel.profile_pic}}" alt="{{ userModel.first_name }}">
+	<div class="col-lg-12">
+		<div class="row">
+			<div class="col-md-6 ml-auto mr-auto text-right">
+				<button type="button" class="btn btn-link text-danger" (click)="changePassword()" *ngIf="!edit">Change Password</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 ml-auto mr-auto text-center">
+				<nb-card accent="info">
+					<nb-card-header>
+						<img class="rounded mr-auto ml-auto mt-2 card-img-top" style="width: 200px; height: 200px;" *ngIf="userModel.profile_pic != ''; else else_image"
+						 src="/images/{{userModel.profile_pic}}" alt="{{ userModel.first_name }}">
 
-				<ng-template #else_image>
-					<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.first_name }}">
-				</ng-template>
-			</nb-card-header>
-			<nb-card-body>
-				<nb-list>
-					<nb-list-item>
-						Name: {{ userModel.first_name + ' ' + userModel.last_name }} 
-					</nb-list-item>
-					<nb-list-item>
-						Designation: {{ userModel.designation }}
-					</nb-list-item>
-					<nb-list-item>
-						Email: {{userModel.email}}
-					</nb-list-item>
-					<nb-list-item>
-						Salary: {{ userModel.salary | currency:'INR' }}
-					</nb-list-item>
-					<nb-list-item>
-						Status:
-						<span class="badge badge-info p-2" *ngIf="userModel.is_active; else else_block">Active</span>
-						<ng-template #else_block>
-							<span class="badge badge-info p-2">Inactive</span>
+						<ng-template #else_image>
+							<img class="rounded ml-auto mr-auto mt-2 card-img-top" style="width: 200px; height: 200px;" src="/images/no_user.png" alt="{{ userModel.first_name }}">
 						</ng-template>
-					</nb-list-item>
-				</nb-list>
-			</nb-card-body>
-		</nb-card>
+					</nb-card-header>
+					<nb-card-body>
+						<nb-list>
+							<nb-list-item>
+								Name: {{ userModel.first_name + ' ' + userModel.last_name }}
+							</nb-list-item>
+							<nb-list-item>
+								Designation: {{ userModel.designation }}
+							</nb-list-item>
+							<nb-list-item>
+								Email: {{userModel.email}}
+							</nb-list-item>
+							<nb-list-item>
+								Salary: {{ userModel.salary | currency:'INR' }}
+							</nb-list-item>
+							<nb-list-item>
+								Status:
+								<span class="badge badge-info p-2" *ngIf="userModel.is_active; else else_block">Active</span>
+								<ng-template #else_block>
+									<span class="badge badge-info p-2">Inactive</span>
+								</ng-template>
+							</nb-list-item>
+						</nb-list>
+					</nb-card-body>
+				</nb-card>
+			</div>
+
+			<div class="col-md-6 ml-auto mr-auto text-center" *ngIf="edit">
+				<nb-card class="text-center" accent="info">
+					<nb-card-header>
+						Edit Employee
+					</nb-card-header>
+					<nb-card-body>
+
+						<nb-alert status="danger" closable (close)="onClose()" *ngIf="message">
+							{{ message }}
+						</nb-alert>
+
+						<form (ngSubmit)="onFormSubmit(userModel)" class="mb-3">
+							<!-- old password -->
+							<div class="form-group" *ngIf="edit">
+								<label for="old_password">Old Password: </label>
+								<input type="text" id="old_password" name="old_password" class="form-control" #old_password="ngModel" [class.in-valid]="old_password.invalid && old_password.touched"
+								 [class.is-valid]="old_password.valid && old_password.untouched" [(ngModel)]="passwordModel.old_password" required>
+								<small class="text-danger" [class.d-none]="old_password.valid || old_password.untouched">Old Password is required</small>
+								<small class="text-danger" [class.d-none]="userModel.password == passwordModel.old_password || old_password.untouched || old_password.invalid">Old Password did not match</small>
+							</div>
+							<!-- new password -->
+							<div class="form-group" *ngIf="edit">
+								<label for="new_password">New Password: </label>
+								<input type="text" id="new_password" name="new_password" class="form-control" #new_password="ngModel" [class.in-valid]="new_password.invalid && new_password.touched"
+								 [class.is-valid]="new_password.valid && new_password.untouched" [(ngModel)]="passwordModel.new_password" required>
+								<small class="text-danger" [class.d-none]="new_password.valid || new_password.untouched">New Password is required</small>
+							</div>
+							<!-- confirm password -->
+							<div class="form-group" *ngIf="edit">
+								<label for="confirm_password">Confirm Password: </label>
+								<input type="text" id="confirm_password" name="confirm_password" class="form-control" #confirm_password="ngModel" [class.in-valid]="confirm_password.invalid && confirm_password.touched"
+								 [class.is-valid]="confirm_password.valid && confirm_password.untouched" [(ngModel)]="passwordModel.confirm_password"
+								 required>
+								<small class="text-danger" [class.d-none]="confirm_password.valid || confirm_password.untouched">Confirm Password is required</small>
+								<small class="text-danger" [class.d-none]="passwordModel.new_password == passwordModel.confirm_password || confirm_password.untouched || confirm_password.invalid">Confirm Password did not match with New Password</small>
+							</div>
+
+							<button nbButton outline status="primary" size="xsmall" *ngIf="edit" class="mr-2">Update</button>
+							<button nbButton outline status="danger" size="xsmall" *ngIf="edit" class="mr-2" (click)="changePassword()">Cancel</button>
+
+
+						</form>
+					</nb-card-body>
+				</nb-card>
+			</div>
+
+		</div>
 	</div>
 </div>

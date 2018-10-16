@@ -3,6 +3,7 @@ import { User } from '../../user';
 import { Router } from '@angular/router';
 import { UserService } from '../../user.service';
 import { HttpErrorResponse } from '../../../../node_modules/@angular/common/http';
+import { Password } from '../../password';
 
 @Component({
   selector: 'app-employee-profile',
@@ -17,7 +18,11 @@ export class EmployeeProfileComponent implements OnInit {
   individualTasksLoaded: Promise<boolean>;
   queriesLoaded: Promise<boolean>;
 
+  edit: boolean = false;
+
   userModel;
+  passwordModel = new Password();
+  message;
   BarChart = [];
 
   projectModel;
@@ -88,5 +93,24 @@ export class EmployeeProfileComponent implements OnInit {
           }
         }
       })
+    }
+
+    changePassword(){
+      this.edit = !this.edit
+    }
+
+    onFormSubmit(user){
+      if(user.password != this.passwordModel.old_password || this.passwordModel.confirm_password != this.passwordModel.new_password){
+        this.message = "Cannot update password"
+      }
+      else {
+        this.user.changePassword(user.employee_id, this.passwordModel)
+          .subscribe(res => {
+            this.message = null
+            window.location.reload()
+          }, error => {
+            console.error(error)
+          })
+      }
     }
 }

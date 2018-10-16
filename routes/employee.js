@@ -100,6 +100,26 @@ router.get("/employee_profile", verifyToken, function (req, res, callback) {
 
 
 /**
+ * ---------------------
+ * CHANGE PASSWORD ROUTE
+ * ---------------------
+ */
+
+router.post("/change_password", verifyToken, function (req, res, callback){
+	
+	obj = {
+		"fields": `password = ?`,
+		"data": [req.body.data.confirm_password],
+		"condition": req.body.id
+	}
+
+	commonFunction.updateEmployee("employees", obj, function(error, result){
+		if(error) callback(error)
+		else res.json("Password Changed!")
+	})
+})
+
+/**
  * -----------------
  * MY PROJECTS ROUTE
  * -----------------

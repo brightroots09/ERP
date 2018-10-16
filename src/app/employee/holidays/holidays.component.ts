@@ -43,7 +43,7 @@ export class HolidaysComponent implements OnInit {
       Day: "Tuesday",
       Date: "December 25th, 2018"
     },
-    {
+    /*{
       Holiday: "New Year",
       Month: "January",
       Day: "Sunday",
@@ -72,7 +72,7 @@ export class HolidaysComponent implements OnInit {
       Month: "August",
       Day: "Sunday",
       Date: "Aug 26th, 2019"
-    }
+    }*/
   ]
 
 }

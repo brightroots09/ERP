@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { User } from '../../user';
 import { Router } from '@angular/router';
 import { UserService } from '../../user.service';
+import { staggerAnimate } from '../../animation';
 
 
 @Component({
   selector: 'app-employees',
   templateUrl: './employees.component.html',
-  styleUrls: ['./employees.component.css']
+  styleUrls: ['./employees.component.css'],
+  animations: [
+    staggerAnimate    
+  ]
 })
 export class EmployeesComponent implements OnInit {
   
