@@ -100,7 +100,7 @@
 					</div>
 				</div>
 				<nb-alert status="danger" closable *ngIf="warning" (click)="closeEmployeeWarning()">{{ warning }}</nb-alert>
-				<nb-list *ngIf="projectModel[0].employee__first_name != null; else employee_else">
+				<nb-list *ngIf="projectModel[0].employee_first_name != null; else employee_else">
 					<nb-list-item *ngFor="let employee of projectModel" class="text-left">
 						<div class="row">
 							<div class="col-md-*">
