@@ -75,7 +75,7 @@ export class AppComponent {
       link: '/individualTask'
     },
     {
-      title: "View Attendance",
+      title: "My Attendance",
       icon: "far fa-eye",
       link: '/myAttendance'
     },

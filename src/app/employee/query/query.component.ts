@@ -28,7 +28,7 @@ export class QueryComponent implements OnInit {
   
   async ngOnInit() {
     try {
-      await this.getTasks()
+      await this.getQueries()
       await this.getEmployees()
       await this.getProfile()
     } catch (error) {
@@ -36,7 +36,7 @@ export class QueryComponent implements OnInit {
     }
   }
 
-  getTasks(){
+  getQueries(){
     this.user.queries()
       .subscribe(res => {
         this.queryModel = res

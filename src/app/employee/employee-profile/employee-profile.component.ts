@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../user.service';
 import { HttpErrorResponse } from '../../../../node_modules/@angular/common/http';
 import { Password } from '../../password';
+import { NbSidebarService, NbMenuItem } from '@nebular/theme';
 
 @Component({
   selector: 'app-employee-profile',
@@ -112,4 +113,23 @@ export class EmployeeProfileComponent implements OnInit {
           })
       }
     }
+
+
+    adminRoutes: NbMenuItem[] = [
+      {
+        title: "Queries/Requests",
+        icon: 'fas fa-question-circle',
+        link: '/view-queries'
+      },
+      {
+        title: "View Attendance",
+        icon: "far fa-eye",
+        link: "/view-attendances"
+      },
+      {
+        title: "Add absenties",
+        icon: "far fa-times-circle",
+        link: "/add-absenties"
+      }
+    ]
 }

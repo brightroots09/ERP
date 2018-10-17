@@ -228,10 +228,11 @@ function findTasks(db, fields, join, condition, cb) {
   let sql;
 
   if (join) {
-    sql = `select ${fields} from ${db} as t LEFT JOIN employees as e ON (CONCAT(',', t.others, ',') LIKE CONCAT('%,', e.employee_id, ',%')) LEFT JOIN projects as p ON t.project_id = p.project_id where ${condition}`
+    sql = `select ${fields} from ${db} as t LEFT JOIN employees as e ON find_in_set(e.employee_id, 
+      t.others) LEFT JOIN projects as p ON t.project_id = p.project_id where ${condition} ORDER BY t.date_created DESC`
   }
   else {
-    sql = `select ${fields} from ${db} as t where ${condition}`
+    sql = `SELECT ${fields}, GROUP_CONCAT(e.first_name, ' ' , e.last_name ORDER BY e.employee_id) employee_name FROM tasks as t LEFT JOIN employees as e ON find_in_set(e.employee_id, t.others) GROUP BY t.id ORDER BY t.date_created DESC`
   }
 
 

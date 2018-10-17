@@ -78,6 +78,10 @@ export class UserService {
   private _createTask = "/employee/create_tasks";
   private _invidualTaskUrl = "/employee/others";
   private _myAttendanceUrl = "/employee/my_attendance";
+  private _attendanceDetailsUrl = "/employee/attendance_details";
+  private _updateAttendanceUrl = "/employee/update_daily_dairy";
+  
+
 
   constructor(private http: HttpClient) { }
 
@@ -372,5 +376,13 @@ export class UserService {
     return this.http.get(this._myAttendanceUrl)
   }
 
+  attendanceDetails(id): Observable<any> {
+    let url = this._attendanceDetailsUrl + "/" + id;
+    return this.http.get(url)
+  }
+
+  updateAttendance(attendance): Observable<any>{
+    return this.http.post<any>(this._updateAttendanceUrl, attendance)
+  }
 
 }

@@ -39,6 +39,13 @@ import { AddAbsentiesComponent } from './admin/add-absenties/add-absenties.compo
 import { AdminGuard } from './admin.auth.guard';
 import { GenerateTaskComponent } from './employee/generate-task/generate-task.component';
 import { HolidaysComponent } from './employee/holidays/holidays.component';
+import { QueriesComponent } from './employee/queries/queries.component';
+import { ViewAttendancesComponent } from './employee/view-attendances/view-attendances.component';
+import { AttendancesComponent } from './employee/attendances/attendances.component';
+import { AllAttendancesComponent } from './employee/all-attendances/all-attendances.component';
+import { AbsentiesComponent } from './employee/absenties/absenties.component';
+import { ExportsComponent } from './employee/exports/exports.component';
+import { AttendanceDetailsComponent } from './employee/attendance-details/attendance-details.component';
 
 const routes: Routes = [
   {
@@ -237,6 +244,41 @@ const routes: Routes = [
   {
     path: "myAttendance",
     component: MyAttendanceComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "view-queries",
+    component: QueriesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "view-attendances",
+    component: ViewAttendancesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "attendances/:date",
+    component: AttendancesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "allAttendances/:date",
+    component: AllAttendancesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "add-absenties",
+    component: AbsentiesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "exports/:date",
+    component: ExportsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "attendance_details/:id",
+    component: AttendanceDetailsComponent,
     canActivate: [AuthGuard]
   },
   {

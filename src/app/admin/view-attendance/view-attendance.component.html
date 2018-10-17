@@ -3,7 +3,7 @@
 
     <nb-card accent="info">
       <nb-card-header>
-        Attendance
+        Attendance - {{ param.date | date: 'mediumDate' }}
         <button type="button" class="btn btn-link text-primary p-0 float-right" (click)="viewAllAttendance()">View All</button>
       </nb-card-header>
       <nb-card-body>
@@ -18,7 +18,8 @@
                 <th>Total Hours</th>
                 <th>Status</th>
                 <!-- <th>Salary</th> -->
-                <th>Date</th>
+                <th>In Time</th>
+                <th>Out Time</th>
               </tr>
             </thead>
             <tbody>
@@ -48,8 +49,11 @@
                       {{ attendance.employee_id.salary }}
                     </td> -->
                   <td>
-                    {{ attendance.date_created | date:'mediumDate' }}
+                    {{ attendance.in_time }}
                   </td>
+                  <td>
+                      {{ attendance.out_time }}
+                    </td>
                 </tr>
               </ng-container>
             </tbody>
