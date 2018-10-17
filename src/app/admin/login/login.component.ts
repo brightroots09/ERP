@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit {
     this._auth.loginUser(this.userModel)
       .subscribe(
         res => {
-          console.log(res)
           if (res.token) {
             localStorage.setItem('token', res.token)
             this._router.navigate(["/profile"])

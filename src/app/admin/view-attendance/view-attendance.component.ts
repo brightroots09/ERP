@@ -38,7 +38,6 @@ export class ViewAttendanceComponent implements OnInit {
     this.user.getAttendance(this.param.date)
       .subscribe(res => {
         this.attendanceModel = res
-        console.log(res)
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         console.error(error)

@@ -35,7 +35,6 @@ export class ProjectTaskDetailsComponent implements OnInit {
   getTasksDetails(){
     this.user.projectTasksDetails(this.param.id)
       .subscribe(res => {
-        console.log("***********", res)
         this.tasksModel = res
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {

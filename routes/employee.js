@@ -521,4 +521,47 @@ router.get("/my_attendance", verifyToken, function (req, res, callback) {
 
 })
 
+
+/**
+ * ------------------
+ * ATTENDANCE DETAILS
+ * ------------------
+ */
+router.get("/attendance_details/:id", verifyToken, function(req, res, token){
+	let condition = {
+		field: `id = ?`,
+		id: req.params.id
+	};
+
+	let fields = `id, morning_session, evening_session, in_time, out_time, total_hours, status, date_created`
+
+	commonFunction.dailyDiary('dailyUpdate', fields, condition, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
+	})
+})
+
+
+/**
+ * ------------------
+ * UPDATE DAILY DAIRY
+ * ------------------
+ */
+
+ router.post("/update_daily_dairy", verifyToken, function(req, res, callback){
+	let fields = `in_time = ?, out_time = ?, total_hours = ?`
+
+	let in_time = moment(req.body.in_time, 'YYYY-MM-DD HH:mm:ss')
+	let new_date = moment(req.body.out_time, 'YYYY-MM-DD HH:mm:ss')
+	let diff = moment.duration(new_date.diff(in_time))
+	let format_date = diff.asHours();
+
+	let data = [in_time.format('LTS'), new_date.format('LTS'), format_date, req.body.id]
+
+	commonFunction.updateDailyDiary('dailyUpdate', fields, data, function (error, result) {
+		if (error) callback(error)
+		else res.json(result)
+	})
+ })
+
 module.exports = router;

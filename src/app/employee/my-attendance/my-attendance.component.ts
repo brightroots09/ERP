@@ -29,7 +29,6 @@ export class MyAttendanceComponent implements OnInit {
     this.user.myAttendance()
       .subscribe(res => {
         this.attendanceModel = res
-        console.log(res)
         this.getTotal()
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {

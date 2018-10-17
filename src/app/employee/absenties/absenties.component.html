@@ -1,0 +1,49 @@
+<div class="row" *ngIf="filtersLoaded | async">
+    <div class="col-md-12">
+  
+      <nb-card accent="danger">
+        <nb-card-header>
+          Add Absenties
+        </nb-card-header>
+        <nb-card-body>
+          <div class="alert alert-danger alert-dismissible fade show" *ngIf="error" role="alert">
+            Date is required.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table *ngIf="userModel.length > 0; else userModel_else" class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Designation</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let employee of userModel">
+                  <td>{{ employee.employee_first_name }} {{ employee.employee_last_name }}</td>
+                  <td>
+                    {{ employee.employee_designation }}
+                  </td>
+                  <td>
+                    <input type="date" class="form-control" #date="ngModel" id="date{{employee.employee_id}}" name="date" [(ngModel)]="dateModel">
+                  </td>
+                  <td>
+                    <a class="btn btn-link text-primary p-0 text-danger" (click)='absent(employee.employee_id)'>Mark as absent</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ng-template #userModel_else>
+            <div class="col-md-6 offset-md-3 text-center">
+              <h3>No employee.</h3>
+            </div>
+          </ng-template>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>

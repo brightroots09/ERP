@@ -1,0 +1,89 @@
+<div class="row" *ngIf="filtersLoaded | async">
+
+    <div class="col-md-12">
+      <nb-card accent="info">
+        <nb-card-header>
+          List of Queries
+        </nb-card-header>
+        <nb-card-body>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Employee Name</th>
+                  <th>Management</th>
+                  <th>Message</th>
+                  <th>Status</th>
+                  <th>Reply</th>
+                  <th>Date Created</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="queryModel.length > 0; else queryModel_else">
+                  <tr *ngFor="let query of queryModel">
+                    <td>
+                        <nb-user [name]="query.employee_first_name + ' ' + query.employee_last_name" [title]="query.employee_designation">
+                        </nb-user>
+                    </td>
+                    <td>
+                      <nb-user [name]="query.management_first_name + ' ' + query.management_last_name" [title]="query.management_designation">
+                      </nb-user>
+                    </td>
+                    <td>{{ query.message }}</td>
+                    <td>{{ query.status }}</td>
+                    <td *ngIf="query.reply != null; else reply_else">
+                      {{ query.reply }}
+                    </td>
+                    <ng-template #reply_else>
+                      <td class="text-muted">No reply yet</td>
+                    </ng-template>
+                    <td>{{ query.date_created | date : 'mediumDate' }}</td>
+                    <td>
+                      <button nbButton outline status="primary" size="xsmall" *ngIf="query.status != 'closed'" (click)="closeTicket(query.id)">
+                        Mark as closed
+                      </button>
+                      <button nbButton outline status="danger" size="xsmall" [disabled]="query.reply != null" data-toggle="modal" attr.data-target="#replyModal{{query.id}}" class="ml-2">
+                        Reply
+                      </button>
+                    </td>
+  
+                    <div class="modal fade" id="replyModal{{query.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form (ngSubmit)="onFormSubmit(query.id)" class="mb-3">
+                              <div class="form-group">
+                                <label>Reply</label>
+                                <textarea #reply="ngModel" class="form-control" name="reply" [(ngModel)]="updateModel.reply" [class.is-invalid]="reply.invalid && reply.touched"
+                                  [class.is-valid]="reply.valid && reply.touched" placeholder="Enter tour text here..." required></textarea>
+                                <small class="text-danger" [class.d-none]="reply.valid || reply.untouched">Reply is required</small>
+                              </div>
+                              <button type="submit" class="btn btn-outline-primary mr-2">Send</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                  </tr>
+                </ng-container>
+                <ng-template #queryModel_else>
+                  <tr>
+                    <td colspan="7" class="text-center">
+                        No queries asked
+                    </td>
+                  </tr>
+                </ng-template>
+              </tbody>
+            </table>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>

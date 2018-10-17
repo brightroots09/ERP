@@ -31,7 +31,6 @@ export class IndividualTaskComponent implements OnInit {
   getTasks(){
     this.user.invidualTaskUrl()
       .subscribe(res => {
-        console.log(res)
         this.tasksModel = res
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
@@ -49,7 +48,6 @@ export class IndividualTaskComponent implements OnInit {
     }
     this.user.toggleTaskStatus(obj)
       .subscribe(res => {
-        console.log(res)
         window.location.reload()
       }, (error) => {
         console.error(error)

@@ -22,7 +22,6 @@ export class EmployeeLoginComponent implements OnInit {
     this._auth.employeeLogin(this.userModel)
       .subscribe(
         res => {
-          console.log(res)
           if (res.token) {
             localStorage.setItem('employeeToken', res.token)
             this._router.navigate(["/employeeProfile"])

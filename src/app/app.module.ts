@@ -65,7 +65,13 @@ import { MyAttendanceComponent } from './employee/my-attendance/my-attendance.co
 import { GenerateTaskComponent } from './employee/generate-task/generate-task.component';
 import { GroupByPipe } from './group-by.service';
 import { HolidaysComponent } from './employee/holidays/holidays.component';
-
+import { QueriesComponent } from './employee/queries/queries.component';
+import { ExportsComponent } from './employee/exports/exports.component';
+import { ViewAttendancesComponent } from './employee/view-attendances/view-attendances.component';
+import { AttendancesComponent } from './employee/attendances/attendances.component';
+import { AllAttendancesComponent } from './employee/all-attendances/all-attendances.component';
+import { AbsentiesComponent } from './employee/absenties/absenties.component';
+import { AttendanceDetailsComponent } from './employee/attendance-details/attendance-details.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +113,14 @@ import { HolidaysComponent } from './employee/holidays/holidays.component';
     ExportToPdfComponent,
     AddAbsentiesComponent,
     GenerateTaskComponent,
-    HolidaysComponent
+    HolidaysComponent,
+    QueriesComponent,
+    ViewAttendancesComponent,
+    AttendancesComponent,
+    AllAttendancesComponent,
+    AbsentiesComponent,
+    ExportsComponent,
+    AttendanceDetailsComponent,
   ],
   imports: [
     BrowserModule,

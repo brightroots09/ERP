@@ -30,7 +30,6 @@ export class MyTasksComponent implements OnInit {
   getTasks(){
     this.user.myTasks()
       .subscribe(res => {
-        console.log(res)
         this.tasksModel = res
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {

@@ -45,7 +45,6 @@ export class GenerateTaskComponent implements OnInit {
   getProjects(){
     this.user.projects()
       .subscribe(res => {
-        console.log("======>", res)
         this.projectsModel = res
       }, (error) => {
         console.error(error)

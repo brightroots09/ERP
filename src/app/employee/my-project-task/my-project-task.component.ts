@@ -34,7 +34,6 @@ export class MyProjectTaskComponent implements OnInit {
   getTasksDetails() {
     this.user.myProjectTaskDetails(this.param.id)
       .subscribe(res => {
-        console.log(res)
         this.tasksModel = res
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
@@ -53,7 +52,6 @@ export class MyProjectTaskComponent implements OnInit {
     }
     this.user.toggleTaskStatus(obj)
       .subscribe(res => {
-        console.log(res)
         window.location.reload()
       }, (error) => {
         console.error(error)

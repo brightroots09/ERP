@@ -37,7 +37,6 @@ export class DailyUpdateComponent implements OnInit {
     this.user.myDailyTasks(this.param.id)
       .subscribe(res => {
         this.tasksModel = res
-        console.log(res)
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         console.error(error)
