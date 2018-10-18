@@ -40,6 +40,7 @@ import { ViewAllAttendanceComponent } from './admin/view-all-attendance/view-all
 import { AddProjectTaskComponent } from './admin/add-project-task/add-project-task.component';
 import { ExportToPdfComponent } from './admin/export-to-pdf/export-to-pdf.component';
 import { AddAbsentiesComponent } from './admin/add-absenties/add-absenties.component';
+import { AttendancesDetailsComponent } from './admin/attendances-details/attendances-details.component';
 
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -121,6 +122,7 @@ import { AttendanceDetailsComponent } from './employee/attendance-details/attend
     AbsentiesComponent,
     ExportsComponent,
     AttendanceDetailsComponent,
+    AttendancesDetailsComponent,
   ],
   imports: [
     BrowserModule,
