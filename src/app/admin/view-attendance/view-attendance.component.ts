@@ -99,4 +99,8 @@ export class ViewAttendanceComponent implements OnInit {
     this.router.navigate([`/all_attendance/${this.param.date}`])
   }
 
+  edit(id){
+    this.router.navigate([`/attendances_details/${id}`])
+  }
+
 }

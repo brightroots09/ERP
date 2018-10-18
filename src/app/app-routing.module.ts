@@ -46,6 +46,7 @@ import { AllAttendancesComponent } from './employee/all-attendances/all-attendan
 import { AbsentiesComponent } from './employee/absenties/absenties.component';
 import { ExportsComponent } from './employee/exports/exports.component';
 import { AttendanceDetailsComponent } from './employee/attendance-details/attendance-details.component';
+import { AttendancesDetailsComponent } from './admin/attendances-details/attendances-details.component';
 
 const routes: Routes = [
   {
@@ -160,6 +161,11 @@ const routes: Routes = [
   {
     path: "all_attendance/:date",
     component: ViewAllAttendanceComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: "attendances_details/:id",
+    component: AttendancesDetailsComponent,
     canActivate: [AdminGuard]
   },
   {

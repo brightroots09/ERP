@@ -3,11 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../user.service';
 
 @Component({
-  selector: 'app-attendance-details',
-  templateUrl: './attendance-details.component.html',
-  styleUrls: ['./attendance-details.component.css']
+  selector: 'app-attendances-details',
+  templateUrl: './attendances-details.component.html',
+  styleUrls: ['./attendances-details.component.css']
 })
-export class AttendanceDetailsComponent implements OnInit {
+export class AttendancesDetailsComponent implements OnInit {
 
   attendanceModel;
   filtersLoaded: Promise<boolean>;
@@ -45,14 +45,13 @@ export class AttendanceDetailsComponent implements OnInit {
     }
     this.user.updateAttendance(obj)
       .subscribe(res => {
-        this.router.navigate(["/view-attendances"])
+        this.router.navigate(["/attendance"])
       }, error => {
         console.error(error)
       })
   }
 
   cancel(){
-    this.router.navigate(["/view-attendances"])
+    this.router.navigate(["/attendance"])
   }
-
 }

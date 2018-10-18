@@ -1,0 +1,52 @@
+<div class="row" *ngIf="filtersLoaded | async">
+    <div class="col-md-12">
+  
+      <nb-card accent="info">
+        <nb-card-header>
+          Attendance -
+          <span *ngIf="attendanceModel != undefined">{{ attendanceModel.date_created | date:'mediumDate' }}</span>
+          <button type="button" class="btn btn-link text-primary p-0 float-right" (click)="viewAllAttendance()">View All</button>
+        </nb-card-header>
+        <nb-card-body>
+          <div class="table-responsive">
+            <table *ngIf="attendanceModel != null; else attendanceModel_else" class="table">
+              <thead>
+                <tr>
+                  <th>Previous In Time</th>
+                  <th>New In Time</th>
+                  <th>Previous Out Time</th>
+                  <th>New Out Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td style="line-height: 2.5rem">{{ attendanceModel.in_time }}</td>
+                    <td>
+                      <input type="datetime-local" name="in_time" [(ngModel)]="in_time" class="form-control">
+                    </td>
+                    <td style="line-height: 2.5rem">{{ attendanceModel.out_time }}</td>
+                    <td>
+                      <input type="datetime-local" name="out_time" [(ngModel)]="out_time" class="form-control">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="text-right">
+                        <button nbButton outline status="primary" size="xsmall" class="mr-2" (click)="update()">Update</button>
+                    </td>            
+                    <td colspan="2" class="text-left">
+                      <button nbButton outline status="danger" size="xsmall" class="mr-2" (click)="cancel()">Cancel</button>
+                    </td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+          <ng-template #attendanceModel_else>
+            <div class="col-md-6 offset-md-3 text-center">
+              <p>No Record Found.</p>
+            </div>
+          </ng-template>
+        </nb-card-body>
+      </nb-card>
+  
+    </div>
+  </div>
