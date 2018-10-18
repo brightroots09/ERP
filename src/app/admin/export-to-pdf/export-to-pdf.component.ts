@@ -39,6 +39,7 @@ export class ExportToPdfComponent implements OnInit {
   getAttendance() {
     this.user.getAllAttendance(this.param.date)
       .subscribe(res => {
+        console.log(res)
         this.attendanceModel = res
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {

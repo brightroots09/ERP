@@ -10,7 +10,20 @@ export class GroupByPipe implements PipeTransform {
         if(!collection) {
             return null;
         }
-        // if(property == 'employee_first_name'){
+        if(property == 'date_created'){
+
+            const groupedCollection = collection.reduce((previous, current)=> {
+                var date = new Date(current[property]).toLocaleDateString()
+                  if(!previous[date]) {
+                    previous[date] = [current];
+                  } else {
+                      previous[date].push(current);
+                  }
+                  return previous;
+              }, {});
+              return Object.keys(groupedCollection).map(key => ({ key, value: groupedCollection[key]}));
+        }
+        else{
             const groupedCollection = collection.reduce((previous, current)=> {
                 //   var date = new Date(current[property]).toLocaleDateString()
                     if(!previous[current[property]]) {
@@ -21,18 +34,6 @@ export class GroupByPipe implements PipeTransform {
                     return previous;
                 }, {});
                 return Object.keys(groupedCollection).map(key => ({ key: groupedCollection[key], value: groupedCollection[key]}));
-        // }
-        // else{
-            // const groupedCollection = collection.reduce((previous, current)=> {
-            //       var date = new Date(current[property]).toLocaleDateString()
-            //         if(!previous[date]) {
-            //           previous[date] = [current];
-            //         } else {
-            //             previous[date].push(current);
-            //         }
-            //         return previous;
-            //     }, {});
-            //     return Object.keys(groupedCollection).map(key => ({ key, value: groupedCollection[key]}));
-        // }
+        }
     }
 }

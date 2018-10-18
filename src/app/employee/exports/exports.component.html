@@ -21,7 +21,7 @@
                 <tr>
                   <th>Name</th>
                   <th>Designation</th>
-                  <th *ngFor="let attendance of attendanceModel | groupBy:'date_created'">{{ attendance.key[0].date_created | date:'mediumDate' }}</th>
+                  <th *ngFor="let attendance of attendanceModel | groupBy:'date_created'">{{ attendance.key | date:'mediumDate' }}</th>
                   <th>Total Hours Worked</th>
                   <th>Salary</th>
                 </tr>
