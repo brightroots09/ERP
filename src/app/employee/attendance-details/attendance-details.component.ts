@@ -45,7 +45,7 @@ export class AttendanceDetailsComponent implements OnInit {
     }
     this.user.updateAttendance(obj)
       .subscribe(res => {
-        this.router.navigate(["/view_attendances"])
+        this.router.navigate(["/view-attendances"])
       }, error => {
         console.error(error)
       })
