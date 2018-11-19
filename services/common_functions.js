@@ -289,7 +289,7 @@ function toggleStatus(db, fields, data, id, cb) {
 }
 
 function veiwAttendance(db, fields, condition, cb) {
-  let sql = `select ${fields} from ${db} as a LEFT JOIN employees as e on a.employee_id = e.employee_id where a.date_created BETWEEN ? AND ?`;
+  let sql = `select ${fields} from ${db} as a LEFT JOIN employees as e on a.employee_id = e.employee_id where a.date_created >= ? AND a.date_created < ?`;
 
   let attendance = con.query(sql, [condition.prevDate, condition.nextDate], function (error, result) {
     if (error) cb(error)

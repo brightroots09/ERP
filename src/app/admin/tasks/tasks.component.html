@@ -28,6 +28,7 @@
                 </th>
                 <th>Title</th>
                 <th>Employees</th>
+		<th>Status</th>
                 <th>Date Created</th>
                 <th>Action</th>
               </tr>
@@ -42,6 +43,9 @@
                 <ng-template #name_else>
                   <td>-</td>
                 </ng-template>
+		<td>
+		 {{ tasks.status }}
+		</td>
                 <td>{{ tasks.task_date_created | date : 'mediumDate'}}</td>
                 <td>
                   <a class="btn btn-link text-success p-0 m-0" routerLink="/tasks_details/{{tasks.task_id}}">

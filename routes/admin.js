@@ -550,7 +550,7 @@ router.post("/projects_delete", verifyToken, function (req, res, callback) {
 
 router.get("/tasks", verifyToken, function (req, res, callback) {
 	
-	let fields = "t.id as task_id, t.task_name, t.task_description, t.date_created as task_date_created"
+	let fields = "t.id as task_id, t.task_name, t.task_description, t.status, t.date_created as task_date_created"
 
 	commonFunction.findTasks('tasks', fields, false, 1, function(error, result){
 		if(error) callback(error)
@@ -788,7 +788,9 @@ router.get("/attendance/:date", verifyToken, function (req, res, callback) {
 
 	commonFunction.veiwAttendance('dailyUpdate', fields, condition, function(error, result){
 		if(error) callback(error)
-		else res.json(result)
+		else {
+			res.json(result)
+		}
 	})
 })
 
