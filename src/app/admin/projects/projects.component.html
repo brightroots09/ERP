@@ -42,7 +42,7 @@ Selected</button>
 								<td>{{ project.project_name }}</td>
 								<td>{{ project.project_description }}</td>
 								<td>
-									<span class="badge badge-info p-2">{{ project.status }}</span>
+									<span [class]='project.status == "Completed" ? "badge badge-success p-2" : "badge badge-info p-2" '>{{ project.status }}</span>
 								</td>
 								<td>{{ project.date_created | date : 'mediumDate'}}</td>
 								<td *ngIf="!multiSelect">
