@@ -16,7 +16,7 @@
                 <th>Date</th>
               </tr>
             </thead>
-            <tbody *ngIf="attendanceModel.length > 0; else attendanceModel_else">
+            <tbody *ngIf="attendanceModel.length > 0; else attendanceModel_else" [@fade]="attendanceModel.length">
               <tr *ngFor="let attendance of attendanceModel">
                 <td>{{attendance.morning_session}}</td>
                 <td>{{attendance.evening_session}}</td>

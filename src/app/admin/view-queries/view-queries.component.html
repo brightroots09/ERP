@@ -19,8 +19,7 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <ng-container *ngIf="queryModel.length > 0; else queryModel_else">
+            <tbody *ngIf="queryModel.length > 0; else queryModel_else" [@fade]="queryModel.length">
                 <tr *ngFor="let query of queryModel">
                   <td>
                       <nb-user [name]="query.employee_first_name + ' ' + query.employee_last_name" [title]="query.employee_designation">
@@ -72,15 +71,16 @@
                   </div>
 
                 </tr>
-              </ng-container>
-              <ng-template #queryModel_else>
+            </tbody>
+            <ng-template #queryModel_else>
+              <tbody>
                 <tr>
                   <td colspan="7" class="text-center">
                       No queries asked
                   </td>
                 </tr>
-              </ng-template>
-            </tbody>
+              </tbody>
+            </ng-template>
           </table>
         </div>
       </nb-card-body>

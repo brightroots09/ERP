@@ -10,7 +10,7 @@
 					<b>Description:</b> {{ tasksModel[0].task_description }}
 				</p>
 				<h6>
-					Status: {{ tasksModel[0].status }}
+					Status: <span [class]='tasksModel[0].status == "completed" ? "badge badge-success p-2" : tasksModel[0].status == "expired" ? "badge badge-danger p-2" : "badge badge-info p-2"'>{{ tasksModel[0].status }}</span>
 				</h6>
 			</nb-card-body>
 			<nb-card-body>

@@ -26,7 +26,7 @@
                   <th>Salary</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody [@fade]="attendanceModel.length">
                 <ng-container *ngFor="let attendance of attendanceModel | groupBy:'employee_id'">
   
                   <tr>

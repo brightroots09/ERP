@@ -2,10 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
 import { UserService } from '../../user.service';
 import { Query } from '../../query';
+import { staggerAnimate } from '../../animation';
+
 @Component({
   selector: 'app-view-queries',
   templateUrl: './view-queries.component.html',
-  styleUrls: ['./view-queries.component.css']
+  styleUrls: ['./view-queries.component.css'],
+  animations: [
+    staggerAnimate    
+  ]
 })
 export class ViewQueriesComponent implements OnInit {
 

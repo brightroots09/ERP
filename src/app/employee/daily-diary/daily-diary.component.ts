@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
 import { UserService } from '../../user.service';
 import { DailyDiary } from '../../daily-diary';
+import { staggerAnimate } from '../../animation';
 
 @Component({
   selector: 'app-daily-diary',
   templateUrl: './daily-diary.component.html',
-  styleUrls: ['./daily-diary.component.css']
+  styleUrls: ['./daily-diary.component.css'],
+  animations: [
+    staggerAnimate
+  ]
 })
 export class DailyDiaryComponent implements OnInit {
 
@@ -33,10 +37,7 @@ export class DailyDiaryComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const details = await this.getTasks()
-      if (details != undefined || details != null) {
-        this.tasksModel = details
-      }
+      await this.getTasks()
     } catch (error) {
       return error
     }
@@ -105,7 +106,8 @@ export class DailyDiaryComponent implements OnInit {
   }
 
   onEveningUpdateFormSubmit(dailyDiaryId) {
-    this.user.addEveningUpdate(dailyDiaryId, this.updateModel, this.total_hours)
+    if(this.total_hours >= 1) {
+      this.user.addEveningUpdate(dailyDiaryId, this.updateModel, this.total_hours)
       .subscribe(res => {
         // if(res != ""){
         //   this.error = res
@@ -116,6 +118,7 @@ export class DailyDiaryComponent implements OnInit {
       }, (error) => {
         console.error(error)
       })
+    }
   }
 
 }

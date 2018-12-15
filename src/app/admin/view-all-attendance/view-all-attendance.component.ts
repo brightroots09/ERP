@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef ,ViewChild, Pipe, PipeTransform, ChangeDe
 import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
 import { UserService } from '../../user.service';
 import { ExcelService } from '../../excel.service';
+import { staggerAnimate } from '../../animation';
 
 import { ExportToCsv } from 'export-to-csv';
 import * as jspdf from 'jspdf';  
@@ -11,7 +12,10 @@ import html2canvas from 'html2canvas';
 @Component({
   selector: 'app-view-all-attendance',
   templateUrl: './view-all-attendance.component.html',
-  styleUrls: ['./view-all-attendance.component.css']
+  styleUrls: ['./view-all-attendance.component.css'],
+  animations: [
+    staggerAnimate
+  ]
 })
 export class ViewAllAttendanceComponent implements OnInit {
 

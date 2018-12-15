@@ -20,17 +20,27 @@
 								<th>Status</th>
 								<th>Action</th>
 								<th>Date Created</th>
+								<th>Update Date</th>
 							</tr>
 						</thead>
-						<tbody *ngIf="tasksModel.length > 0; else block_task">
+						<tbody *ngIf="tasksModel.length > 0; else block_task" [@fade]="tasksModel.length">
 							<tr *ngFor="let tasks of tasksModel">
 								<td>{{tasks.task_name}}</td>
 								<td>{{ tasks.task_description }}</td>
-								<td [class]="tasks.status == 'completed' ? 'text-success' : 'text-info' ">{{ tasks.status }}</td>
+								<td [class]="tasks.status == 'completed' ? 'text-success' : tasks.status == 'expired' ? 'text-danger' : 'text-info' ">{{ tasks.status }}</td>
 								<td>
-									<button type="button" [disabled]="tasks.status == 'completed'" class="btn btn-link text-danger p-0" (click)="toggleStatus(tasks.id)">Mark as Complete</button>
+									<button type="button" *ngIf="tasks.status !== 'expired'" [disabled]="tasks.status == 'completed'" class="btn btn-link text-danger p-0" (click)="toggleStatus(tasks.id)">Mark as Complete</button>
+									<button type="button" *ngIf="tasks.status === 'expired'" class="btn btn-link text-danger p-0" (click)="updateTicket(tasks.id)">Renew</button>
 								</td>
 								<td> {{ tasks.date_created | date:'mediumDate' }} </td>
+								<td> 
+									<span *ngIf="tasks.updated_date != null; else else_date">
+										{{ tasks.updated_date | date:'mediumDate' }}
+									</span>
+									<ng-template #else_date>
+										<span>-</span>
+									</ng-template>
+								</td>
 							</tr>
 						</tbody>
 						<ng-template #block_task>

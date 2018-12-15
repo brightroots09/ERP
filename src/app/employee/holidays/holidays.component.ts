@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { staggerAnimate } from '../../animation';
 
 @Component({
   selector: 'app-holidays',
   templateUrl: './holidays.component.html',
-  styleUrls: ['./holidays.component.css']
+  styleUrls: ['./holidays.component.css'],
+  animations: [
+    staggerAnimate
+  ]
 })
 export class HolidaysComponent implements OnInit {
 

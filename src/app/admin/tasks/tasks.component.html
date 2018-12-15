@@ -33,22 +33,22 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody *ngIf="tasksModel.length > 0; else else_block">
+            <tbody *ngIf="tasksModel.length > 0; else else_block" [@fade]="tasksModel.length">
               <tr *ngFor="let tasks of tasksModel">
                 <td *ngIf="multiSelect">
                   <input type="checkbox" [(ngModel)]="tasks.selected">
                 </td>
-                <td>{{ tasks.task_name }}</td>
+                <td>{{ tasks.task_name.length > 40 ? tasks.task_name.slice(0, 40) + '...' : tasks.task_name }}</td>
                 <td *ngIf="tasks.employee_name != null; else name_else"> {{ tasks.employee_name }} </td>
                 <ng-template #name_else>
                   <td>-</td>
                 </ng-template>
                 <td>
-                  <span [class]='tasks.status == "completed" ? "badge badge-success p-2" : "badge badge-info p-2" '>
-                    {{ tasks.status }}
+                  <span [class]='tasks.status == "completed" ? "badge badge-success p-2" : tasks.status == "expired" ? "badge badge-danger p-2" : "badge badge-info p-2"'>
+                    {{ tasks.status }} ({{tasks.total_hours | number:'1.0-1'}} hours)
                   </span>
                 </td>
-                <td>{{ tasks.task_date_created | date : 'mediumDate'}}</td>
+                <td>{{ tasks.task_date_created }}</td>
                 <td>
                   <a class="btn btn-link text-success p-0 m-0" routerLink="/tasks_details/{{tasks.task_id}}">
                     View

@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
 import { UserService } from '../../user.service';
 import { Query } from '../../query';
+import { staggerAnimate } from '../../animation';
 
 @Component({
   selector: 'app-queries',
   templateUrl: './queries.component.html',
-  styleUrls: ['./queries.component.css']
+  styleUrls: ['./queries.component.css'],
+  animations: [
+    staggerAnimate
+  ]
 })
 export class QueriesComponent implements OnInit {
 
@@ -26,14 +30,13 @@ export class QueriesComponent implements OnInit {
   
   async ngOnInit() {
     try {
-      const details = await this.getTasks()
-      this.queryModel = details
+      await this.getQueries()
     } catch (error) {
       return error
     }
   }
 
-  getTasks(){
+  getQueries(){
     this.user.getAllQueries()
       .subscribe(res => {
         this.queryModel = res

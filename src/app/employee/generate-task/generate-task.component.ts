@@ -53,11 +53,11 @@ export class GenerateTaskComponent implements OnInit {
 
   onFormSubmit(){
     this.user.createTask(this.tasksModel, this.projects, this.userModel.employee_id)
-      .subscribe(res => {
-        this.router.navigate(["/myTasks"])
-      }, (error) => {
-        console.error(error)
-      })
+    .subscribe(res => {
+      this.projects.length > 0 ? this.router.navigate(["/myTasks"]) : this.router.navigate(["/individualTask"])
+    }, (error) => {
+      console.error(error)
+    })
   }
 
   cancelAdd() {

@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../user.service';
 import { ExcelService } from '../../excel.service';
+import { staggerAnimate } from '../../animation';
 
 @Component({
   selector: 'app-attendances',
   templateUrl: './attendances.component.html',
-  styleUrls: ['./attendances.component.css']
+  styleUrls: ['./attendances.component.css'],
+  animations: [
+    staggerAnimate
+  ]
 })
 export class AttendancesComponent implements OnInit {
 

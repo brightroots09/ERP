@@ -26,7 +26,7 @@
 								<th>Date Created</th>
 							</tr>
 						</thead>
-						<tbody *ngIf="queryModel.length > 0; else queryModel_else">
+						<tbody *ngIf="queryModel.length > 0; else queryModel_else" [@fade]="queryModel.length">
 							<tr *ngFor="let query of queryModel">
 								<td>{{ query.management_first_name }} {{ query.management_last_name }}</td>
 								<td>{{ query.management_designation }}</td>

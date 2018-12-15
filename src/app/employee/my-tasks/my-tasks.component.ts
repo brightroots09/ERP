@@ -9,7 +9,7 @@ import { UserService } from '../../user.service';
 })
 export class MyTasksComponent implements OnInit {
 
-  tasksModel;
+  tasksModel = [];
   param;
   filtersLoaded: Promise<boolean>;
   constructor(private router: Router, private user: UserService) { 
@@ -18,10 +18,7 @@ export class MyTasksComponent implements OnInit {
   
   async ngOnInit() {
     try {
-      const details = await this.getTasks()
-      if(details != undefined || details != null){
-        this.tasksModel = details
-      }
+      await this.getTasks()
     } catch (error) {
       return error
     }
@@ -30,7 +27,23 @@ export class MyTasksComponent implements OnInit {
   getTasks(){
     this.user.myTasks()
       .subscribe(res => {
-        this.tasksModel = res
+        for(let task in res) {
+          let now_date = new Date()
+          let task_date;
+          if(res[task].updated_date != null) {
+            task_date = new Date(res[task].updated_date)
+          }
+          else {
+            task_date = new Date(res[task].date_created)
+          }
+          if(task_date.getDate() == now_date.getDate() && task_date.getMonth() == now_date.getMonth() || res[task].status == 'completed'){
+            this.tasksModel.push(res[task])
+          }
+          else {
+            res[task].status = "expired"
+            this.tasksModel.push(res[task])
+          }
+        }
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
         console.error(error)

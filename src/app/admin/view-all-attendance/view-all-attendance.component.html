@@ -20,7 +20,7 @@
                 <th>Date</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody [@fade]="attendanceModel.length">
               <ng-container *ngFor="let attendance of attendanceModel | groupBy:'employee_id'">
                 <tr>
                   <td colspan="6" class="text-danger text-center m-4 p-4">

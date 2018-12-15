@@ -52,12 +52,12 @@ export class UserService {
   private _replyToQuery = "/admin/reply_to_query";
   private _createProjectTask = "/admin/create_project_task";
   private _addAbsenties = "/admin/add_absenties";
+  
   /**
    * -------------
    * EMPLOYEE URLs
    * -------------
    */
-
   private _employeeProfileUrl = "/employee/employee_profile";
   private _changePasswordUrl = "/employee/change_password";
   private _myProjectsUrl = "/employee/my_projects";
@@ -65,11 +65,11 @@ export class UserService {
   private _myTasksUrl = "/employee/my_tasks";
   private _myProjectTaskUrl = "/employee/my_project_task";
   private _myTaskDetailsUrl = "/employee/my_task_details";
-  private _addQueryUrl = "/employee/query";
+  // private _addQueryUrl = "/employee/query";
   private _queriesUrl = "/employee/query";
   private _queryDetailsUrl = "/employee/query_details";
   private _dailyDiaryUrl = "/employee/daily_diary";
-  private _addDailyDiary = "/employee/daily_diary";
+  // private _addDailyDiary = "/employee/daily_diary";
   private _dailyDiaryDetailsUrl = "/employee/daily_diary_details";
   private _addEveningUpdate = "/employee/addEveningUpdate";
   private _dailyUpdateUrl = "/employee/daily_tasks";
@@ -80,7 +80,7 @@ export class UserService {
   private _myAttendanceUrl = "/employee/my_attendance";
   private _attendanceDetailsUrl = "/employee/attendance_details";
   private _updateAttendanceUrl = "/employee/update_daily_dairy";
-  
+  private _updateTicket = "/employee/update_ticket";
 
 
   constructor(private http: HttpClient) { }
@@ -321,7 +321,7 @@ export class UserService {
   }
 
   addQuery(data): Observable<any> {
-    return this.http.post<any>(this._addQueryUrl, data)
+    return this.http.post<any>(this._queriesUrl, data)
   }
 
   queries(): Observable<any> {
@@ -337,7 +337,7 @@ export class UserService {
   }
 
   addDailyDiary(data): Observable<any> {
-    return this.http.post<any>(this._addDailyDiary, data)
+    return this.http.post<any>(this._dailyDiaryUrl, data)
   }
 
   dailyDiaryDetails(): Observable<any> {
@@ -383,6 +383,10 @@ export class UserService {
 
   updateAttendance(attendance): Observable<any>{
     return this.http.post<any>(this._updateAttendanceUrl, attendance)
+  }
+
+  updateTicket(obj): Observable<any> {
+    return this.http.post<any>(this._updateTicket, obj)
   }
 
 }

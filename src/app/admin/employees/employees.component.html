@@ -35,7 +35,7 @@ Selected</button>
 								<th>Action</th>
 							</tr>
 						</thead>
-						<tbody *ngIf="userModel.length > 0; else else_block">
+						<tbody *ngIf="userModel.length > 0; else else_block" [@fade]="userModel.length">
 							<tr *ngFor="let user of userModel">
 								<td *ngIf="multiSelect">
 									<input type="checkbox" [(ngModel)]="user.selected">

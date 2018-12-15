@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '../../../../node_modules/@angular/router';
 import { UserService } from '../../user.service';
 import { ExcelService } from '../../excel.service';
+import { staggerAnimate } from '../../animation';
 
 @Component({
   selector: 'app-view-attendance',
   templateUrl: './view-attendance.component.html',
-  styleUrls: ['./view-attendance.component.css']
+  styleUrls: ['./view-attendance.component.css'],
+  animations: [
+    staggerAnimate
+  ]
 })
 export class ViewAttendanceComponent implements OnInit {
 

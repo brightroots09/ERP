@@ -165,7 +165,7 @@ router.get("/my_tasks", verifyToken, function (req, res, callback) {
 	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
 	let payload = jwt.verify(token, 'secretKey');
 
-	let fields = `t.id, t.task_name, t.task_description, t.status, t.date_created, p.project_name, p.project_description`
+	let fields = `t.id, t.task_name, t.task_description, t.status, t.date_created, t.updated_date, p.project_name, p.project_description`
 
 	condition = {
 		field: `e.employee_id = ? AND t.project_id != ''`,
@@ -215,7 +215,7 @@ router.get("/others", verifyToken, function (req, res, callback) {
 	let token = req.headers.authorization.split(" ")[1] ? req.headers.authorization.split(" ")[1] : req.headers.authorization
 	let payload = jwt.verify(token, 'secretKey');
 
-	let fields = `t.id, t.task_name, t.task_description, t.status, t.date_created`
+	let fields = `t.id, t.task_name, t.task_description, t.status, t.date_created, t.total_hours, t.updated_date`
 
 	condition = {
 		field: `e.employee_id = ? AND t.project_id = ''`,
@@ -250,7 +250,7 @@ router.get("/my_project_task/:id", verifyToken, function (req, res, callback) {
  */
 router.get("/my_task_details/:id", verifyToken, function (req, res, callback) {
 
-	let fields = `id, task_name, task_description, status, date_created`
+	let fields = `id, task_name, task_description, status, date_created, updated_date`
 
 	condition = {
 		field: `id = ?`,
@@ -559,6 +559,20 @@ router.get("/attendance_details/:id", verifyToken, function(req, res, token){
 	let data = [in_time.format('LTS'), new_date.format('LTS'), format_date, req.body.id]
 
 	commonFunction.updateDailyDiary('dailyUpdate', fields, data, function (error, result) {
+		if (error) callback(error)
+		else res.json(result)
+	})
+ })
+ 
+/**
+ * -------------
+ * UPDATE TICKET
+ * -------------
+ */
+ router.post("/update_ticket", verifyToken, function(req, res, callback) {
+	let fields = `updated_date=?`
+	let date = new Date()
+	commonFunction.toggleStatus('tasks', fields, date, req.body.task_id, function (error, result) {
 		if (error) callback(error)
 		else res.json(result)
 	})

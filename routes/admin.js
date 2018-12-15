@@ -550,7 +550,7 @@ router.post("/projects_delete", verifyToken, function (req, res, callback) {
 
 router.get("/tasks", verifyToken, function (req, res, callback) {
 	
-	let fields = "t.id as task_id, t.task_name, t.task_description, t.status, t.date_created as task_date_created"
+	let fields = "t.id as task_id, t.task_name, t.task_description, t.status, DATE_FORMAT(t.date_created,'%y-%m-%d %H:%i:%s') as task_date_created, DATE_FORMAT(t.updated_date, '%y-%m-%d %H:%i:%s') as updated_date";
 
 	commonFunction.findTasks('tasks', fields, false, 1, function(error, result){
 		if(error) callback(error)
@@ -565,7 +565,7 @@ router.get("/tasks", verifyToken, function (req, res, callback) {
  */
 
 router.get("/tasks_details/:id", verifyToken, function (req, res, callback) {
-	let fields = "t.id as task_id, t.task_name, t.task_description, t.status, t.project_id, t.others, t.date_created as task_date_created, p.project_name, p.project_description, e.first_name as employee_first_name, e.last_name as employee_last_name, e.designation as employee_designation"
+	let fields = "t.id as task_id, t.task_name, t.task_description, t.status, t.project_id, t.others, DATE_FORMAT(t.date_created,'%y-%m-%d %H:%i:%s') as task_date_created, DATE_FORMAT(t.updated_date, '%y-%m-%d %H:%i:%s') as updated_date, p.project_name, p.project_description, e.first_name as employee_first_name, e.last_name as employee_last_name, e.designation as employee_designation"
 	
 	let condition = `t.id = ${req.params.id}`
 

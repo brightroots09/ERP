@@ -2,7 +2,7 @@
 
 	<div class="col-md-6 offset-md-3">
 
-		<nb-card [accent]="tasksModel.status == 'completed' ? 'success' : 'danger'" *ngIf="tasksModel != null; else else_block">
+		<nb-card [accent]="tasksModel.status == 'completed' ? 'success' : tasksModel.status == 'expired' ? 'danger' : 'info'">
 			<nb-card-header>
 				{{ tasksModel.task_name }}
 			</nb-card-header>
@@ -13,11 +13,14 @@
 						Description: {{ tasksModel.task_description }}
 					</nb-list-item>
 					<nb-list-item>
-						Status: {{ tasksModel.status }}
+						Status: <span>{{ tasksModel.status }}</span>
 					</nb-list-item>
 					<nb-list-item>
-							<button type="button" [disabled]="tasksModel.status == 'completed'" (click)="toggleStatus(tasksModel.id)"
-							[class]="tasksModel.status == 'completed' ? 'text-success btn btn-link p-0' : 'text-danger btn btn-link p-0'">Mark as Complete</button>
+						<button type="button" *ngIf="tasksModel.status !== 'expired'" [disabled]="tasksModel.status == 'completed'" (click)="toggleStatus(tasksModel.id)"
+						[class]="tasksModel.status == 'completed' ? 'text-success btn btn-link p-0' : tasksModel.status == 'expired' ? 'text-danger btn btn-link p-0' : 'text-info btn btn-link p-0'">Mark as Complete</button>
+						
+						<button type="button" *ngIf="tasksModel.status === 'expired'" class="btn btn-link text-danger p-0" (click)="updateTicket(tasksModel.id)">Renew</button>
+
 					</nb-list-item>
 				</nb-list>
 
