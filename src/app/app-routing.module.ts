@@ -24,7 +24,7 @@ import { MyProjectDetailsComponent } from './employee/my-project-details/my-proj
 import { MyTasksComponent } from './employee/my-tasks/my-tasks.component';
 import { MyTaskDetailsComponent } from './employee/my-task-details/my-task-details.component';
 import { QueryComponent } from './employee/query/query.component';
-import { QueryDetailsComponent } from './employee/query-details/query-details.component';
+// import { QueryDetailsComponent } from './employee/query-details/query-details.component';
 import { DailyDiaryComponent } from './employee/daily-diary/daily-diary.component';
 import { MyProjectTaskComponent } from './employee/my-project-task/my-project-task.component';
 import { DailyUpdateComponent } from './employee/daily-update/daily-update.component';
@@ -222,11 +222,11 @@ const routes: Routes = [
     component: QueryComponent,
     canActivate: [AuthGuard]
   },
-  {
-    path: "queryDetails/:id",
-    component: QueryDetailsComponent,
-    canActivate: [AuthGuard]
-  },
+  // {
+  //   path: "queryDetails/:id",
+  //   component: QueryDetailsComponent,
+  //   canActivate: [AuthGuard]
+  // },
   {
     path: "dailyUpdate/:id",
     component: DailyUpdateComponent,
