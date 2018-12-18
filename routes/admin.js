@@ -470,7 +470,12 @@ router.post("/edit_project/:id", verifyToken, function (req, res, callback) {
 router.post("/edit_project_employee/:id", verifyToken, function(req, res, callback){
 	let employee_id = []
 	for(let i = 0; i < req.body.length; i++){
-		employee_id.push(req.body[i].employee_id)
+		if(req.body[i].employee_id.length > 1) {
+			employee_id.push(req.body[i].employee)
+		}
+		else {
+			employee_id.push(req.body[i].employee_id)
+		}
 	}
 	let string = employee_id.join(",").toString()
 	var uniqueList=string.split(',').filter(function(allItems,i,a){
@@ -511,12 +516,16 @@ router.post("/editResponsiblePerson/:id", verifyToken, function(req, res, callba
  * --------------------
  */
 router.post("/project_delete/:id", verifyToken, function (req, res, callback) {
-	projectModel.findByIdAndRemove({ _id: req.params.id }, function (error, response) {
-		if (error) callback(error)
-		else {
-			res.redirect("/admin/projects")
-		}
+	commonFunction.deleteProject('projects', req.params.id, function(error, result){
+		if(error) callback(error)
+		else res.json(result)
 	})
+	// projectModel.findByIdAndRemove({ _id: req.params.id }, function (error, response) {
+	// 	if (error) callback(error)
+	// 	else {
+	// 		res.redirect("/admin/projects")
+	// 	}
+	// })
 })
 
 /**

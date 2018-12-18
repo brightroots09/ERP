@@ -30,7 +30,7 @@ exports.dailyUpdate = dailyUpdate;
 
 exports.findMyProjects = findMyProjects;
 exports.projectDetails = projectDetails;
-
+exports.deleteProject = deleteProject;
 exports.projectTask = projectTask;
 
 exports.askQuery = askQuery;
@@ -259,6 +259,15 @@ function deleteTask(db, id, cb) {
     else cb(null, result)
   })
 
+}
+
+function deleteProject(db, id, cb) {
+  let sql = `delete from ${db} where project_id=?`
+
+  con.query(sql, [id], function(error, result) {
+    if(error) cb(error)
+    else cb(null, result)
+  })
 }
 
 function viewQueries(db, fields, condition, cb) {
