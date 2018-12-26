@@ -42,7 +42,7 @@ export class TasksComponent implements OnInit {
         for(let task in res) {
           let now_date = new Date()
           let in_time;
-          let created_date = moment(res[task].task_date_created, 'YYYY-MM-DD HH:mm:ss')
+          let created_date = moment(new Date(res[task].task_date_created), 'YYYY-MM-DD HH:mm:ss')
           if(res[task].updated_date != null){
             in_time = moment(res[task].updated_date, 'YYYY-MM-DD HH:mm:ss')
           }

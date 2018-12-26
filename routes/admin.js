@@ -559,7 +559,7 @@ router.post("/projects_delete", verifyToken, function (req, res, callback) {
 
 router.get("/tasks", verifyToken, function (req, res, callback) {
 	
-	let fields = "t.id as task_id, t.task_name, t.task_description, t.status, DATE_FORMAT(t.date_created,'%y-%m-%d %H:%i:%s') as task_date_created, DATE_FORMAT(t.updated_date, '%y-%m-%d %H:%i:%s') as updated_date";
+	let fields = "t.id as task_id, t.task_name, t.task_description, t.status, t.date_created as task_date_created, t.updated_date as updated_date";
 
 	commonFunction.findTasks('tasks', fields, false, 1, function(error, result){
 		if(error) callback(error)
