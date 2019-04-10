@@ -67,10 +67,6 @@ const employee = require("./routes/employee")
 app.use("/admin", admin);
 app.use("/employee", employee);
 
-app.get("*", (req, res, callback) => {
-    res.sendFile(path.join(__dirname, "dist/ERP/index.html"))
-})
-
 sqlConnection();
 model.model_index();
 
