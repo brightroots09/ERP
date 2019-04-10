@@ -64,16 +64,21 @@ export class ViewAttendanceComponent implements OnInit {
   verify(id) {
     this.user.toggleAttendance(id, {"status": "Verified"})
       .subscribe(res => {
-        window.location.reload()
+        const attendanceObj = this.attendanceModel.find(o => o.id === id);
+        const index = this.attendanceModel.indexOf(attendanceObj)
+        this.attendanceModel[index].status = "Verified";
       }, error => {
-        console.error(error)
+        console.error(error);
       })
   }
 
   notVerify(id) {
     this.user.toggleAttendance(id, {"status": "Not Verified"})
       .subscribe(res => {
-        window.location.reload()
+        const attendanceObj = this.attendanceModel.find(o => o.id === id);
+        const index = this.attendanceModel.indexOf(attendanceObj)
+        this.attendanceModel[index].status = "Not Verified"
+        // window.location.reload()
       }, error => {
         console.error(error)
       })

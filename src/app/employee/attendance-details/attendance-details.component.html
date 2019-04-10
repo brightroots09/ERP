@@ -22,11 +22,13 @@
                 <tr>
                   <td style="line-height: 2.5rem">{{ attendanceModel.in_time }}</td>
                   <td>
-                    <input type="datetime-local" name="in_time" [(ngModel)]="in_time" class="form-control">
+                      <input type="date" name="in_time" [(ngModel)]="in_date" value="in_date" class="form-control datetime">
+                      <input type="time" name="in_time" [(ngModel)]="in_time" class="form-control datetime">
                   </td>
                   <td style="line-height: 2.5rem">{{ attendanceModel.out_time }}</td>
                   <td>
-                    <input type="datetime-local" name="out_time" [(ngModel)]="out_time" class="form-control">
+                    <input type="date" name="out_time" [(ngModel)]="out_date" value="{{out_date}}" class="form-control datetime">
+                    <input type="time" name="in_time" [(ngModel)]="out_time" class="form-control datetime">
                   </td>
                 </tr>
                 <tr>

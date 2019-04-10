@@ -41,7 +41,6 @@ export class AttendancesComponent implements OnInit {
   getAttendance() {
     this.user.getAttendance(this.param.date)
       .subscribe(res => {
-        console.log(res)
         this.attendanceModel = res
         this.filtersLoaded = Promise.resolve(true);
       }, (error) => {
@@ -65,7 +64,9 @@ export class AttendancesComponent implements OnInit {
   verify(id) {
     this.user.toggleAttendance(id, {"status": "Verified"})
       .subscribe(res => {
-        window.location.reload()
+        const attendanceObj = this.attendanceModel.find(o => o.id === id);
+        const index = this.attendanceModel.indexOf(attendanceObj)
+        this.attendanceModel[index].status = "Verified";
       }, error => {
         console.error(error)
       })
@@ -74,7 +75,9 @@ export class AttendancesComponent implements OnInit {
   notVerify(id) {
     this.user.toggleAttendance(id, {"status": "Not Verified"})
       .subscribe(res => {
-        window.location.reload()
+        const attendanceObj = this.attendanceModel.find(o => o.id === id);
+        const index = this.attendanceModel.indexOf(attendanceObj)
+        this.attendanceModel[index].status = "Not Verified"
       }, error => {
         console.error(error)
       })

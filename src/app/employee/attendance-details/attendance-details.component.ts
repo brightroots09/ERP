@@ -48,14 +48,14 @@ export class AttendanceDetailsComponent implements OnInit {
     }
     this.user.updateAttendance(obj)
       .subscribe(res => {
-        this.router.navigate([`/view_attendance/${this.attendanceModel.date_created.split('T')[0]}`]);
+        this.router.navigate([`/attendances/${this.attendanceModel.date_created.split('T')[0]}`]);
       }, error => {
         console.error(error)
       })
   }
 
   cancel(){
-    this.router.navigate([`/view_attendance/${this.attendanceModel.date_created.split('T')[0]}`]);
+    this.router.navigate([`/attendances/${this.attendanceModel.date_created.split('T')[0]}`]);
   }
 
 }
